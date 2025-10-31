@@ -1,11 +1,11 @@
-﻿using SteveCadwallader.CodeMaid.Helpers;
-using SteveCadwallader.CodeMaid.Model.CodeItems;
+﻿using ASGV.CodeMaid.Helpers;
+using ASGV.CodeMaid.Model.CodeItems;
 using System;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
 
-namespace SteveCadwallader.CodeMaid.UI.Converters
+namespace ASGV.CodeMaid.UI.Converters
 {
     /// <summary>
     /// A converter that finds the highest complexity item for a specified parent.
@@ -15,7 +15,7 @@ namespace SteveCadwallader.CodeMaid.UI.Converters
         /// <summary>
         /// The default <see cref="CodeItemParentHighestComplexityConverter" />.
         /// </summary>
-        public static CodeItemParentHighestComplexityConverter Default = new CodeItemParentHighestComplexityConverter();
+        public static CodeItemParentHighestComplexityConverter Default = new();
 
         /// <summary>
         /// Converts a value.
@@ -27,14 +27,14 @@ namespace SteveCadwallader.CodeMaid.UI.Converters
         /// <returns>A converted value. If the method returns null, the valid null value is used.</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var parent = value as ICodeItemParent;
+      ICodeItemParent parent = value as ICodeItemParent;
             if (parent == null) return null;
 
-            var childrenWithComplexity = parent.GetChildrenRecursive().OfType<ICodeItemComplexity>().ToArray();
+      ICodeItemComplexity[] childrenWithComplexity = [.. parent.GetChildrenRecursive().OfType<ICodeItemComplexity>()];
 
             if (!childrenWithComplexity.Any()) return null;
 
-            var maxComplexity = childrenWithComplexity.Max(x => x.Complexity);
+      int maxComplexity = childrenWithComplexity.Max(x => x.Complexity);
 
             return childrenWithComplexity.FirstOrDefault(x => x.Complexity == maxComplexity);
         }

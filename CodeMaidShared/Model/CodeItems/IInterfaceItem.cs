@@ -1,4 +1,4 @@
-﻿namespace SteveCadwallader.CodeMaid.Model.CodeItems
+﻿namespace ASGV.CodeMaid.Model.CodeItems
 {
     /// <summary>
     /// Represents an item that can implement an interface member.

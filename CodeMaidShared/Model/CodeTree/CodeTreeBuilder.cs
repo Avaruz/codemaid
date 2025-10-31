@@ -1,11 +1,11 @@
-using SteveCadwallader.CodeMaid.Helpers;
-using SteveCadwallader.CodeMaid.Model.CodeItems;
-using SteveCadwallader.CodeMaid.Properties;
+using ASGV.CodeMaid.Helpers;
+using ASGV.CodeMaid.Model.CodeItems;
+using ASGV.CodeMaid.Properties;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SteveCadwallader.CodeMaid.Model.CodeTree
+namespace ASGV.CodeMaid.Model.CodeTree
 {
     /// <summary>
     /// A helper class for performing code tree building.
@@ -58,7 +58,7 @@ namespace SteveCadwallader.CodeMaid.Model.CodeTree
         /// <param name="codeItems">The code items.</param>
         private static void ClearHierarchyInformation(SetCodeItems codeItems)
         {
-            foreach (var codeItem in codeItems.OfType<ICodeItemParent>())
+            foreach (ICodeItemParent codeItem in codeItems.OfType<ICodeItemParent>())
             {
                 codeItem.Children.Clear();
             }
@@ -71,13 +71,13 @@ namespace SteveCadwallader.CodeMaid.Model.CodeTree
         /// <returns>The organized code items.</returns>
         private static SetCodeItems OrganizeCodeItemsByAlphaSortOrder(SetCodeItems rawCodeItems)
         {
-            var organizedCodeItems = new SetCodeItems();
+      SetCodeItems organizedCodeItems = new();
 
             if (rawCodeItems != null)
             {
-                var codeItemsWithoutRegions = rawCodeItems.Where(x => !(x is CodeItemRegion));
+        IEnumerable<BaseCodeItem> codeItemsWithoutRegions = rawCodeItems.Where(x => x is not CodeItemRegion);
 
-                var structuredCodeItems = OrganizeCodeItemsByFileSortOrder(codeItemsWithoutRegions);
+        SetCodeItems structuredCodeItems = OrganizeCodeItemsByFileSortOrder(codeItemsWithoutRegions);
                 organizedCodeItems.AddRange(structuredCodeItems);
 
                 // Sort the list of code items by name recursively.
@@ -94,15 +94,15 @@ namespace SteveCadwallader.CodeMaid.Model.CodeTree
         /// <returns>The organized code items.</returns>
         private static SetCodeItems OrganizeCodeItemsByFileSortOrder(IEnumerable<BaseCodeItem> rawCodeItems)
         {
-            var organizedCodeItems = new SetCodeItems();
+      SetCodeItems organizedCodeItems = new();
 
             if (rawCodeItems != null)
             {
-                // Sort the raw list of code items by starting position.
-                var sortedCodeItems = rawCodeItems.OrderBy(x => x.StartOffset);
-                var codeItemStack = new Stack<BaseCodeItem>();
+        // Sort the raw list of code items by starting position.
+        IOrderedEnumerable<BaseCodeItem> sortedCodeItems = rawCodeItems.OrderBy(x => x.StartOffset);
+        Stack<BaseCodeItem> codeItemStack = new();
 
-                foreach (var codeItem in sortedCodeItems)
+                foreach (BaseCodeItem codeItem in sortedCodeItems)
                 {
                     while (true)
                     {
@@ -113,10 +113,10 @@ namespace SteveCadwallader.CodeMaid.Model.CodeTree
                             break;
                         }
 
-                        var top = codeItemStack.Peek();
+            BaseCodeItem top = codeItemStack.Peek();
                         if (codeItem.EndOffset < top.EndOffset)
                         {
-                            var topParent = top as ICodeItemParent;
+              ICodeItemParent topParent = top as ICodeItemParent;
                             if (topParent != null)
                             {
                                 topParent.Children.Add(codeItem);
@@ -146,20 +146,20 @@ namespace SteveCadwallader.CodeMaid.Model.CodeTree
         /// <returns>The organized code items.</returns>
         private static SetCodeItems OrganizeCodeItemsByTypeSortOrder(SetCodeItems rawCodeItems)
         {
-            var organizedCodeItems = new SetCodeItems();
+      SetCodeItems organizedCodeItems = new();
 
             if (rawCodeItems != null)
             {
-                var codeItemsWithoutRegions = rawCodeItems.Where(x => !(x is CodeItemRegion));
+        IEnumerable<BaseCodeItem> codeItemsWithoutRegions = rawCodeItems.Where(x => x is not CodeItemRegion);
 
-                var structuredCodeItems = OrganizeCodeItemsByFileSortOrder(codeItemsWithoutRegions);
+        SetCodeItems structuredCodeItems = OrganizeCodeItemsByFileSortOrder(codeItemsWithoutRegions);
                 organizedCodeItems.AddRange(structuredCodeItems);
 
                 // Sort the list of code items by type recursively.
                 RecursivelySort(organizedCodeItems, new CodeItemTypeComparer(Settings.Default.Digging_SecondarySortTypeByName));
 
                 // Group the list of code items by type recursively.
-                foreach (var codeItem in organizedCodeItems.OfType<ICodeItemParent>())
+                foreach (ICodeItemParent codeItem in organizedCodeItems.OfType<ICodeItemParent>())
                 {
                     RecursivelyGroupByType(codeItem);
                 }
@@ -180,16 +180,16 @@ namespace SteveCadwallader.CodeMaid.Model.CodeTree
                 return;
             }
 
-            // Capture the current children, then clear them out so they can be re-added.
-            var children = codeItem.Children.ToArray();
+      // Capture the current children, then clear them out so they can be re-added.
+      BaseCodeItem[] children = [.. codeItem.Children];
             codeItem.Children.Clear();
 
             CodeItemRegion group = null;
             int groupOrder = -1;
 
-            foreach (var child in children)
+            foreach (BaseCodeItem child in children)
             {
-                var memberTypeSetting = MemberTypeSettingHelper.LookupByKind(child.Kind);
+        MemberTypeSetting memberTypeSetting = MemberTypeSettingHelper.LookupByKind(child.Kind);
 
                 // Create a new group unless the right kind has already been defined.
                 if (group == null || memberTypeSetting.Order != groupOrder)
@@ -203,7 +203,7 @@ namespace SteveCadwallader.CodeMaid.Model.CodeTree
                 // Add the child to the group and recurse.
                 group.Children.Add(child);
 
-                var childAsParent = child as ICodeItemParent;
+        ICodeItemParent childAsParent = child as ICodeItemParent;
                 if (childAsParent != null)
                 {
                     RecursivelyGroupByType(childAsParent);
@@ -220,7 +220,7 @@ namespace SteveCadwallader.CodeMaid.Model.CodeTree
         {
             codeItems.Sort(sortComparer);
 
-            foreach (var codeItem in codeItems.OfType<ICodeItemParent>())
+            foreach (ICodeItemParent codeItem in codeItems.OfType<ICodeItemParent>())
             {
                 RecursivelySort(codeItem.Children, sortComparer);
             }
@@ -235,7 +235,7 @@ namespace SteveCadwallader.CodeMaid.Model.CodeTree
         {
             codeItems.RemoveAll(codeItem =>
             {
-                var codeItemParent = codeItem as ICodeItemParent;
+              ICodeItemParent codeItemParent = codeItem as ICodeItemParent;
                 if (codeItemParent != null)
                 {
                     RecursivelyFilter(codeItemParent.Children, nameFilter);

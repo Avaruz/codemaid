@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Data;
 using System.Xml.Linq;
 
-namespace SteveCadwallader.CodeMaid.UI.Converters
+namespace ASGV.CodeMaid.UI.Converters
 {
     /// <summary>
     /// Converts the specified doc comment into a simpler string.
@@ -14,7 +14,7 @@ namespace SteveCadwallader.CodeMaid.UI.Converters
         /// <summary>
         /// A default instance of the <see cref="DocCommentToStringConverter" />.
         /// </summary>
-        public static DocCommentToStringConverter Default = new DocCommentToStringConverter();
+        public static DocCommentToStringConverter Default = new();
 
         /// <summary>
         /// Converts a value.
@@ -26,7 +26,7 @@ namespace SteveCadwallader.CodeMaid.UI.Converters
         /// <returns>A converted value. If the method returns null, the valid null value is used.</returns>
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            var str = value as string;
+      string str = value as string;
             if (string.IsNullOrEmpty(str)) return string.Empty;
 
             try
@@ -38,16 +38,16 @@ namespace SteveCadwallader.CodeMaid.UI.Converters
                     str = "<doc>" + str + "</doc>";
                 }
 
-                var xElement = XElement.Parse(str);
+        XElement xElement = XElement.Parse(str);
 
-                var summaryTag = xElement.DescendantsAndSelf("summary").FirstOrDefault();
+        XElement summaryTag = xElement.DescendantsAndSelf("summary").FirstOrDefault();
                 if (summaryTag == null) return string.Empty;
 
-                // Get the Inner XML for the summary tag.
-                var result = GetInnerXML(summaryTag);
+        // Get the Inner XML for the summary tag.
+        string result = GetInnerXML(summaryTag);
 
                 // Replace para tags with two new lines.
-                result = Regex.Replace(result, @"</?para ?/?> ?", Environment.NewLine + Environment.NewLine);
+                result = Regex.Replace(result, "</?para ?/?> ?", Environment.NewLine + Environment.NewLine);
 
                 // Reduce three of more new lines down to two.
                 result = Regex.Replace(result, @"(\r?\n){3,}", Environment.NewLine + Environment.NewLine);
@@ -83,7 +83,7 @@ namespace SteveCadwallader.CodeMaid.UI.Converters
         /// <returns>The inner XML for the specified XElement.</returns>
         private static string GetInnerXML(XElement element)
         {
-            var reader = element.CreateReader();
+      System.Xml.XmlReader reader = element.CreateReader();
             reader.MoveToContent();
             return reader.ReadInnerXml();
         }

@@ -1,3 +1,7 @@
+using ASGV.CodeMaid.Model;
+using ASGV.CodeMaid.Model.CodeItems;
+using ASGV.CodeMaid.Model.CodeTree;
+using ASGV.CodeMaid.Properties;
 using EnvDTE;
 using Microsoft.Internal.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio;
@@ -5,10 +9,6 @@ using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using SteveCadwallader.CodeMaid.Model;
-using SteveCadwallader.CodeMaid.Model.CodeItems;
-using SteveCadwallader.CodeMaid.Model.CodeTree;
-using SteveCadwallader.CodeMaid.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -16,10 +16,10 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Threading;
-using CodeModel = SteveCadwallader.CodeMaid.Model.CodeModel;
+using CodeModel = ASGV.CodeMaid.Model.CodeModel;
 using Task = System.Threading.Tasks.Task;
 
-namespace SteveCadwallader.CodeMaid.UI.ToolWindows.Spade
+namespace ASGV.CodeMaid.UI.ToolWindows.Spade
 {
     /// <summary>
     /// The Spade tool window pane.
@@ -45,7 +45,7 @@ namespace SteveCadwallader.CodeMaid.UI.ToolWindows.Spade
             // Set the tool window image from moniker.
             BitmapImageMoniker = new ImageMoniker
             {
-                Guid = PackageGuids.GuidCodeMaidImageMoniker,
+                Guid = PackageGuids.GuidImageSpade,
                 Id = 2,
             };
 
@@ -138,6 +138,7 @@ namespace SteveCadwallader.CodeMaid.UI.ToolWindows.Spade
 
         public void Close()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             (Frame as IVsWindowFrame).CloseFrame((uint)__FRAMECLOSE.FRAMECLOSE_NoSave);
         }
 
@@ -200,7 +201,7 @@ namespace SteveCadwallader.CodeMaid.UI.ToolWindows.Spade
         public override void OnToolWindowCreated()
         {
             base.OnToolWindowCreated();
-
+            ThreadHelper.ThrowIfNotOnUIThread();
             // Register for events to this window.
             ((IVsWindowFrame)Frame).SetProperty((int)__VSFPROPID.VSFPROPID_ViewHelper, this);
 
@@ -236,10 +237,7 @@ namespace SteveCadwallader.CodeMaid.UI.ToolWindows.Spade
                 _viewModel.Package = Package;
 
                 // Attempt to initialize the Document, may have been set before Spade was created.
-                if (Document == null)
-                {
-                    Document = Package.ActiveDocument;
-                }
+                Document ??= Package.ActiveDocument;
 
                 if (Content is FrameworkElement spadeContent)
                 {
@@ -252,6 +250,7 @@ namespace SteveCadwallader.CodeMaid.UI.ToolWindows.Spade
 
         public override void ProvideSearchSettings(IVsUIDataSource pSearchSettings)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             base.ProvideSearchSettings(pSearchSettings);
 
             Utilities.SetValue(pSearchSettings, SearchSettingsDataSource.PropertyNames.ControlMinWidth, 200U);
@@ -275,7 +274,10 @@ namespace SteveCadwallader.CodeMaid.UI.ToolWindows.Spade
         /// <param name="isRefresh">True if refreshing a document, otherwise false.</param>
         private void ConditionallyUpdateCodeModel(bool isRefresh)
         {
-            if (!IsVisible) return;
+            if (!IsVisible)
+            {
+                return;
+            }
 
             _viewModel.Document = Document;
             _viewModel.IsLoading = false;
@@ -298,7 +300,7 @@ namespace SteveCadwallader.CodeMaid.UI.ToolWindows.Spade
                     _viewModel.IsLoading = true;
                 }
 
-                var codeItems = _codeModelManager.RetrieveAllCodeItemsAsync(Document, true);
+                SetCodeItems codeItems = _codeModelManager.RetrieveAllCodeItemsAsync(Document, true);
                 if (codeItems != null)
                 {
                     UpdateViewModelRawCodeItems(codeItems);
@@ -340,8 +342,7 @@ namespace SteveCadwallader.CodeMaid.UI.ToolWindows.Spade
         private void UpdateViewModelRawCodeItems(SetCodeItems codeItems)
         {
             // Create a copy of the original collection, filtering out undesired items.
-            var filteredCodeItems = new SetCodeItems(
-                codeItems.Where(x => !(x is CodeItemUsingStatement || x is CodeItemNamespace)));
+            SetCodeItems filteredCodeItems = [.. codeItems.Where(x => x is not (CodeItemUsingStatement or CodeItemNamespace))];
 
             _viewModel.RawCodeItems = filteredCodeItems;
             _viewModel.IsLoading = false;

@@ -1,33 +1,36 @@
 ﻿using EnvDTE;
+using Microsoft.VisualStudio.Shell;
 
-namespace SteveCadwallader.CodeMaid.Helpers
+namespace ASGV.CodeMaid.Helpers
 {
+  /// <summary>
+  /// A set of extension methods for <see cref="TextDocument" />.
+  /// </summary>
+  internal static class TextDocumentExtensions
+  {
     /// <summary>
-    /// A set of extension methods for <see cref="TextDocument" />.
+    /// Gets the <see cref="CodeLanguage"/> for this text document.
     /// </summary>
-    internal static class TextDocumentExtensions
+    /// <param name="document">The document.</param>
+    /// <returns>A <see cref="CodeLanguage"/>.</returns>
+    internal static CodeLanguage GetCodeLanguage(this TextDocument document)
     {
-        /// <summary>
-        /// Gets the <see cref="CodeLanguage"/> for this text document.
-        /// </summary>
-        /// <param name="document">The document.</param>
-        /// <returns>A <see cref="CodeLanguage"/>.</returns>
-        internal static CodeLanguage GetCodeLanguage(this TextDocument document)
-        {
-            return CodeLanguageHelper.GetCodeLanguage(document.Language);
-        }
-
-        /// <summary>
-        /// Gets an edit point at the cursor for the specified text document.
-        /// </summary>
-        /// <param name="textDocument">The text document.</param>
-        /// <returns>An edit point at the cursor.</returns>
-        internal static EditPoint GetEditPointAtCursor(this TextDocument textDocument)
-        {
-            var cursor = textDocument.CreateEditPoint();
-            cursor.MoveToPoint(textDocument.Selection.ActivePoint);
-
-            return cursor;
-        }
+      ThreadHelper.ThrowIfNotOnUIThread();
+      return CodeLanguageHelper.GetCodeLanguage(document.Language);
     }
+
+    /// <summary>
+    /// Gets an edit point at the cursor for the specified text document.
+    /// </summary>
+    /// <param name="textDocument">The text document.</param>
+    /// <returns>An edit point at the cursor.</returns>
+    internal static EditPoint GetEditPointAtCursor(this TextDocument textDocument)
+    {
+      ThreadHelper.ThrowIfNotOnUIThread();
+      EditPoint cursor = textDocument.CreateEditPoint();
+      cursor.MoveToPoint(textDocument.Selection.ActivePoint);
+
+      return cursor;
+    }
+  }
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SteveCadwallader.CodeMaid.Helpers
+namespace ASGV.CodeMaid.Helpers
 {
     /// <summary>
     /// A class that encapsulates caching a setting expression that can be parsed into a set.
@@ -58,10 +58,10 @@ namespace SteveCadwallader.CodeMaid.Helpers
         {
             get
             {
-                var expression = _lookupFunction();
+        string expression = _lookupFunction();
                 if (expression != _cachedExpression)
                 {
-                    _cachedResult = string.IsNullOrEmpty(expression) ? Enumerable.Empty<T>() : _parseFunction(expression);
+                    _cachedResult = string.IsNullOrEmpty(expression) ? [] : _parseFunction(expression);
 
                     _cachedExpression = expression;
                 }

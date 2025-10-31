@@ -2,7 +2,7 @@ using System.ComponentModel;
 using System.Reflection;
 using System.Windows;
 
-namespace SteveCadwallader.CodeMaid.UI.Dialogs.CleanupProgress
+namespace ASGV.CodeMaid.UI.Dialogs.CleanupProgress
 {
     /// <summary>
     /// Interaction logic for CleanupProgressWindow.xaml
@@ -34,7 +34,7 @@ namespace SteveCadwallader.CodeMaid.UI.Dialogs.CleanupProgress
         /// </param>
         private void OnClosing(object sender, CancelEventArgs e)
         {
-            var viewModel = DataContext as CleanupProgressViewModel;
+      CleanupProgressViewModel viewModel = DataContext as CleanupProgressViewModel;
             if (viewModel != null && viewModel.DialogResult == null)
             {
                 viewModel.CancelCommand.Execute(null);

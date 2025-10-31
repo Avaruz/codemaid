@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SteveCadwallader.CodeMaid.Helpers;
+using ASGV.CodeMaid.Helpers;
 
-namespace SteveCadwallader.CodeMaid.UnitTests
+namespace ASGV.CodeMaid.UnitTests
 {
     [TestClass]
     public class MemberTypeSettingTests
@@ -9,19 +9,19 @@ namespace SteveCadwallader.CodeMaid.UnitTests
         [TestMethod]
         public void CanSerializeMemberTypeSetting()
         {
-            var memberTypeSetting = new MemberTypeSetting("Fields", "Member Variables", 1);
+      MemberTypeSetting memberTypeSetting = new("Fields", "Member Variables", 1);
             Assert.IsNotNull(memberTypeSetting);
 
-            var serializedString = (string)memberTypeSetting;
+      string serializedString = (string)memberTypeSetting;
             Assert.IsFalse(string.IsNullOrWhiteSpace(serializedString));
         }
 
         [TestMethod]
         public void CanDeserializeMemberTypeSetting()
         {
-            const string serializedString = @"Fields||1||Member Variables";
+            const string serializedString = "Fields||1||Member Variables";
 
-            var memberTypeSetting = (MemberTypeSetting)serializedString;
+      MemberTypeSetting memberTypeSetting = (MemberTypeSetting)serializedString;
 
             Assert.IsNotNull(memberTypeSetting);
             Assert.AreEqual(memberTypeSetting.DefaultName, "Fields");

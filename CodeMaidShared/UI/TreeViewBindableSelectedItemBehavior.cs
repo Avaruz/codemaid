@@ -3,7 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Interactivity;
 using System.Windows.Media;
 
-namespace SteveCadwallader.CodeMaid.UI
+namespace ASGV.CodeMaid.UI
 {
     /// <summary>
     /// A behavior for making TreeView's SelectedItem bindable based on http://stackoverflow.com/questions/1000040/selecteditem-in-a-wpf-treeview.
@@ -40,14 +40,11 @@ namespace SteveCadwallader.CodeMaid.UI
         {
             if (obj is TreeViewBindableSelectedItemBehavior behavior)
             {
-                var treeView = behavior.AssociatedObject;
+        TreeView treeView = behavior.AssociatedObject;
                 if (treeView != null)
                 {
-                    var treeViewItem = FindTreeViewItemRecursively(treeView, e.NewValue);
-                    if (treeViewItem != null)
-                    {
-                        treeViewItem.SetValue(TreeViewItem.IsSelectedProperty, true);
-                    }
+          TreeViewItem treeViewItem = FindTreeViewItemRecursively(treeView, e.NewValue);
+                    treeViewItem?.SetValue(TreeViewItem.IsSelectedProperty, true);
                 }
             }
         }
@@ -79,8 +76,8 @@ namespace SteveCadwallader.CodeMaid.UI
 
             for (int i = 0; i < itemsControl.Items.Count; i++)
             {
-                var childItemsControl = itemsControl.ItemContainerGenerator.ContainerFromIndex(i) as ItemsControl;
-                var result = FindTreeViewItemRecursively(childItemsControl, contentToFind);
+        ItemsControl childItemsControl = itemsControl.ItemContainerGenerator.ContainerFromIndex(i) as ItemsControl;
+        TreeViewItem result = FindTreeViewItemRecursively(childItemsControl, contentToFind);
                 if (result != null)
                 {
                     return result;
@@ -98,7 +95,7 @@ namespace SteveCadwallader.CodeMaid.UI
         {
             itemsControl.ApplyTemplate();
 
-            var itemsPresenter = (ItemsPresenter)itemsControl.Template.FindName("ItemsHost", itemsControl);
+      ItemsPresenter itemsPresenter = (ItemsPresenter)itemsControl.Template.FindName("ItemsHost", itemsControl);
 
             if (itemsPresenter != null)
             {
@@ -120,10 +117,10 @@ namespace SteveCadwallader.CodeMaid.UI
 
             if (itemsPresenter != null)
             {
-                var itemsHostPanel = (Panel)VisualTreeHelper.GetChild(itemsPresenter, 0);
+        Panel itemsHostPanel = (Panel)VisualTreeHelper.GetChild(itemsPresenter, 0);
 
-                // Ensure that the generator for this panel has been created.
-                var children = itemsHostPanel.Children;
+        // Ensure that the generator for this panel has been created.
+        UIElementCollection children = itemsHostPanel.Children;
             }
         }
 

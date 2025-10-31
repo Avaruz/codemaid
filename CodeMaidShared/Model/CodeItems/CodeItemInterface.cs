@@ -2,7 +2,7 @@ using EnvDTE;
 using EnvDTE80;
 using System;
 
-namespace SteveCadwallader.CodeMaid.Model.CodeItems
+namespace ASGV.CodeMaid.Model.CodeItems
 {
     /// <summary>
     /// The representation of a code interface.

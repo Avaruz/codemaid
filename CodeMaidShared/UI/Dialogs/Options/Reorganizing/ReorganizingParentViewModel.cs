@@ -1,6 +1,6 @@
-﻿using SteveCadwallader.CodeMaid.Properties;
+﻿using ASGV.CodeMaid.Properties;
 
-namespace SteveCadwallader.CodeMaid.UI.Dialogs.Options.Reorganizing
+namespace ASGV.CodeMaid.UI.Dialogs.Options.Reorganizing
 {
     /// <summary>
     /// The view model for reorganizing options - a parent to more specific view models.

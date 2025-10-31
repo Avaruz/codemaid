@@ -1,8 +1,8 @@
-using SteveCadwallader.CodeMaid.Model.CodeItems;
+using ASGV.CodeMaid.Model.CodeItems;
 using System;
 using System.Collections.Generic;
 
-namespace SteveCadwallader.CodeMaid.Logic.Reorganizing
+namespace ASGV.CodeMaid.Logic.Reorganizing
 {
     /// <summary>
     /// An implementation of <see cref="IEqualityComparer{T}"/> for handling region comparison by name.

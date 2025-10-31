@@ -2,7 +2,7 @@ using System;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace SteveCadwallader.CodeMaid.Helpers
+namespace ASGV.CodeMaid.Helpers
 {
     /// <summary>
     /// A helper class that provides reflection access to property information.

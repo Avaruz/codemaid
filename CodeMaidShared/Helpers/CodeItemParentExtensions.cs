@@ -1,6 +1,6 @@
-﻿using SteveCadwallader.CodeMaid.Model.CodeItems;
+﻿using ASGV.CodeMaid.Model.CodeItems;
 
-namespace SteveCadwallader.CodeMaid.Helpers
+namespace ASGV.CodeMaid.Helpers
 {
     /// <summary>
     /// A set of extension methods for <see cref="ICodeItemParent" />.
@@ -15,14 +15,14 @@ namespace SteveCadwallader.CodeMaid.Helpers
         /// <returns>The recursive set of children.</returns>
         public static SetCodeItems GetChildrenRecursive(this ICodeItemParent parent)
         {
-            var children = new SetCodeItems();
+      SetCodeItems children = new();
 
-            foreach (var child in parent.Children)
+            foreach (BaseCodeItem child in parent.Children)
             {
                 children.Add(child);
 
-                var childAsParent = child as ICodeItemParent;
-                if (childAsParent != null && !(child is BaseCodeItemElementParent))
+        ICodeItemParent childAsParent = child as ICodeItemParent;
+                if (childAsParent != null && child is not BaseCodeItemElementParent)
                 {
                     children.AddRange(childAsParent.GetChildrenRecursive());
                 }

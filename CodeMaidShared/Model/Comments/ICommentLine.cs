@@ -1,4 +1,4 @@
-﻿namespace SteveCadwallader.CodeMaid.Model.Comments
+﻿namespace ASGV.CodeMaid.Model.Comments
 {
     internal interface ICommentLine
     {

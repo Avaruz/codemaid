@@ -1,9 +1,9 @@
-using SteveCadwallader.CodeMaid.Helpers;
+using ASGV.CodeMaid.Helpers;
 using System;
 using System.Globalization;
 using System.Windows.Data;
 
-namespace SteveCadwallader.CodeMaid.UI.Converters
+namespace ASGV.CodeMaid.UI.Converters
 {
     /// <summary>
     /// Converts a type string into a simpler value using the <see cref="TypeFormatHelper" />.
@@ -13,7 +13,7 @@ namespace SteveCadwallader.CodeMaid.UI.Converters
         /// <summary>
         /// A default instance of the <see cref="TypeStringConverter" />.
         /// </summary>
-        public static TypeStringConverter Default = new TypeStringConverter();
+        public static TypeStringConverter Default = new();
 
         /// <summary>
         /// Converts a value.

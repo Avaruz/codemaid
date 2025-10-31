@@ -1,7 +1,7 @@
-using SteveCadwallader.CodeMaid.Model.CodeTree;
-using SteveCadwallader.CodeMaid.Properties;
+using ASGV.CodeMaid.Model.CodeTree;
+using ASGV.CodeMaid.Properties;
 
-namespace SteveCadwallader.CodeMaid.UI.Dialogs.Options.Digging
+namespace ASGV.CodeMaid.UI.Dialogs.Options.Digging
 {
     /// <summary>
     /// The view model for digging options.

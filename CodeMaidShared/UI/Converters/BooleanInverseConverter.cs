@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using System.Windows.Data;
 
-namespace SteveCadwallader.CodeMaid.UI.Converters
+namespace ASGV.CodeMaid.UI.Converters
 {
     /// <summary>
     /// A simple converter for inverting a boolean.
@@ -12,7 +12,7 @@ namespace SteveCadwallader.CodeMaid.UI.Converters
         /// <summary>
         /// A default instance of <see cref="BooleanInverseConverter" />.
         /// </summary>
-        public static BooleanInverseConverter Default = new BooleanInverseConverter();
+        public static BooleanInverseConverter Default = new();
 
         /// <summary>
         /// Converts a value.

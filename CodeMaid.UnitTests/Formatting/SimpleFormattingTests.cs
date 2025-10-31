@@ -1,8 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SteveCadwallader.CodeMaid.Properties;
+using ASGV.CodeMaid.Properties;
 using System;
 
-namespace SteveCadwallader.CodeMaid.UnitTests.Formatting
+namespace ASGV.CodeMaid.UnitTests.Formatting
 {
     /// <summary>
     /// Class with simple unit tests for formatting. This calls the formatter directly, rather than
@@ -28,7 +28,7 @@ namespace SteveCadwallader.CodeMaid.UnitTests.Formatting
         [TestCategory("Formatting UnitTests")]
         public void SimpleFormattingTests_DoesNotWrapShortLines()
         {
-            var input = "Lorem ipsum dolor sit amet.";
+      string input = "Lorem ipsum dolor sit amet.";
 
             CommentFormatHelper.AssertEqualAfterFormat(input);
         }
@@ -37,7 +37,7 @@ namespace SteveCadwallader.CodeMaid.UnitTests.Formatting
         [TestCategory("Formatting UnitTests")]
         public void SimpleFormattingTests_PreservesMultipleBlankLine()
         {
-            var input = "Lorem ipsum\r\n\r\n\r\ndolor sit amet.";
+      string input = "Lorem ipsum\r\n\r\n\r\ndolor sit amet.";
 
             CommentFormatHelper.AssertEqualAfterFormat(input);
         }
@@ -46,7 +46,7 @@ namespace SteveCadwallader.CodeMaid.UnitTests.Formatting
         [TestCategory("Formatting UnitTests")]
         public void SimpleFormattingTests_PreservesSingleBlankLine()
         {
-            var input = "Lorem ipsum\r\n\r\ndolor sit amet.";
+      string input = "Lorem ipsum\r\n\r\ndolor sit amet.";
 
             CommentFormatHelper.AssertEqualAfterFormat(input);
         }
@@ -55,12 +55,12 @@ namespace SteveCadwallader.CodeMaid.UnitTests.Formatting
         [TestCategory("Formatting UnitTests")]
         public void SimpleFormattingTests_NoTrailingWhitespace()
         {
-            var input =
+      string input =
                 "Lorem ipsum " + Environment.NewLine + " " +
                 Environment.NewLine + " " +
                 "dolor sit amet. ";
 
-            var expected =
+      string expected =
                 "Lorem ipsum" + Environment.NewLine +
                 Environment.NewLine +
                 "dolor sit amet.";
@@ -72,8 +72,8 @@ namespace SteveCadwallader.CodeMaid.UnitTests.Formatting
         [TestCategory("Formatting UnitTests")]
         public void SimpleFormattingTests_RemoveBlankLinesAfter()
         {
-            var input = "Lorem ipsum dolor sit amet.\r\n\r\n";
-            var expected = "Lorem ipsum dolor sit amet.";
+      string input = "Lorem ipsum dolor sit amet.\r\n\r\n";
+      string expected = "Lorem ipsum dolor sit amet.";
 
             CommentFormatHelper.AssertEqualAfterFormat(input, expected);
         }
@@ -82,8 +82,8 @@ namespace SteveCadwallader.CodeMaid.UnitTests.Formatting
         [TestCategory("Formatting UnitTests")]
         public void SimpleFormattingTests_RemoveBlankLinesBefore()
         {
-            var input = "\r\n\r\nLorem ipsum dolor sit amet.";
-            var expected = "Lorem ipsum dolor sit amet.";
+      string input = "\r\n\r\nLorem ipsum dolor sit amet.";
+      string expected = "Lorem ipsum dolor sit amet.";
 
             CommentFormatHelper.AssertEqualAfterFormat(input, expected);
         }
@@ -92,8 +92,8 @@ namespace SteveCadwallader.CodeMaid.UnitTests.Formatting
         [TestCategory("Formatting UnitTests")]
         public void SimpleFormattingTests_RemovesLineBreaks()
         {
-            var input = "Lorem ipsum\r\ndolor sit amet.";
-            var expected = "Lorem ipsum dolor sit amet.";
+      string input = "Lorem ipsum\r\ndolor sit amet.";
+      string expected = "Lorem ipsum dolor sit amet.";
 
             CommentFormatHelper.AssertEqualAfterFormat(input, expected);
         }
@@ -102,8 +102,8 @@ namespace SteveCadwallader.CodeMaid.UnitTests.Formatting
         [TestCategory("Formatting UnitTests")]
         public void SimpleFormattingTests_SkipWrapOnLastWord()
         {
-            var input = "Lorem ipsum dolor sit amet.";
-            var expected = "Lorem ipsum\r\ndolor sit amet.";
+      string input = "Lorem ipsum dolor sit amet.";
+      string expected = "Lorem ipsum\r\ndolor sit amet.";
 
             CommentFormatHelper.AssertEqualAfterFormat(input, expected, o =>
             {
@@ -116,8 +116,8 @@ namespace SteveCadwallader.CodeMaid.UnitTests.Formatting
         [TestCategory("Formatting UnitTests")]
         public void SimpleFormattingTests_WrapOnLastWord()
         {
-            var input = "Lorem ipsum dolor sit amet.";
-            var expected = "Lorem ipsum\r\ndolor sit\r\namet.";
+      string input = "Lorem ipsum dolor sit amet.";
+      string expected = "Lorem ipsum\r\ndolor sit\r\namet.";
 
             CommentFormatHelper.AssertEqualAfterFormat(input, expected, o =>
             {
@@ -130,7 +130,7 @@ namespace SteveCadwallader.CodeMaid.UnitTests.Formatting
         [TestCategory("Formatting UnitTests")]
         public void SimpleFormattingTests_HyperlinkOnNewLine()
         {
-            var input = "http://foo";
+      string input = "http://foo";
             CommentFormatHelper.AssertEqualAfterFormat(input);
         }
 
@@ -138,7 +138,7 @@ namespace SteveCadwallader.CodeMaid.UnitTests.Formatting
         [TestCategory("Formatting UnitTests")]
         public void SimpleFormattingTests_HyperlinkBetweenWords()
         {
-            var input = "Look at this http://foo pretty link.";
+      string input = "Look at this http://foo pretty link.";
             CommentFormatHelper.AssertEqualAfterFormat(input);
         }
 
@@ -146,8 +146,8 @@ namespace SteveCadwallader.CodeMaid.UnitTests.Formatting
         [TestCategory("Formatting UnitTests")]
         public void SimpleFormattingTests_WrapsLinesAsExpected()
         {
-            var input = "Lorem ipsum dolor sit.";
-            var expected = "Lorem ipsum\r\ndolor sit.";
+      string input = "Lorem ipsum dolor sit.";
+      string expected = "Lorem ipsum\r\ndolor sit.";
 
             CommentFormatHelper.AssertEqualAfterFormat(input, expected, o => o.WrapColumn = 12);
         }
@@ -156,12 +156,12 @@ namespace SteveCadwallader.CodeMaid.UnitTests.Formatting
         [TestCategory("Formatting UnitTests")]
         public void SimpleFormattingTests_MergesHyphenAndNonHyphenLines()
         {
-            var input =
-                @"-----" + Environment.NewLine +
-                @"Second line to merge onto hyphen line";
+      string input =
+                "-----" + Environment.NewLine +
+                "Second line to merge onto hyphen line";
 
-            var expected =
-                @"----- Second line to merge onto hyphen line";
+      string expected =
+                "----- Second line to merge onto hyphen line";
 
             CommentFormatHelper.AssertEqualAfterFormat(input, expected);
         }

@@ -1,8 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SteveCadwallader.CodeMaid.Properties;
+using ASGV.CodeMaid.Properties;
 using System;
 
-namespace SteveCadwallader.CodeMaid.UnitTests.Formatting
+namespace ASGV.CodeMaid.UnitTests.Formatting
 {
     /// <summary>
     /// Class with list oriented unit tests for formatting. This calls the formatter directly, rather
@@ -21,19 +21,19 @@ namespace SteveCadwallader.CodeMaid.UnitTests.Formatting
         [TestCategory("Formatting UnitTests")]
         public void ListFormattingTests_DashedList()
         {
-            var input =
-                @"Some text before." + Environment.NewLine +
-                @"- The first item with enough words to require wrapping." + Environment.NewLine +
-                @"- The second item with enough words to require wrapping." + Environment.NewLine +
-                @"Some trailing text.";
+      string input =
+                "Some text before." + Environment.NewLine +
+                "- The first item with enough words to require wrapping." + Environment.NewLine +
+                "- The second item with enough words to require wrapping." + Environment.NewLine +
+                "Some trailing text.";
 
-            var expected =
-                @"Some text before." + Environment.NewLine +
-                @"- The first item with enough" + Environment.NewLine +
-                @"  words to require wrapping." + Environment.NewLine +
-                @"- The second item with enough" + Environment.NewLine +
-                @"  words to require wrapping." + Environment.NewLine +
-                @"Some trailing text.";
+      string expected =
+                "Some text before." + Environment.NewLine +
+                "- The first item with enough" + Environment.NewLine +
+                "  words to require wrapping." + Environment.NewLine +
+                "- The second item with enough" + Environment.NewLine +
+                "  words to require wrapping." + Environment.NewLine +
+                "Some trailing text.";
 
             CommentFormatHelper.AssertEqualAfterFormat(input, expected, o => o.WrapColumn = 30);
         }
@@ -42,19 +42,19 @@ namespace SteveCadwallader.CodeMaid.UnitTests.Formatting
         [TestCategory("Formatting UnitTests")]
         public void ListFormattingTests_NumberedList()
         {
-            var input =
-                @"Some text before." + Environment.NewLine +
-                @"1) The first item with enough words to require wrapping." + Environment.NewLine +
-                @"2) The second item with enough words to require wrapping." + Environment.NewLine +
-                @"Some trailing text.";
+      string input =
+                "Some text before." + Environment.NewLine +
+                "1) The first item with enough words to require wrapping." + Environment.NewLine +
+                "2) The second item with enough words to require wrapping." + Environment.NewLine +
+                "Some trailing text.";
 
-            var expected =
-                @"Some text before." + Environment.NewLine +
-                @"1) The first item with enough" + Environment.NewLine +
-                @"   words to require wrapping." + Environment.NewLine +
-                @"2) The second item with enough" + Environment.NewLine +
-                @"   words to require wrapping." + Environment.NewLine +
-                @"Some trailing text.";
+      string expected =
+                "Some text before." + Environment.NewLine +
+                "1) The first item with enough" + Environment.NewLine +
+                "   words to require wrapping." + Environment.NewLine +
+                "2) The second item with enough" + Environment.NewLine +
+                "   words to require wrapping." + Environment.NewLine +
+                "Some trailing text.";
 
             CommentFormatHelper.AssertEqualAfterFormat(input, expected, o => o.WrapColumn = 30);
         }
@@ -63,19 +63,19 @@ namespace SteveCadwallader.CodeMaid.UnitTests.Formatting
         [TestCategory("Formatting UnitTests")]
         public void ListFormattingTests_WordList()
         {
-            var input =
-                @"Some text before." + Environment.NewLine +
-                @"item) The first item with enough words to require wrapping." + Environment.NewLine +
-                @"meti) The second item with enough words to require wrapping." + Environment.NewLine +
-                @"Some trailing text.";
+      string input =
+                "Some text before." + Environment.NewLine +
+                "item) The first item with enough words to require wrapping." + Environment.NewLine +
+                "meti) The second item with enough words to require wrapping." + Environment.NewLine +
+                "Some trailing text.";
 
-            var expected =
-                @"Some text before." + Environment.NewLine +
-                @"item) The first item with enough" + Environment.NewLine +
-                @"      words to require wrapping." + Environment.NewLine +
-                @"meti) The second item with enough" + Environment.NewLine +
-                @"      words to require wrapping." + Environment.NewLine +
-                @"Some trailing text.";
+      string expected =
+                "Some text before." + Environment.NewLine +
+                "item) The first item with enough" + Environment.NewLine +
+                "      words to require wrapping." + Environment.NewLine +
+                "meti) The second item with enough" + Environment.NewLine +
+                "      words to require wrapping." + Environment.NewLine +
+                "Some trailing text.";
 
             CommentFormatHelper.AssertEqualAfterFormat(input, expected, o => o.WrapColumn = 35);
         }
@@ -84,7 +84,7 @@ namespace SteveCadwallader.CodeMaid.UnitTests.Formatting
         [TestCategory("Formatting UnitTests")]
         public void ListFormattingTests_XmlListWithHeader()
         {
-            var input =
+      string input =
                 "Some text before." + Environment.NewLine +
                 "<list type=\"bullet\">" + Environment.NewLine +
                 "   <listheader>" + Environment.NewLine +
@@ -98,7 +98,7 @@ namespace SteveCadwallader.CodeMaid.UnitTests.Formatting
                 "</list>" + Environment.NewLine +
                 "Some trailing text.";
 
-            var expected =
+      string expected =
                 "Some text before." + Environment.NewLine +
                 "<list type=\"bullet\">" + Environment.NewLine +
                 "<listheader>" + Environment.NewLine +
@@ -119,7 +119,7 @@ namespace SteveCadwallader.CodeMaid.UnitTests.Formatting
         [TestCategory("Formatting UnitTests")]
         public void ListFormattingTests_XmlListWithHeaderAndIndent()
         {
-            var input =
+      string input =
                 "Some text before." + Environment.NewLine +
                 "<list type=\"bullet\">" + Environment.NewLine +
                 "<listheader>" + Environment.NewLine +
@@ -133,7 +133,7 @@ namespace SteveCadwallader.CodeMaid.UnitTests.Formatting
                 "</list>" + Environment.NewLine +
                 "Some trailing text.";
 
-            var expected =
+      string expected =
                 "Some text before." + Environment.NewLine +
                 "<list type=\"bullet\">" + Environment.NewLine +
                 "  <listheader>" + Environment.NewLine +

@@ -1,6 +1,6 @@
-using SteveCadwallader.CodeMaid.Properties;
+using ASGV.CodeMaid.Properties;
 
-namespace SteveCadwallader.CodeMaid.UI.Dialogs.Options.Switching
+namespace ASGV.CodeMaid.UI.Dialogs.Options.Switching
 {
     /// <summary>
     /// The view model for switching options.

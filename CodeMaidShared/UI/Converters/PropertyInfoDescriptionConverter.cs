@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Windows.Data;
 
-namespace SteveCadwallader.CodeMaid.UI.Converters
+namespace ASGV.CodeMaid.UI.Converters
 {
     /// <summary>
     /// A converter that retrieves the description attribute from a specified property info value.
@@ -14,7 +14,7 @@ namespace SteveCadwallader.CodeMaid.UI.Converters
         /// <summary>
         /// A default instance of the <see cref="PropertyInfoDescriptionConverter" />.
         /// </summary>
-        public static PropertyInfoDescriptionConverter Default = new PropertyInfoDescriptionConverter();
+        public static PropertyInfoDescriptionConverter Default = new();
 
         /// <summary>
         /// Converts a value.
@@ -26,10 +26,10 @@ namespace SteveCadwallader.CodeMaid.UI.Converters
         /// <returns>A converted value. If the method returns null, the valid null value is used.</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var propertyInfo = value as PropertyInfo;
+      PropertyInfo propertyInfo = value as PropertyInfo;
             if (propertyInfo == null) return null;
 
-            var descriptionAttribute = propertyInfo.GetCustomAttribute<DescriptionAttribute>();
+      DescriptionAttribute descriptionAttribute = propertyInfo.GetCustomAttribute<DescriptionAttribute>();
             if (descriptionAttribute == null) return null;
 
             return descriptionAttribute.Description;

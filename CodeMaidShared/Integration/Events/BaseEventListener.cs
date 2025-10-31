@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace SteveCadwallader.CodeMaid.Integration.Events
+namespace ASGV.CodeMaid.Integration.Events
 {
     /// <summary>
     /// The base implementation of an event listener.
@@ -21,19 +21,19 @@ namespace SteveCadwallader.CodeMaid.Integration.Events
         /// </summary>
         protected bool IsListening { get; set; }
 
-        /// <summary>
-        /// Gets the hosting package.
-        /// </summary>
-        protected CodeMaidPackage Package { get; private set; }
+    /// <summary>
+    /// Gets the hosting package.
+    /// </summary>
+    protected CodeMaidPackage Package { get; }
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
 
-        /// <summary>
-        /// Switches the event listener on or off, registering/unregistering from events from the IDE.
-        /// </summary>
-        /// <param name="on">True if switching the event listener on, otherwise false.</param>
-        /// <returns>A task.</returns>
-        public async Task SwitchAsync(bool on)
+    /// <summary>
+    /// Switches the event listener on or off, registering/unregistering from events from the IDE.
+    /// </summary>
+    /// <param name="on">True if switching the event listener on, otherwise false.</param>
+    /// <returns>A task.</returns>
+    public async Task SwitchAsync(bool on)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             if (on && !IsListening)

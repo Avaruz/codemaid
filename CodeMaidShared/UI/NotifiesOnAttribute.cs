@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SteveCadwallader.CodeMaid.UI
+namespace ASGV.CodeMaid.UI
 {
     /// <summary>
     /// This attribute is used to declare that a property should raise a notification
@@ -21,14 +21,14 @@ namespace SteveCadwallader.CodeMaid.UI
             Name = name;
         }
 
-        /// <summary>
-        /// The name of the independent property.
-        /// </summary>
-        public string Name { get; private set; }
+    /// <summary>
+    /// The name of the independent property.
+    /// </summary>
+    public string Name { get; }
 
-        /// <summary>
-        /// A unique identifier for this attribute.
-        /// </summary>
-        public override object TypeId => this;
+    /// <summary>
+    /// A unique identifier for this attribute.
+    /// </summary>
+    public override object TypeId => this;
     }
 }

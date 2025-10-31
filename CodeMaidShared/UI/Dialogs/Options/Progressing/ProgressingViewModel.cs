@@ -1,6 +1,6 @@
-using SteveCadwallader.CodeMaid.Properties;
+using ASGV.CodeMaid.Properties;
 
-namespace SteveCadwallader.CodeMaid.UI.Dialogs.Options.Progressing
+namespace ASGV.CodeMaid.UI.Dialogs.Options.Progressing
 {
     /// <summary>
     /// The view model for progressing options.

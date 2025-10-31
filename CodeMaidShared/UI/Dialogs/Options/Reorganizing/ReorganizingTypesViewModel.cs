@@ -1,12 +1,12 @@
-﻿using SteveCadwallader.CodeMaid.Helpers;
-using SteveCadwallader.CodeMaid.Properties;
+﻿using ASGV.CodeMaid.Helpers;
+using ASGV.CodeMaid.Properties;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 
-namespace SteveCadwallader.CodeMaid.UI.Dialogs.Options.Reorganizing
+namespace ASGV.CodeMaid.UI.Dialogs.Options.Reorganizing
 {
     /// <summary>
     /// The view model for reorganizing types options.
@@ -132,7 +132,7 @@ namespace SteveCadwallader.CodeMaid.UI.Dialogs.Options.Reorganizing
         /// <summary>
         /// Gets the split command.
         /// </summary>
-        public DelegateCommand SplitCommand => _splitCommand ?? (_splitCommand = new DelegateCommand(OnSplitCommandExecuted));
+        public DelegateCommand SplitCommand => _splitCommand ??= new DelegateCommand(OnSplitCommandExecuted);
 
         /// <summary>
         /// Called when the <see cref="SplitCommand" /> is executed.
@@ -140,16 +140,16 @@ namespace SteveCadwallader.CodeMaid.UI.Dialogs.Options.Reorganizing
         /// <param name="parameter">The command parameter.</param>
         private void OnSplitCommandExecuted(object parameter)
         {
-            var list = parameter as IList;
+      IList list = parameter as IList;
             if (list != null)
             {
                 // Determine the position of the combined item and remove it.
                 int index = MemberTypes.IndexOf(parameter);
                 MemberTypes.Remove(parameter);
 
-                // Reset each item in the list and insert it into the specified position.
-                var memberTypeSettings = list.OfType<MemberTypeSetting>().Reverse();
-                foreach (var memberTypeSetting in memberTypeSettings)
+        // Reset each item in the list and insert it into the specified position.
+        IEnumerable<MemberTypeSetting> memberTypeSettings = list.OfType<MemberTypeSetting>().Reverse();
+                foreach (MemberTypeSetting memberTypeSetting in memberTypeSettings)
                 {
                     memberTypeSetting.EffectiveName = memberTypeSetting.DefaultName;
                     MemberTypes.Insert(index, memberTypeSetting);
@@ -175,15 +175,15 @@ namespace SteveCadwallader.CodeMaid.UI.Dialogs.Options.Reorganizing
         /// </summary>
         private void CreateMemberTypesFromCurrentState()
         {
-            var allMemberTypes = new[] { Classes, Constructors, Delegates, Destructors, Enums, Events, Fields, Indexers, Interfaces, Methods, Properties, Structs };
-            foreach (var memberType in allMemberTypes)
+      MemberTypeSetting[] allMemberTypes = new[] { Classes, Constructors, Delegates, Destructors, Enums, Events, Fields, Indexers, Interfaces, Methods, Properties, Structs };
+            foreach (MemberTypeSetting memberType in allMemberTypes)
             {
                 memberType.PropertyChanged += OnMemberTypeSettingPropertyChanged;
             }
 
-            MemberTypes = new ObservableCollection<object>(allMemberTypes.GroupBy(x => x.Order)
+            MemberTypes = [.. allMemberTypes.GroupBy(x => x.Order)
                                                                          .Select(y => new List<object>(y))
-                                                                         .OrderBy(z => ((MemberTypeSetting)z[0]).Order));
+                                                                         .OrderBy(z => ((MemberTypeSetting)z[0]).Order)];
 
             MemberTypes.CollectionChanged += (sender, args) => UpdateMemberTypeSettings();
         }
@@ -195,7 +195,7 @@ namespace SteveCadwallader.CodeMaid.UI.Dialogs.Options.Reorganizing
         /// <param name="e">The event arguments.</param>
         private void OnMemberTypeSettingPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            var memberTypeSetting = sender as MemberTypeSetting;
+      MemberTypeSetting memberTypeSetting = sender as MemberTypeSetting;
             if (memberTypeSetting != null)
             {
                 // Raise NotifyPropertyChanged on the DefaultName of the MemberTypeSetting which matches the property name on this class.
@@ -204,10 +204,10 @@ namespace SteveCadwallader.CodeMaid.UI.Dialogs.Options.Reorganizing
                 // If the EffectiveName changed for one member in a group, be sure all other members in the group are synchronized.
                 if (e.PropertyName == "EffectiveName")
                 {
-                    var list = MemberTypes.OfType<IList>().FirstOrDefault(x => x.Contains(memberTypeSetting));
-                    if (list != null && list.Count > 1)
+          IList list = MemberTypes.OfType<IList>().FirstOrDefault(x => x.Contains(memberTypeSetting));
+                    if (list?.Count > 1)
                     {
-                        foreach (var type in list.OfType<MemberTypeSetting>())
+                        foreach (MemberTypeSetting type in list.OfType<MemberTypeSetting>())
                         {
                             type.EffectiveName = memberTypeSetting.EffectiveName;
                         }
@@ -223,29 +223,29 @@ namespace SteveCadwallader.CodeMaid.UI.Dialogs.Options.Reorganizing
         {
             int index = 1;
 
-            foreach (var memberType in MemberTypes)
+            foreach (object memberType in MemberTypes)
             {
-                var memberTypeSetting = memberType as MemberTypeSetting;
+        MemberTypeSetting memberTypeSetting = memberType as MemberTypeSetting;
                 if (memberTypeSetting != null)
                 {
                     memberTypeSetting.Order = index;
                 }
                 else
                 {
-                    var list = memberType as IList;
+          IList list = memberType as IList;
                     if (list != null)
                     {
-                        var types = list.OfType<MemberTypeSetting>().ToList();
+            List<MemberTypeSetting> types = [.. list.OfType<MemberTypeSetting>()];
 
                         // If merged member types have distinct names, create a new effective name from joining their names together.
                         string newEffectiveName = null;
-                        var distinctNames = types.Select(x => x.EffectiveName).Distinct().ToList();
+            List<string> distinctNames = [.. types.Select(x => x.EffectiveName).Distinct()];
                         if (distinctNames.Count > 1)
                         {
                             newEffectiveName = string.Join(" + ", distinctNames);
                         }
 
-                        foreach (var type in types)
+                        foreach (MemberTypeSetting type in types)
                         {
                             type.Order = index;
                             if (!string.IsNullOrWhiteSpace(newEffectiveName))

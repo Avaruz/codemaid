@@ -1,4 +1,4 @@
-namespace SteveCadwallader.CodeMaid.UI.Enumerations
+namespace ASGV.CodeMaid.UI.Enumerations
 {
     /// <summary>
     /// An enumeration of drop positions.

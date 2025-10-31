@@ -1,7 +1,7 @@
-using SteveCadwallader.CodeMaid.UI.Dialogs.Options;
+using ASGV.CodeMaid.UI.Dialogs.Options;
 using System.Threading.Tasks;
 
-namespace SteveCadwallader.CodeMaid.Integration.Commands
+namespace ASGV.CodeMaid.Integration.Commands
 {
     /// <summary>
     /// A command that provides for launching the CodeMaid Options to the general cleanup page.

@@ -1,8 +1,8 @@
-using SteveCadwallader.CodeMaid.Model.CodeItems;
+using ASGV.CodeMaid.Model.CodeItems;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace SteveCadwallader.CodeMaid.UI.ToolWindows.Spade
+namespace ASGV.CodeMaid.UI.ToolWindows.Spade
 {
     /// <summary>
     /// A template selector for code items.
@@ -56,7 +56,7 @@ namespace SteveCadwallader.CodeMaid.UI.ToolWindows.Spade
         /// </returns>
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            var codeItem = item as BaseCodeItem;
+      BaseCodeItem codeItem = item as BaseCodeItem;
             if (codeItem != null)
             {
                 switch (codeItem.Kind)

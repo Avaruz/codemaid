@@ -1,4 +1,4 @@
-﻿namespace SteveCadwallader.CodeMaid.UI.Enumerations
+﻿namespace ASGV.CodeMaid.UI.Enumerations
 {
     public enum HeaderPosition
     {

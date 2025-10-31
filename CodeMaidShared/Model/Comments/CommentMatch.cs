@@ -1,9 +1,9 @@
-﻿using SteveCadwallader.CodeMaid.Model.Comments.Options;
+﻿using ASGV.CodeMaid.Model.Comments.Options;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace SteveCadwallader.CodeMaid.Model.Comments
+namespace ASGV.CodeMaid.Model.Comments
 {
     internal class CodeCommentMatch
     {
@@ -17,7 +17,7 @@ namespace SteveCadwallader.CodeMaid.Model.Comments
 
             if (formatterOptions.IgnoreTokens.Any(p => match.Value.StartsWith(p)))
             {
-                Words = new List<string> { match.Groups["line"].Value };
+                Words = [match.Groups["line"].Value];
                 IsLiteral = true;
                 IsEmpty = false;
                 IsList = false;
@@ -26,7 +26,7 @@ namespace SteveCadwallader.CodeMaid.Model.Comments
             {
                 Indent = match.Groups["indent"].Success ? match.Groups["indent"].Value.Length : 0;
                 ListPrefix = match.Groups["listprefix"].Success ? match.Groups["listprefix"].Value : null;
-                Words = match.Groups["words"].Success ? match.Groups["words"].Captures.OfType<Capture>().Select(c => c.Value).ToList() : null;
+                Words = match.Groups["words"].Success ? [.. match.Groups["words"].Captures.OfType<Capture>().Select(c => c.Value)] : null;
 
                 IsLiteral = false;
                 IsEmpty = string.IsNullOrWhiteSpace(match.Value) || Words == null || Words.Count < 1;
@@ -36,7 +36,7 @@ namespace SteveCadwallader.CodeMaid.Model.Comments
             // In the case of a list prefix but no content (e.g. hyphen line) convert to regular content.
             if (IsEmpty && IsList)
             {
-                Words = new List<string>(new[] { ListPrefix });
+                Words = [.. new[] { ListPrefix }];
                 ListPrefix = null;
                 IsEmpty = false;
                 IsList = false;

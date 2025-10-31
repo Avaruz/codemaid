@@ -1,8 +1,8 @@
+using ASGV.CodeMaid.Properties;
 using EnvDTE;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using SteveCadwallader.CodeMaid.Properties;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace SteveCadwallader.CodeMaid.UI.ToolWindows.BuildProgress
+namespace ASGV.CodeMaid.UI.ToolWindows.BuildProgress
 {
     /// <summary>
     /// This class implements the build progress tool window and hosts a user control.
@@ -33,7 +33,7 @@ namespace SteveCadwallader.CodeMaid.UI.ToolWindows.BuildProgress
             // Set the tool window image from moniker.
             BitmapImageMoniker = new ImageMoniker
             {
-                Guid = PackageGuids.GuidCodeMaidImageMoniker,
+                Guid = PackageGuids.GuidImageSpade,
                 Id = 1
             };
 
@@ -91,6 +91,7 @@ namespace SteveCadwallader.CodeMaid.UI.ToolWindows.BuildProgress
 
         public void Close()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             (Frame as IVsWindowFrame).CloseFrame((uint)__FRAMECLOSE.FRAMECLOSE_NoSave);
         }
 
@@ -117,9 +118,9 @@ namespace SteveCadwallader.CodeMaid.UI.ToolWindows.BuildProgress
         {
             BuildAction = action;
             BuildScope = scope;
-            BuildingProjects = new List<string>();
+            BuildingProjects = [];
             NumberOfProjectsBuilt = 0;
-
+            ThreadHelper.ThrowIfNotOnUIThread();
             if (BuildScope == vsBuildScope.vsBuildScopeSolution)
             {
                 NumberOfProjectsToBeBuilt = GetNumberOfProjectsToBeBuilt();
@@ -207,7 +208,7 @@ namespace SteveCadwallader.CodeMaid.UI.ToolWindows.BuildProgress
         /// <returns>The build type string.</returns>
         private static string GetBuildTypeString(vsBuildScope buildScope, vsBuildAction buildAction)
         {
-            var stringBuilder = new StringBuilder();
+            StringBuilder stringBuilder = new();
 
             // First append the word 'Batch ' if this is a batch build event.
             if (buildScope == vsBuildScope.vsBuildScopeBatch)
@@ -243,7 +244,8 @@ namespace SteveCadwallader.CodeMaid.UI.ToolWindows.BuildProgress
         /// </summary>
         private int GetNumberOfProjectsToBeBuilt()
         {
-            var solutionContexts = Package.IDE.Solution.SolutionBuild.ActiveConfiguration.SolutionContexts;
+            ThreadHelper.ThrowIfNotOnUIThread();
+            SolutionContexts solutionContexts = Package.IDE.Solution.SolutionBuild.ActiveConfiguration.SolutionContexts;
             int count = 0;
 
             for (int i = 0; i < solutionContexts.Count; i++)
@@ -271,7 +273,7 @@ namespace SteveCadwallader.CodeMaid.UI.ToolWindows.BuildProgress
         /// <returns>The string to be displayed as the tool window caption.</returns>
         private string GetToolWindowCaption()
         {
-            var projectNames = BuildingProjects.Select(x => $"\"{ExtractProjectName(x)}\"").ToList();
+            List<string> projectNames = [.. BuildingProjects.Select(x => $"\"{ExtractProjectName(x)}\"")];
             string buildString = GetBuildTypeString(BuildScope, BuildAction);
 
             string progressString = string.Empty;

@@ -1,4 +1,4 @@
-namespace SteveCadwallader.CodeMaid.Model.CodeTree
+namespace ASGV.CodeMaid.Model.CodeTree
 {
     /// <summary>
     /// An enumeration of code sort orders.

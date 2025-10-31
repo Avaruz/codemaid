@@ -1,7 +1,7 @@
-﻿using SteveCadwallader.CodeMaid.Properties;
+﻿using ASGV.CodeMaid.Properties;
 using System;
 
-namespace SteveCadwallader.CodeMaid.Model.Comments.Options
+namespace ASGV.CodeMaid.Model.Comments.Options
 {
     /// <summary>
     /// Document wide options for the comment formatter.

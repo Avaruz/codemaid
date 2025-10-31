@@ -4,19 +4,17 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace SteveCadwallader.CodeMaid.UI
+namespace ASGV.CodeMaid.UI
 {
     /// <summary>
     /// The base class for bindable objects.
     /// </summary>
     public abstract class Bindable : INotifyPropertyChanged
     {
-        #region Backing Dictionary
-
         /// <summary>
         /// A dictionary holding a set of property/value pairs.
         /// </summary>
-        private readonly Dictionary<string, object> _propertyBackingDictionary = new Dictionary<string, object>();
+        private readonly Dictionary<string, object> _propertyBackingDictionary = [];
 
         /// <summary>
         /// Gets the property value for the specified property name.
@@ -26,15 +24,13 @@ namespace SteveCadwallader.CodeMaid.UI
         /// <returns>The property value if set, otherwise the default for its type.</returns>
         protected T GetPropertyValue<T>([CallerMemberName] string propertyName = null)
         {
-            if (propertyName == null) throw new ArgumentNullException(nameof(propertyName));
-
-            object value;
-            if (_propertyBackingDictionary.TryGetValue(propertyName, out value))
+            if (propertyName == null)
             {
-                return (T)value;
+                throw new ArgumentNullException(nameof(propertyName));
             }
 
-            return default(T);
+            object value;
+            return _propertyBackingDictionary.TryGetValue(propertyName, out value) ? (T)value : default(T);
         }
 
         /// <summary>
@@ -47,18 +43,20 @@ namespace SteveCadwallader.CodeMaid.UI
         /// <returns>True if the value was changed, otherwise false.</returns>
         protected bool SetPropertyValue<T>(T newValue, [CallerMemberName] string propertyName = null)
         {
-            if (propertyName == null) throw new ArgumentNullException(nameof(propertyName));
+            if (propertyName == null)
+            {
+                throw new ArgumentNullException(nameof(propertyName));
+            }
 
-            if (EqualityComparer<T>.Default.Equals(newValue, GetPropertyValue<T>(propertyName))) return false;
+            if (EqualityComparer<T>.Default.Equals(newValue, GetPropertyValue<T>(propertyName)))
+            {
+                return false;
+            }
 
             _propertyBackingDictionary[propertyName] = newValue;
             RaisePropertyChanged(propertyName);
             return true;
         }
-
-        #endregion Backing Dictionary
-
-        #region Dependent Notifications
 
         private ILookup<string, string> _dependentLookup;
 
@@ -70,16 +68,12 @@ namespace SteveCadwallader.CodeMaid.UI
         {
             get
             {
-                return _dependentLookup ?? (_dependentLookup = (from p in GetType().GetProperties()
-                                                                let attrs = p.GetCustomAttributes(typeof(NotifiesOnAttribute), false)
-                                                                from NotifiesOnAttribute a in attrs
-                                                                select new { Independent = a.Name, Dependent = p.Name }).ToLookup(i => i.Independent, d => d.Dependent));
+                return _dependentLookup ??= (from p in GetType().GetProperties()
+                                             let attrs = p.GetCustomAttributes(typeof(NotifiesOnAttribute), false)
+                                             from NotifiesOnAttribute a in attrs
+                                             select new { Independent = a.Name, Dependent = p.Name }).ToLookup(i => i.Independent, d => d.Dependent);
             }
         }
-
-        #endregion Dependent Notifications
-
-        #region INotifyPropertyChanged
 
         /// <summary>
         /// Occurs when a property value changes.
@@ -92,20 +86,21 @@ namespace SteveCadwallader.CodeMaid.UI
         /// <param name="propertyName">The name of the property.</param>
         protected void RaisePropertyChanged([CallerMemberName] string propertyName = null)
         {
-            if (propertyName == null) throw new ArgumentNullException(nameof(propertyName));
+            if (propertyName == null)
+            {
+                throw new ArgumentNullException(nameof(propertyName));
+            }
 
-            var propertyChanged = PropertyChanged;
+            PropertyChangedEventHandler propertyChanged = PropertyChanged;
             if (propertyChanged != null)
             {
                 propertyChanged(this, new PropertyChangedEventArgs(propertyName));
 
-                foreach (var dependentPropertyName in DependentLookup[propertyName])
+                foreach (string dependentPropertyName in DependentLookup[propertyName])
                 {
                     RaisePropertyChanged(dependentPropertyName);
                 }
             }
         }
-
-        #endregion INotifyPropertyChanged
     }
 }

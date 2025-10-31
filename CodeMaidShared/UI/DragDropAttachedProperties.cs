@@ -1,6 +1,6 @@
 using System.Windows;
 
-namespace SteveCadwallader.CodeMaid.UI
+namespace ASGV.CodeMaid.UI
 {
     /// <summary>
     /// A collection of attached properties related to drag and drop behavior.

@@ -1,6 +1,6 @@
-using SteveCadwallader.CodeMaid.Properties;
+using ASGV.CodeMaid.Properties;
 
-namespace SteveCadwallader.CodeMaid.UI.Dialogs.Options.Collapsing
+namespace ASGV.CodeMaid.UI.Dialogs.Options.Collapsing
 {
     /// <summary>
     /// The view model for collapsing options.

@@ -9,7 +9,7 @@
 <p>For Visual Studio 2005/2008, the last supported version is <a href="https://github.com/codecadwallader/codemaid/releases/download/v0.4.3/CodeMaid_v0.4.3.msi" target="_blank"> v0.4.3</a>.</p>
 <h2>Links</h2>
 Project home, Documentation, News: <a title="codemaid.net" href="https://www.codemaid.net" target="_blank">www.codemaid.net</a> <br />
-Download, Reviews: <a title="Visual Studio Marketplace" href="https://marketplace.visualstudio.com/items?itemName=SteveCadwallader.CodeMaid" target="_blank">Visual Studio Marketplace</a> <br />
+Download, Reviews: <a title="Visual Studio Marketplace" href="https://marketplace.visualstudio.com/items?itemName=ASGV.CodeMaid" target="_blank">Visual Studio Marketplace</a> <br />
 
 Code, Issues: <a title="GitHub" href="https://github.com/codecadwallader/codemaid" target="_blank">GitHub</a> <br />
 Continuous Integration: <a title="AppVeyor" href="https://ci.appveyor.com/project/codecadwallader/codemaid" target="_blank">AppVeyor</a>

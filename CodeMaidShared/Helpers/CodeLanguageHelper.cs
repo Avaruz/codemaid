@@ -1,4 +1,4 @@
-﻿namespace SteveCadwallader.CodeMaid.Helpers
+﻿namespace ASGV.CodeMaid.Helpers
 {
     /// <summary>
     /// A helper class for mapping <see cref="CodeLanguage"/> from a string.
@@ -12,65 +12,26 @@
         /// <returns>A <see cref="CodeLanguage"/>.</returns>
         internal static CodeLanguage GetCodeLanguage(string language)
         {
-            switch (language)
-            {
-                case "Basic":
-                    return CodeLanguage.VisualBasic;
-
-                case "CSharp":
-                    return CodeLanguage.CSharp;
-
-                case "C/C++":
-                case "C/C++ (VisualGDB)":
-                    return CodeLanguage.CPlusPlus;
-
-                case "CSS":
-                    return CodeLanguage.CSS;
-
-                case "F#":
-                    return CodeLanguage.FSharp;
-
-                case "HTML":
-                case "HTMLX":
-                case "Razor":
-                case "WebForms":
-                    return CodeLanguage.HTML;
-
-                case "JavaScript":
-                case "JScript":
-                case "Node.js":
-                    return CodeLanguage.JavaScript;
-
-                case "JSON":
-                    return CodeLanguage.JSON;
-
-                case "LESS":
-                    return CodeLanguage.LESS;
-
-                case "PHP":
-                    return CodeLanguage.PHP;
-
-                case "PowerShell":
-                    return CodeLanguage.PowerShell;
-
-                case "R":
-                    return CodeLanguage.R;
-
-                case "SCSS":
-                    return CodeLanguage.SCSS;
-
-                case "TypeScript":
-                    return CodeLanguage.TypeScript;
-
-                case "XAML":
-                    return CodeLanguage.XAML;
-
-                case "XML":
-                    return CodeLanguage.XML;
-
-                default:
-                    return CodeLanguage.Unknown;
-            }
-        }
+      return language switch
+      {
+        "Basic" => CodeLanguage.VisualBasic,
+        "CSharp" => CodeLanguage.CSharp,
+        "C/C++" or "C/C++ (VisualGDB)" => CodeLanguage.CPlusPlus,
+        "CSS" => CodeLanguage.CSS,
+        "F#" => CodeLanguage.FSharp,
+        "HTML" or "HTMLX" or "Razor" or "WebForms" => CodeLanguage.HTML,
+        "JavaScript" or "JScript" or "Node.js" => CodeLanguage.JavaScript,
+        "JSON" => CodeLanguage.JSON,
+        "LESS" => CodeLanguage.LESS,
+        "PHP" => CodeLanguage.PHP,
+        "PowerShell" => CodeLanguage.PowerShell,
+        "R" => CodeLanguage.R,
+        "SCSS" => CodeLanguage.SCSS,
+        "TypeScript" => CodeLanguage.TypeScript,
+        "XAML" => CodeLanguage.XAML,
+        "XML" => CodeLanguage.XML,
+        _ => CodeLanguage.Unknown,
+      };
+    }
     }
 }

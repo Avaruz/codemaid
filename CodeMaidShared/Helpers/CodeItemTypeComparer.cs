@@ -1,9 +1,9 @@
 using EnvDTE;
-using SteveCadwallader.CodeMaid.Model.CodeItems;
-using SteveCadwallader.CodeMaid.Properties;
+using ASGV.CodeMaid.Model.CodeItems;
+using ASGV.CodeMaid.Properties;
 using System.Collections.Generic;
 
-namespace SteveCadwallader.CodeMaid.Helpers
+namespace ASGV.CodeMaid.Helpers
 {
     /// <summary>
     /// A helper for comparing code items by type, access level, etc.
@@ -95,31 +95,31 @@ namespace SteveCadwallader.CodeMaid.Helpers
 
         private static int CalculateTypeOffset(BaseCodeItem codeItem)
         {
-            switch (codeItem.Kind)
-            {
-                case KindCodeItem.Class: return MemberTypeSettingHelper.ClassSettings.Order;
-                case KindCodeItem.Constructor: return MemberTypeSettingHelper.ConstructorSettings.Order;
-                case KindCodeItem.Delegate: return MemberTypeSettingHelper.DelegateSettings.Order;
-                case KindCodeItem.Destructor: return MemberTypeSettingHelper.DestructorSettings.Order;
-                case KindCodeItem.Enum: return MemberTypeSettingHelper.EnumSettings.Order;
-                case KindCodeItem.Event: return MemberTypeSettingHelper.EventSettings.Order;
-                case KindCodeItem.Field: return MemberTypeSettingHelper.FieldSettings.Order;
-                case KindCodeItem.Indexer: return MemberTypeSettingHelper.IndexerSettings.Order;
-                case KindCodeItem.Interface: return MemberTypeSettingHelper.InterfaceSettings.Order;
-                case KindCodeItem.Method: return MemberTypeSettingHelper.MethodSettings.Order;
-                case KindCodeItem.Property: return MemberTypeSettingHelper.PropertySettings.Order;
-                case KindCodeItem.Struct: return MemberTypeSettingHelper.StructSettings.Order;
-                default: return 0;
-            }
-        }
+      return codeItem.Kind switch
+      {
+        KindCodeItem.Class => MemberTypeSettingHelper.ClassSettings.Order,
+        KindCodeItem.Constructor => MemberTypeSettingHelper.ConstructorSettings.Order,
+        KindCodeItem.Delegate => MemberTypeSettingHelper.DelegateSettings.Order,
+        KindCodeItem.Destructor => MemberTypeSettingHelper.DestructorSettings.Order,
+        KindCodeItem.Enum => MemberTypeSettingHelper.EnumSettings.Order,
+        KindCodeItem.Event => MemberTypeSettingHelper.EventSettings.Order,
+        KindCodeItem.Field => MemberTypeSettingHelper.FieldSettings.Order,
+        KindCodeItem.Indexer => MemberTypeSettingHelper.IndexerSettings.Order,
+        KindCodeItem.Interface => MemberTypeSettingHelper.InterfaceSettings.Order,
+        KindCodeItem.Method => MemberTypeSettingHelper.MethodSettings.Order,
+        KindCodeItem.Property => MemberTypeSettingHelper.PropertySettings.Order,
+        KindCodeItem.Struct => MemberTypeSettingHelper.StructSettings.Order,
+        _ => 0,
+      };
+    }
 
         private static int CalculateAccessOffset(BaseCodeItem codeItem)
         {
-            var codeItemElement = codeItem as BaseCodeItemElement;
+      BaseCodeItemElement codeItemElement = codeItem as BaseCodeItemElement;
             if (codeItemElement == null) return 0;
 
-            var itemsOrder = new List<vsCMAccess>
-            {
+      List<vsCMAccess> itemsOrder = new()
+      {
                 vsCMAccess.vsCMAccessPublic,
                 vsCMAccess.vsCMAccessAssemblyOrFamily,
                 vsCMAccess.vsCMAccessProject,
@@ -140,8 +140,8 @@ namespace SteveCadwallader.CodeMaid.Helpers
         {
             if (Settings.Default.Reorganizing_ExplicitMembersAtEnd)
             {
-                var interfaceItem = codeItem as IInterfaceItem;
-                if ((interfaceItem != null) && interfaceItem.IsExplicitInterfaceImplementation)
+        IInterfaceItem interfaceItem = codeItem as IInterfaceItem;
+                if ((interfaceItem?.IsExplicitInterfaceImplementation == true))
                 {
                     return 1;
                 }
@@ -152,7 +152,7 @@ namespace SteveCadwallader.CodeMaid.Helpers
 
         private static int CalculateConstantOffset(BaseCodeItem codeItem)
         {
-            var codeItemField = codeItem as CodeItemField;
+      CodeItemField codeItemField = codeItem as CodeItemField;
             if (codeItemField == null) return 0;
 
             return codeItemField.IsConstant ? 0 : 1;
@@ -160,7 +160,7 @@ namespace SteveCadwallader.CodeMaid.Helpers
 
         private static int CalculateStaticOffset(BaseCodeItem codeItem)
         {
-            var codeItemElement = codeItem as BaseCodeItemElement;
+      BaseCodeItemElement codeItemElement = codeItem as BaseCodeItemElement;
             if (codeItemElement == null) return 0;
 
             return codeItemElement.IsStatic ? 0 : 1;
@@ -168,7 +168,7 @@ namespace SteveCadwallader.CodeMaid.Helpers
 
         private static int CalculateReadOnlyOffset(BaseCodeItem codeItem)
         {
-            var codeItemField = codeItem as CodeItemField;
+      CodeItemField codeItemField = codeItem as CodeItemField;
             if (codeItemField == null) return 0;
 
             return codeItemField.IsReadOnly ? 0 : 1;
@@ -177,8 +177,8 @@ namespace SteveCadwallader.CodeMaid.Helpers
         private static string NormalizeName(BaseCodeItem codeItem)
         {
             string name = codeItem.Name;
-            var interfaceItem = codeItem as IInterfaceItem;
-            if ((interfaceItem != null) && interfaceItem.IsExplicitInterfaceImplementation)
+      IInterfaceItem interfaceItem = codeItem as IInterfaceItem;
+            if ((interfaceItem?.IsExplicitInterfaceImplementation == true))
             {
                 // Try to find where the interface ends and the method starts
                 int dot = name.LastIndexOf('.') + 1;

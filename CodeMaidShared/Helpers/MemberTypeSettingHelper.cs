@@ -1,8 +1,8 @@
-﻿using SteveCadwallader.CodeMaid.Model.CodeItems;
-using SteveCadwallader.CodeMaid.Properties;
+﻿using ASGV.CodeMaid.Model.CodeItems;
+using ASGV.CodeMaid.Properties;
 using System.Collections.Generic;
 
-namespace SteveCadwallader.CodeMaid.Helpers
+namespace ASGV.CodeMaid.Helpers
 {
     /// <summary>
     /// A helper class that simplifies access to <see cref="MemberTypeSetting"/> instances.
@@ -54,12 +54,12 @@ namespace SteveCadwallader.CodeMaid.Helpers
         /// <summary>
         /// Gets an enumerable set of all of the settings.
         /// </summary>
-        public static IEnumerable<MemberTypeSetting> AllSettings => new[]
-        {
+        public static IEnumerable<MemberTypeSetting> AllSettings =>
+        [
             ClassSettings, ConstructorSettings, DelegateSettings, DestructorSettings,
             EnumSettings, EventSettings, FieldSettings, IndexerSettings,
             InterfaceSettings, MethodSettings, PropertySettings, StructSettings
-        };
+        ];
 
         /// <summary>
         /// Gets the settings associated with the <see cref="KindCodeItem.Class"/> type.
@@ -132,23 +132,23 @@ namespace SteveCadwallader.CodeMaid.Helpers
         /// <returns>The associated <see cref="MemberTypeSetting"/>, otherwise null.</returns>
         public static MemberTypeSetting LookupByKind(KindCodeItem kindCodeItem)
         {
-            switch (kindCodeItem)
-            {
-                case KindCodeItem.Class: return ClassSettings;
-                case KindCodeItem.Constructor: return ConstructorSettings;
-                case KindCodeItem.Delegate: return DelegateSettings;
-                case KindCodeItem.Destructor: return DestructorSettings;
-                case KindCodeItem.Enum: return EnumSettings;
-                case KindCodeItem.Event: return EventSettings;
-                case KindCodeItem.Field: return FieldSettings;
-                case KindCodeItem.Indexer: return IndexerSettings;
-                case KindCodeItem.Interface: return InterfaceSettings;
-                case KindCodeItem.Method: return MethodSettings;
-                case KindCodeItem.Property: return PropertySettings;
-                case KindCodeItem.Struct: return StructSettings;
-                default: return null;
-            }
-        }
+      return kindCodeItem switch
+      {
+        KindCodeItem.Class => ClassSettings,
+        KindCodeItem.Constructor => ConstructorSettings,
+        KindCodeItem.Delegate => DelegateSettings,
+        KindCodeItem.Destructor => DestructorSettings,
+        KindCodeItem.Enum => EnumSettings,
+        KindCodeItem.Event => EventSettings,
+        KindCodeItem.Field => FieldSettings,
+        KindCodeItem.Indexer => IndexerSettings,
+        KindCodeItem.Interface => InterfaceSettings,
+        KindCodeItem.Method => MethodSettings,
+        KindCodeItem.Property => PropertySettings,
+        KindCodeItem.Struct => StructSettings,
+        _ => null,
+      };
+    }
 
         #endregion Methods
     }

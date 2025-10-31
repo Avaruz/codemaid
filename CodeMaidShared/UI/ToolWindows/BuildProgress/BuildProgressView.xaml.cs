@@ -1,7 +1,7 @@
 using System.Reflection;
 using System.Windows;
 
-namespace SteveCadwallader.CodeMaid.UI.ToolWindows.BuildProgress
+namespace ASGV.CodeMaid.UI.ToolWindows.BuildProgress
 {
     /// <summary>
     /// Interaction logic for BuildProgressView.xaml

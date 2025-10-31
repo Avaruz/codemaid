@@ -1,9 +1,9 @@
-﻿using SteveCadwallader.CodeMaid.Helpers;
+﻿using ASGV.CodeMaid.Helpers;
 using System;
 using System.Globalization;
 using System.Windows.Data;
 
-namespace SteveCadwallader.CodeMaid.UI.Converters
+namespace ASGV.CodeMaid.UI.Converters
 {
     /// <summary>
     /// A converter that retrieves the description attribute from a specified enumeration value.
@@ -13,7 +13,7 @@ namespace SteveCadwallader.CodeMaid.UI.Converters
         /// <summary>
         /// A default instance of the <see cref="EnumDescriptionConverter" />.
         /// </summary>
-        public static EnumDescriptionConverter Default = new EnumDescriptionConverter();
+        public static EnumDescriptionConverter Default = new();
 
         /// <summary>
         /// Converts a value.
@@ -25,7 +25,7 @@ namespace SteveCadwallader.CodeMaid.UI.Converters
         /// <returns>A converted value. If the method returns null, the valid null value is used.</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var enumValue = value as Enum;
+      Enum enumValue = value as Enum;
 
             return enumValue?.GetDescription();
         }

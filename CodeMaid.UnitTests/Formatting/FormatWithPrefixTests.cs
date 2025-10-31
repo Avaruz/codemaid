@@ -1,8 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SteveCadwallader.CodeMaid.Properties;
+using ASGV.CodeMaid.Properties;
 using System;
 
-namespace SteveCadwallader.CodeMaid.UnitTests.Formatting
+namespace ASGV.CodeMaid.UnitTests.Formatting
 {
     /// <summary>
     /// </summary>
@@ -19,8 +19,8 @@ namespace SteveCadwallader.CodeMaid.UnitTests.Formatting
         [TestCategory("Formatting UnitTests")]
         public void SimpleFormatWithPrefixTests_KeepsPrefix()
         {
-            var input = "// Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
-            var expected =
+      string input = "// Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
+      string expected =
                 "// Lorem ipsum dolor sit amet," + Environment.NewLine +
                 "// consectetur adipiscing elit.";
             CommentFormatHelper.AssertEqualAfterFormat(input, expected, "//", o => o.WrapColumn = 40);
@@ -30,8 +30,8 @@ namespace SteveCadwallader.CodeMaid.UnitTests.Formatting
         [TestCategory("Formatting UnitTests")]
         public void SimpleFormatWithPrefixTests_TrimsTrailingSpace()
         {
-            var input = "// Trailing space  ";
-            var expected = "// Trailing space";
+      string input = "// Trailing space  ";
+      string expected = "// Trailing space";
             CommentFormatHelper.AssertEqualAfterFormat(input, expected, "//");
         }
 
@@ -39,11 +39,11 @@ namespace SteveCadwallader.CodeMaid.UnitTests.Formatting
         [TestCategory("Formatting UnitTests")]
         public void SimpleFormatWithPrefixTests_TrimsTrailingLines()
         {
-            var input =
+      string input =
                 "// Comment with some trailing lines" + Environment.NewLine +
                 "//" + Environment.NewLine +
                 "//";
-            var expected =
+      string expected =
                 "// Comment with some trailing lines";
             CommentFormatHelper.AssertEqualAfterFormat(input, expected, "//");
         }
@@ -52,11 +52,11 @@ namespace SteveCadwallader.CodeMaid.UnitTests.Formatting
         [TestCategory("Formatting UnitTests")]
         public void SimpleFormatWithPrefixTests_TrimsLeadingLines()
         {
-            var input =
+      string input =
                 "//" + Environment.NewLine +
                 "//" + Environment.NewLine +
                 "// Comment with some leading lines";
-            var expected =
+      string expected =
                 "// Comment with some leading lines";
 
             CommentFormatHelper.AssertEqualAfterFormat(input, expected, "//");
@@ -66,7 +66,7 @@ namespace SteveCadwallader.CodeMaid.UnitTests.Formatting
         [TestCategory("Formatting UnitTests")]
         public void SimpleFormatWithPrefixTests_KeepsLeadingSpace()
         {
-            var input = "    // Lorem ipsum.";
+      string input = "    // Lorem ipsum.";
             CommentFormatHelper.AssertEqualAfterFormat(input, input, "    //");
         }
 
@@ -74,10 +74,10 @@ namespace SteveCadwallader.CodeMaid.UnitTests.Formatting
         [TestCategory("Formatting UnitTests")]
         public void SimpleFormatWithPrefixTests_AlignsToFirstPrefix()
         {
-            var input =
+      string input =
                 "    // Lorem ipsum dolor sit amet, consectetur" + Environment.NewLine +
                 "  // adipiscing elit.";
-            var expected =
+      string expected =
                 "    // Lorem ipsum dolor sit amet," + Environment.NewLine +
                 "    // consectetur adipiscing elit.";
             CommentFormatHelper.AssertEqualAfterFormat(input, expected, "    //", o => o.WrapColumn = 40);
@@ -87,7 +87,7 @@ namespace SteveCadwallader.CodeMaid.UnitTests.Formatting
         [TestCategory("Formatting UnitTests")]
         public void SimpleFormatWithPrefixTests_NoTrailingWhitespaceOnEmptyLine()
         {
-            var input =
+      string input =
                 "// Lorem ipsum dolor sit amet." + Environment.NewLine +
                 "//" + Environment.NewLine +
                 "// Consectetur adipiscing elit.";

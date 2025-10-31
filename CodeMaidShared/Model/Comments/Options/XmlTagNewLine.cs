@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SteveCadwallader.CodeMaid.Model.Comments.Options
+namespace ASGV.CodeMaid.Model.Comments.Options
 {
     [Flags]
     public enum XmlTagNewLine

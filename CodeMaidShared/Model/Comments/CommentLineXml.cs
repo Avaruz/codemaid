@@ -1,16 +1,16 @@
-﻿using SteveCadwallader.CodeMaid.Helpers;
-using SteveCadwallader.CodeMaid.Model.Comments.Options;
+﻿using ASGV.CodeMaid.Helpers;
+using ASGV.CodeMaid.Model.Comments.Options;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace SteveCadwallader.CodeMaid.Model.Comments
+namespace ASGV.CodeMaid.Model.Comments
 {
     internal class CommentLineXml : CommentLine
     {
-        private static Regex InterpunctionRegex = new Regex(@"^[^\w]", RegexOptions.Compiled);
+        private static Regex InterpunctionRegex = new(@"^[^\w]", RegexOptions.Compiled);
 
         private readonly FormatterOptions _formatterOptions;
         private readonly StringBuilder _innerText;
@@ -28,7 +28,7 @@ namespace SteveCadwallader.CodeMaid.Model.Comments
             CloseTag = CreateXmlCloseTag(xml, TagOptions);
             IsSelfClosing = CloseTag == null;
 
-            Lines = new List<ICommentLine>();
+            Lines = [];
             ParseChildNodes(xml);
             CloseInnerText(true);
             IsLast = xml.NextNode == null;
@@ -70,8 +70,8 @@ namespace SteveCadwallader.CodeMaid.Model.Comments
         /// <returns>The XML open tag. In case of an element without value, the tag is self-closing.</returns>
         private static string CreateXmlOpenTag(XElement element, IXmlTagOptions options)
         {
-            var builder = new StringBuilder();
-            var name = element.Name.LocalName;
+      StringBuilder builder = new();
+      string name = element.Name.LocalName;
 
             builder.Append("<");
 
@@ -79,7 +79,7 @@ namespace SteveCadwallader.CodeMaid.Model.Comments
 
             if (element.HasAttributes)
             {
-                foreach (var attr in element.Attributes())
+                foreach (XAttribute attr in element.Attributes())
                 {
                     builder.Append(CodeCommentHelper.Spacer);
                     builder.Append(attr);
@@ -98,7 +98,7 @@ namespace SteveCadwallader.CodeMaid.Model.Comments
 
             builder.Append(">");
 
-            var result = builder.ToString();
+      string result = builder.ToString();
 
             return options.KeepTogether ? CodeCommentHelper.SpaceToFake(result) : result;
         }
@@ -145,7 +145,7 @@ namespace SteveCadwallader.CodeMaid.Model.Comments
             if (TagOptions.Literal)
             {
                 // Read content literally and preserve all formatting.
-                using (var reader = xml.CreateReader())
+                using (XmlReader reader = xml.CreateReader())
                 {
                     reader.MoveToContent();
                     Content = reader.ReadInnerXml();
@@ -153,14 +153,14 @@ namespace SteveCadwallader.CodeMaid.Model.Comments
             }
             else
             {
-                // Loop and parse all child nodes.
-                var node = xml.FirstNode;
+        // Loop and parse all child nodes.
+        XNode node = xml.FirstNode;
                 while (node != null)
                 {
                     // If the node is a sub-element, it needs to be handled seperately.
                     if (node.NodeType == XmlNodeType.Element)
                     {
-                        var element = (XElement)node;
+            XElement element = (XElement)node;
 
                         if (NeedsXmlHandling(element))
                         {
@@ -188,8 +188,8 @@ namespace SteveCadwallader.CodeMaid.Model.Comments
                     }
                     else
                     {
-                        // Always trim trailing
-                        var value = node.ToString().TrimEnd(CodeCommentHelper.Spacer);
+            // Always trim trailing
+            string value = node.ToString().TrimEnd(CodeCommentHelper.Spacer);
 
                         // If the parent is an element, trim the starting spaces.
                         if (node.PreviousNode == null && node.Parent.NodeType == XmlNodeType.Element && !TagOptions.SpaceContent)

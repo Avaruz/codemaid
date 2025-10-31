@@ -1,13 +1,13 @@
-﻿using SteveCadwallader.CodeMaid.Helpers;
-using SteveCadwallader.CodeMaid.Properties;
+﻿using ASGV.CodeMaid.Helpers;
+using ASGV.CodeMaid.Properties;
 using System;
 using System.Collections.Generic;
 
-namespace SteveCadwallader.CodeMaid.Model.Comments.Options
+namespace ASGV.CodeMaid.Model.Comments.Options
 {
     public class FormatterOptionsXml
     {
-        private readonly static FormatterOptionsXmlTag FormatterOptionsXmlTagOverrideSplitBeforeAfter = new FormatterOptionsXmlTag
+        private readonly static FormatterOptionsXmlTag FormatterOptionsXmlTagOverrideSplitBeforeAfter = new()
         {
             Split = XmlTagNewLine.BeforeAndAfter
         };
@@ -32,7 +32,7 @@ namespace SteveCadwallader.CodeMaid.Model.Comments.Options
 
         public IXmlTagOptions GetTagOptions(string tagName)
         {
-            return !Tags.TryGetValue(tagName, out var tag) ? Default : new XmlTagOptions(tag, Default);
+            return !Tags.TryGetValue(tagName, out FormatterOptionsXmlTag tag) ? Default : new XmlTagOptions(tag, Default);
         }
 
         internal static FormatterOptionsXml FromSettings(Settings settings)

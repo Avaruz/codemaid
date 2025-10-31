@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SteveCadwallader.CodeMaid.Helpers
+namespace ASGV.CodeMaid.Helpers
 {
     /// <summary>
     /// A class that encapsulates caching a setting expression that can be parsed.
@@ -56,7 +56,7 @@ namespace SteveCadwallader.CodeMaid.Helpers
         {
             get
             {
-                var expression = _lookupFunction();
+        string expression = _lookupFunction();
                 if (expression != _cachedExpression)
                 {
                     _cachedResult = string.IsNullOrEmpty(expression) ? default(T) : _parseFunction(expression);

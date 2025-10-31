@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
 
-namespace SteveCadwallader.CodeMaid.UI.Dialogs.About
+namespace ASGV.CodeMaid.UI.Dialogs.About
 {
     /// <summary>
     /// Interaction logic for AboutWindow.xaml
@@ -59,7 +59,7 @@ namespace SteveCadwallader.CodeMaid.UI.Dialogs.About
         /// </param>
         private void OnWebsiteLinkClick(object sender, RoutedEventArgs e)
         {
-            LaunchLink(@"http://www.codemaid.net/");
+            LaunchLink("http://www.codemaid.net/");
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace SteveCadwallader.CodeMaid.UI.Dialogs.About
         /// </param>
         private void OnVisualStudioMarketplaceLinkClick(object sender, RoutedEventArgs e)
         {
-            LaunchLink(@"https://marketplace.visualstudio.com/items?itemName=SteveCadwallader.CodeMaid");
+            LaunchLink("https://marketplace.visualstudio.com/items?itemName=ASGV.CodeMaid");
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace SteveCadwallader.CodeMaid.UI.Dialogs.About
         /// </param>
         private void OnGitHubLinkClick(object sender, RoutedEventArgs e)
         {
-            LaunchLink(@"https://github.com/codecadwallader/codemaid");
+            LaunchLink("https://github.com/codecadwallader/codemaid");
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace SteveCadwallader.CodeMaid.UI.Dialogs.About
         /// </param>
         private void OnTwitterLinkClick(object sender, RoutedEventArgs e)
         {
-            LaunchLink(@"https://twitter.com/codemaid/");
+            LaunchLink("https://twitter.com/codemaid/");
         }
 
         #endregion Event Handlers

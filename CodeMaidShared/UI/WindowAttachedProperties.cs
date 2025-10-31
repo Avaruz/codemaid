@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace SteveCadwallader.CodeMaid.UI
+namespace ASGV.CodeMaid.UI
 {
     /// <summary>
     /// A helper class for attached properties on <see cref="Window" />.
@@ -47,7 +47,7 @@ namespace SteveCadwallader.CodeMaid.UI
         /// </param>
         private static void OnDialogResultChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
-            var window = obj as Window;
+      Window window = obj as Window;
             if (window != null)
             {
                 window.DialogResult = e.NewValue as bool?;

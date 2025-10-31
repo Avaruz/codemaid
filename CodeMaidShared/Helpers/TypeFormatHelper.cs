@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace SteveCadwallader.CodeMaid.Helpers
+namespace ASGV.CodeMaid.Helpers
 {
     /// <summary>
     /// A simple helper class for formatting type definitions.
@@ -16,7 +16,7 @@ namespace SteveCadwallader.CodeMaid.Helpers
         {
             if (string.IsNullOrEmpty(input)) return input;
 
-            var result = Regex.Replace(input, @"[^ \t,<>\[\]]*\.", string.Empty);
+      string result = Regex.Replace(input, @"[^ \t,<>\[\]]*\.", string.Empty);
 
             return result;
         }

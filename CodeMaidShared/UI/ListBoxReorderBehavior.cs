@@ -1,4 +1,4 @@
-﻿using SteveCadwallader.CodeMaid.UI.Enumerations;
+﻿using ASGV.CodeMaid.UI.Enumerations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 
-namespace SteveCadwallader.CodeMaid.UI
+namespace ASGV.CodeMaid.UI
 {
     /// <summary>
     /// A behavior for supporting list box drag and drop reordering, and optionally merging.
@@ -110,7 +110,7 @@ namespace SteveCadwallader.CodeMaid.UI
         {
             if (_dragCandidate == null || !_dragStartPoint.HasValue) return;
 
-            var delta = _dragStartPoint.Value - e.GetPosition(null);
+      Vector delta = _dragStartPoint.Value - e.GetPosition(null);
             if (Math.Abs(delta.X) <= SystemParameters.MinimumHorizontalDragDistance &&
                 Math.Abs(delta.Y) <= SystemParameters.MinimumVerticalDragDistance)
             {
@@ -147,11 +147,11 @@ namespace SteveCadwallader.CodeMaid.UI
         /// <param name="e">The <see cref="DragEventArgs" /> instance containing the event data.</param>
         private void OnDragEvent(object sender, DragEventArgs e)
         {
-            var target = FindParentListBoxItem(e.OriginalSource);
+      ListBoxItem target = FindParentListBoxItem(e.OriginalSource);
             if (target != null && e.Data.GetDataPresent(typeof(object)))
             {
-                var sourceData = e.Data.GetData(typeof(object));
-                var targetData = target.DataContext;
+        object sourceData = e.Data.GetData(typeof(object));
+        object targetData = target.DataContext;
 
                 if (sourceData != null && targetData != null && sourceData != targetData)
                 {
@@ -194,7 +194,7 @@ namespace SteveCadwallader.CodeMaid.UI
         /// <param name="e">The <see cref="DragEventArgs" /> instance containing the event data.</param>
         private void OnDragLeave(object sender, DragEventArgs e)
         {
-            var target = FindParentListBoxItem(e.OriginalSource);
+      ListBoxItem target = FindParentListBoxItem(e.OriginalSource);
             if (target != null)
             {
                 target.SetValue(DragDropAttachedProperties.IsDropAboveTargetProperty, false);
@@ -212,19 +212,19 @@ namespace SteveCadwallader.CodeMaid.UI
         {
             if (!e.Data.GetDataPresent(typeof(object))) return;
 
-            var target = FindParentListBoxItem(e.OriginalSource);
+      ListBoxItem target = FindParentListBoxItem(e.OriginalSource);
             if (target == null) return;
 
-            var sourceData = e.Data.GetData(typeof(object));
-            var targetData = target.DataContext;
+      object sourceData = e.Data.GetData(typeof(object));
+      object targetData = target.DataContext;
 
             if (sourceData == null || targetData == null || sourceData == targetData) return;
 
-            var collection = AssociatedObject.ItemsSource as ObservableCollection<object>;
+      ObservableCollection<object> collection = AssociatedObject.ItemsSource as ObservableCollection<object>;
             if (collection == null) return;
 
-            var sourceIndex = collection.IndexOf(sourceData);
-            var targetIndex = collection.IndexOf(targetData);
+      int sourceIndex = collection.IndexOf(sourceData);
+      int targetIndex = collection.IndexOf(targetData);
 
             // If the source is in front of the target, offset the target by 1 as the indices will change then the source is removed.
             if (sourceIndex < targetIndex)
@@ -264,10 +264,10 @@ namespace SteveCadwallader.CodeMaid.UI
         /// <returns>The parent ListBoxItem, otherwise null.</returns>
         private static ListBoxItem FindParentListBoxItem(object eventSource)
         {
-            var source = eventSource as DependencyObject;
+      DependencyObject source = eventSource as DependencyObject;
             if (source == null) return null;
 
-            var listBoxItem = source.FindVisualAncestor<ListBoxItem>();
+      ListBoxItem listBoxItem = source.FindVisualAncestor<ListBoxItem>();
 
             return listBoxItem;
         }
@@ -280,8 +280,8 @@ namespace SteveCadwallader.CodeMaid.UI
         /// <returns>The drop position.</returns>
         private DropPosition GetDropPostion(DragEventArgs e, ListBoxItem target)
         {
-            var dropPoint = e.GetPosition(target);
-            var targetHeight = target.ActualHeight;
+      Point dropPoint = e.GetPosition(target);
+      double targetHeight = target.ActualHeight;
 
             if (CanMerge)
             {
@@ -308,14 +308,14 @@ namespace SteveCadwallader.CodeMaid.UI
             // Remove the source item from the collection.
             collection.Remove(sourceItem);
 
-            // Get a collection for the target, creating one if necessary.
-            var targetCollection = targetItem as IList ?? new List<object> { targetItem };
+      // Get a collection for the target, creating one if necessary.
+      IList targetCollection = targetItem as IList ?? new List<object> { targetItem };
 
-            // Add the source(s) to the target collection.
-            var sourceCollection = sourceItem as IList;
+      // Add the source(s) to the target collection.
+      IList sourceCollection = sourceItem as IList;
             if (sourceCollection != null)
             {
-                foreach (var source in sourceCollection)
+                foreach (object source in sourceCollection)
                 {
                     targetCollection.Add(source);
                 }

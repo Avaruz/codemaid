@@ -1,7 +1,7 @@
 using EnvDTE;
-using SteveCadwallader.CodeMaid.Model.CodeItems;
+using ASGV.CodeMaid.Model.CodeItems;
 
-namespace SteveCadwallader.CodeMaid.Model.CodeTree
+namespace ASGV.CodeMaid.Model.CodeTree
 {
     /// <summary>
     /// A simple class for containing a request to build a code tree.
@@ -23,24 +23,24 @@ namespace SteveCadwallader.CodeMaid.Model.CodeTree
             NameFilter = nameFilter;
         }
 
-        /// <summary>
-        /// Gets the document.
-        /// </summary>
-        internal Document Document { get; private set; }
+    /// <summary>
+    /// Gets the document.
+    /// </summary>
+    internal Document Document { get; }
 
-        /// <summary>
-        /// Gets the raw code items.
-        /// </summary>
-        internal SetCodeItems RawCodeItems { get; private set; }
+    /// <summary>
+    /// Gets the raw code items.
+    /// </summary>
+    internal SetCodeItems RawCodeItems { get; }
 
-        /// <summary>
-        /// Gets the sort order.
-        /// </summary>
-        internal CodeSortOrder SortOrder { get; private set; }
+    /// <summary>
+    /// Gets the sort order.
+    /// </summary>
+    internal CodeSortOrder SortOrder { get; }
 
-        /// <summary>
-        /// Gets the name filter.
-        /// </summary>
-        internal string NameFilter { get; private set; }
-    }
+    /// <summary>
+    /// Gets the name filter.
+    /// </summary>
+    internal string NameFilter { get; }
+  }
 }

@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace SteveCadwallader.CodeMaid.Model.CodeItems
+namespace ASGV.CodeMaid.Model.CodeItems
 {
     /// <summary>
     /// An enumeration of kind of code items. Does not 1:1 correspond to the code item classes (ex:

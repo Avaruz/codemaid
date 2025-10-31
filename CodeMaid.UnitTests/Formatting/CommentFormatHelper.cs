@@ -1,9 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SteveCadwallader.CodeMaid.Model.Comments;
-using SteveCadwallader.CodeMaid.Model.Comments.Options;
+using ASGV.CodeMaid.Model.Comments;
+using ASGV.CodeMaid.Model.Comments.Options;
 using System;
 
-namespace SteveCadwallader.CodeMaid.UnitTests.Formatting
+namespace ASGV.CodeMaid.UnitTests.Formatting
 {
     internal class CommentFormatHelper
     {
@@ -28,7 +28,7 @@ namespace SteveCadwallader.CodeMaid.UnitTests.Formatting
             string prefix,
             Action<FormatterOptions> options = null)
         {
-            var result = CodeComment.Format(text, prefix, options);
+      string result = CodeComment.Format(text, prefix, options);
             Assert.AreEqual(expected ?? text, result);
             return result;
         }

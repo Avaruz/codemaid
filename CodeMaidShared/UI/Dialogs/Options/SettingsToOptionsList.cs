@@ -1,7 +1,7 @@
-﻿using SteveCadwallader.CodeMaid.Properties;
+﻿using ASGV.CodeMaid.Properties;
 using System.Collections.Generic;
 
-namespace SteveCadwallader.CodeMaid.UI.Dialogs.Options
+namespace ASGV.CodeMaid.UI.Dialogs.Options
 {
     /// <summary>
     /// A specialized list class holding settings to options mappings.
@@ -19,22 +19,22 @@ namespace SteveCadwallader.CodeMaid.UI.Dialogs.Options
             OptionsPageViewModel = optionsPageViewModel;
         }
 
-        /// <summary>
-        /// Gets the active settings.
-        /// </summary>
-        public Settings ActiveSettings { get; private set; }
+    /// <summary>
+    /// Gets the active settings.
+    /// </summary>
+    public Settings ActiveSettings { get; }
 
-        /// <summary>
-        /// Gets or sets the <see cref="OptionsPageViewModel"/> that owns this list.
-        /// </summary>
-        public OptionsPageViewModel OptionsPageViewModel { get; set; }
+    /// <summary>
+    /// Gets or sets the <see cref="OptionsPageViewModel"/> that owns this list.
+    /// </summary>
+    public OptionsPageViewModel OptionsPageViewModel { get; set; }
 
         /// <summary>
         /// Iterates across all mappings, copying the setting values onto the options.
         /// </summary>
         public void CopySettingsToOptions()
         {
-            foreach (var mapping in this)
+            foreach (ISettingToOptionMapping mapping in this)
             {
                 mapping.CopySettingToOption(ActiveSettings, OptionsPageViewModel);
             }
@@ -45,7 +45,7 @@ namespace SteveCadwallader.CodeMaid.UI.Dialogs.Options
         /// </summary>
         public void CopyOptionsToSettings()
         {
-            foreach (var mapping in this)
+            foreach (ISettingToOptionMapping mapping in this)
             {
                 mapping.CopyOptionToSetting(ActiveSettings, OptionsPageViewModel);
             }

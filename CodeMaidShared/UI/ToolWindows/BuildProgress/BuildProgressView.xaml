@@ -1,9 +1,9 @@
-<UserControl x:Class="SteveCadwallader.CodeMaid.UI.ToolWindows.BuildProgress.BuildProgressView"
+<UserControl x:Class="ASGV.CodeMaid.UI.ToolWindows.BuildProgress.BuildProgressView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:cnv="clr-namespace:SteveCadwallader.CodeMaid.UI.Converters"
+             xmlns:cnv="clr-namespace:ASGV.CodeMaid.UI.Converters"
              xmlns:vsfx="clr-namespace:Microsoft.VisualStudio.Shell;assembly=Microsoft.VisualStudio.Shell.15.0"
-             xmlns:p="clr-namespace:SteveCadwallader.CodeMaid.Properties"
+             xmlns:p="clr-namespace:ASGV.CodeMaid.Properties"
              Background="{DynamicResource {x:Static vsfx:VsBrushes.ToolWindowBackgroundKey}}"
         Foreground="{DynamicResource {x:Static vsfx:VsBrushes.ToolWindowTextKey}}">
     <Grid VerticalAlignment="Bottom">

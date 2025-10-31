@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace SteveCadwallader.CodeMaid.UI.Converters
+namespace ASGV.CodeMaid.UI.Converters
 {
     /// <summary>
     /// Converts an integer into a thickness value, building on top of the converter parameter if specified.
@@ -16,24 +16,24 @@ namespace SteveCadwallader.CodeMaid.UI.Converters
         /// An instance of <see cref="IntToThicknessConverter" /> that only sets the left side of
         /// the thickness.
         /// </summary>
-        public static IntToThicknessConverter LeftOnly = new IntToThicknessConverter { Left = true };
+        public static IntToThicknessConverter LeftOnly = new() { Left = true };
 
         /// <summary>
         /// An instance of <see cref="IntToThicknessConverter" /> that only sets the top side of the thickness.
         /// </summary>
-        public static IntToThicknessConverter TopOnly = new IntToThicknessConverter { Top = true };
+        public static IntToThicknessConverter TopOnly = new() { Top = true };
 
         /// <summary>
         /// An instance of <see cref="IntToThicknessConverter" /> that only sets the right side of
         /// the thickness.
         /// </summary>
-        public static IntToThicknessConverter RightOnly = new IntToThicknessConverter { Right = true };
+        public static IntToThicknessConverter RightOnly = new() { Right = true };
 
         /// <summary>
         /// An instance of <see cref="IntToThicknessConverter" /> that only sets the bottom side of
         /// the thickness.
         /// </summary>
-        public static IntToThicknessConverter BottomOnly = new IntToThicknessConverter { Bottom = true };
+        public static IntToThicknessConverter BottomOnly = new() { Bottom = true };
 
         #endregion Fields
 
@@ -73,8 +73,8 @@ namespace SteveCadwallader.CodeMaid.UI.Converters
         /// <returns>A converted value. If the method returns null, the valid null value is used.</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var thickness = parameter as Thickness? ?? new Thickness();
-            var input = System.Convert.ToInt32(value);
+      Thickness thickness = parameter as Thickness? ?? new Thickness();
+      int input = System.Convert.ToInt32(value);
 
             if (Left)
             {

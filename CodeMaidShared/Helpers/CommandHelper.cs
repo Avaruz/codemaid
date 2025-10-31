@@ -1,98 +1,110 @@
-﻿using EnvDTE;
-using System;
+﻿using System;
 using System.Linq;
+using EnvDTE;
+using Microsoft.VisualStudio.Shell;
 
-namespace SteveCadwallader.CodeMaid.Helpers
+namespace ASGV.CodeMaid.Helpers
 {
+  /// <summary>
+  /// A helper class for accessing commands.
+  /// </summary>
+  public sealed class CommandHelper
+  {
+    #region Fields
+
+    private readonly CodeMaidPackage _package;
+
+    #endregion Fields
+
+    #region Constructors
+
     /// <summary>
-    /// A helper class for accessing commands.
+    /// The singleton instance of the <see cref="CommandHelper" /> class.
     /// </summary>
-    public class CommandHelper
+    private static CommandHelper _instance;
+
+    /// <summary>
+    /// Gets an instance of the <see cref="CommandHelper" /> class.
+    /// </summary>
+    /// <param name="package">The hosting package.</param>
+    /// <returns>An instance of the <see cref="CommandHelper" /> class.</returns>
+    internal static CommandHelper GetInstance(CodeMaidPackage package)
     {
-        #region Fields
-
-        private readonly CodeMaidPackage _package;
-
-        #endregion Fields
-
-        #region Constructors
-
-        /// <summary>
-        /// The singleton instance of the <see cref="CommandHelper" /> class.
-        /// </summary>
-        private static CommandHelper _instance;
-
-        /// <summary>
-        /// Gets an instance of the <see cref="CommandHelper" /> class.
-        /// </summary>
-        /// <param name="package">The hosting package.</param>
-        /// <returns>An instance of the <see cref="CommandHelper" /> class.</returns>
-        internal static CommandHelper GetInstance(CodeMaidPackage package)
-        {
-            return _instance ?? (_instance = new CommandHelper(package));
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CommandHelper" /> class.
-        /// </summary>
-        /// <param name="package">The hosting package.</param>
-        private CommandHelper(CodeMaidPackage package)
-        {
-            _package = package;
-        }
-
-        #endregion Constructors
-
-        #region Methods
-
-        /// <summary>
-        /// Finds a command of any of the specified names, otherwise null.
-        /// </summary>
-        /// <param name="commandNames">The command names.</param>
-        /// <returns>The found command, otherwise null.</returns>
-        public Command FindCommand(params string[] commandNames)
-        {
-            if (commandNames == null || commandNames.Length == 0) return null;
-
-            return _package.IDE.Commands.OfType<Command>().FirstOrDefault(x => commandNames.Contains(x.Name));
-        }
-
-        /// <summary>
-        /// Finds a command by the specified guid/id pair.
-        /// </summary>
-        /// <param name="guid">The command guid.</param>
-        /// <param name="id">The command id.</param>
-        /// <returns>The found command, otherwise null.</returns>
-        public Command FindCommand(string guid, int id)
-        {
-            return _package.IDE.Commands.OfType<Command>().FirstOrDefault(x => x.Guid == guid && x.ID == id);
-        }
-
-        /// <summary>
-        /// Executes the specified command when available against the specified text document.
-        /// </summary>
-        /// <param name="textDocument">The text document to cleanup.</param>
-        /// <param name="commandNames">The cleanup command name(s).</param>
-        public void ExecuteCommand(TextDocument textDocument, params string[] commandNames)
-        {
-            try
-            {
-                var command = FindCommand(commandNames);
-                if (command != null && command.IsAvailable)
-                {
-                    using (new CursorPositionRestorer(textDocument))
-                    {
-                        _package.IDE.ExecuteCommand(command.Name, string.Empty);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                // OK if fails, not available for some file types.
-                OutputWindowHelper.DiagnosticWriteLine($"Unable to execute command(s) {string.Join(",", commandNames)} on {textDocument.Parent.FullName}", ex);
-            }
-        }
-
-        #endregion Methods
+      return _instance ??= new CommandHelper(package);
     }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CommandHelper" /> class.
+    /// </summary>
+    /// <param name="package">The hosting package.</param>
+    private CommandHelper(CodeMaidPackage package)
+    {
+      _package = package;
+    }
+
+    #endregion Constructors
+
+    #region Methods
+
+    /// <summary>
+    /// Finds a command of any of the specified names, otherwise null.
+    /// </summary>
+    /// <param name="commandNames">The command names.</param>
+    /// <returns>The found command, otherwise null.</returns>
+    public Command FindCommand(params string[] commandNames)
+    {
+      ThreadHelper.ThrowIfNotOnUIThread();
+      return commandNames == null || commandNames.Length == 0
+              ? null
+              : _package.IDE.Commands.OfType<Command>().FirstOrDefault(x =>
+              {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return commandNames.Contains(x.Name);
+              });
+    }
+
+    /// <summary>
+    /// Finds a command by the specified guid/id pair.
+    /// </summary>
+    /// <param name="guid">The command guid.</param>
+    /// <param name="id">The command id.</param>
+    /// <returns>The found command, otherwise null.</returns>
+    public Command FindCommand(string guid, int id)
+    {
+      ThreadHelper.ThrowIfNotOnUIThread();
+      return _package.IDE.Commands.OfType<Command>().FirstOrDefault(x =>
+      {
+        ThreadHelper.ThrowIfNotOnUIThread();
+        return x.Guid == guid && x.ID == id;
+      });
+    }
+
+    /// <summary>
+    /// Executes the specified command when available against the specified text document.
+    /// </summary>
+    /// <param name="textDocument">The text document to cleanup.</param>
+    /// <param name="commandNames">The cleanup command name(s).</param>
+    public void ExecuteCommand(TextDocument textDocument, params string[] commandNames)
+    {
+      ThreadHelper.ThrowIfNotOnUIThread();
+      try
+      {
+        Command command = FindCommand(commandNames);
+        if (command?.IsAvailable == true)
+        {
+          using (new CursorPositionRestorer(textDocument))
+          {
+            _package.IDE.ExecuteCommand(command.Name, string.Empty);
+          }
+        }
+      }
+      catch (Exception ex)
+      {
+        // OK if fails, not available for some file types.
+        OutputWindowHelper.DiagnosticWriteLine($"Unable to execute command(s) {string.Join(",", commandNames)} on {textDocument.Parent.FullName}", ex);
+      }
+    }
+
+    #endregion Methods
+  }
 }

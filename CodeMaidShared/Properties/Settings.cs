@@ -1,7 +1,7 @@
-﻿using SteveCadwallader.CodeMaid.Helpers;
+﻿using ASGV.CodeMaid.Helpers;
 using System.Configuration;
 
-namespace SteveCadwallader.CodeMaid.Properties
+namespace ASGV.CodeMaid.Properties
 {
     /// <summary>
     /// This partial class instructs the <see cref="Settings"/> class to utilize the <see cref="CodeMaidSettingsProvider"/>.
@@ -14,8 +14,8 @@ namespace SteveCadwallader.CodeMaid.Properties
         /// </summary>
         public override void Upgrade()
         {
-            var oldSettingsProvider = new LocalFileSettingsProvider();
-            var oldPropertyValues = oldSettingsProvider.GetPropertyValues(Context, Properties);
+      LocalFileSettingsProvider oldSettingsProvider = new();
+      SettingsPropertyValueCollection oldPropertyValues = oldSettingsProvider.GetPropertyValues(Context, Properties);
 
             foreach (SettingsPropertyValue oldPropertyValue in oldPropertyValues)
             {

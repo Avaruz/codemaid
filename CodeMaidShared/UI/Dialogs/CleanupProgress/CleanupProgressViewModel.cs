@@ -1,9 +1,9 @@
-using SteveCadwallader.CodeMaid.Logic.Cleaning;
+using ASGV.CodeMaid.Logic.Cleaning;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 
-namespace SteveCadwallader.CodeMaid.UI.Dialogs.CleanupProgress
+namespace ASGV.CodeMaid.UI.Dialogs.CleanupProgress
 {
     /// <summary>
     /// The view model representing the state and commands available for cleanup progress.
@@ -93,21 +93,21 @@ namespace SteveCadwallader.CodeMaid.UI.Dialogs.CleanupProgress
             set { SetPropertyValue(value); }
         }
 
-        /// <summary>
-        /// Gets or sets the code cleanup manager.
-        /// </summary>
-        private CodeCleanupManager CodeCleanupManager { get; set; }
+    /// <summary>
+    /// Gets or sets the code cleanup manager.
+    /// </summary>
+    private CodeCleanupManager CodeCleanupManager { get; }
 
-        #endregion Properties
+    #endregion Properties
 
-        #region Cancel Command
+    #region Cancel Command
 
-        private DelegateCommand _cancelCommand;
+    private DelegateCommand _cancelCommand;
 
         /// <summary>
         /// Gets the cancel command.
         /// </summary>
-        public DelegateCommand CancelCommand => _cancelCommand ?? (_cancelCommand = new DelegateCommand(OnCancelCommandExecuted, OnCancelCommandCanExecute));
+        public DelegateCommand CancelCommand => _cancelCommand ??= new DelegateCommand(OnCancelCommandExecuted, OnCancelCommandCanExecute);
 
         /// <summary>
         /// Called when the <see cref="CancelCommand" /> needs to determine if it can execute.
@@ -144,8 +144,8 @@ namespace SteveCadwallader.CodeMaid.UI.Dialogs.CleanupProgress
         /// </param>
         private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            var bw = (BackgroundWorker)sender;
-            var items = (IEnumerable<object>)e.Argument;
+      BackgroundWorker bw = (BackgroundWorker)sender;
+      IEnumerable<object> items = (IEnumerable<object>)e.Argument;
             int i = 0;
 
             foreach (dynamic item in items)

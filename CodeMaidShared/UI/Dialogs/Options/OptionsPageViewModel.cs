@@ -1,7 +1,7 @@
-using SteveCadwallader.CodeMaid.Properties;
+using ASGV.CodeMaid.Properties;
 using System.Collections.Generic;
 
-namespace SteveCadwallader.CodeMaid.UI.Dialogs.Options
+namespace ASGV.CodeMaid.UI.Dialogs.Options
 {
     /// <summary>
     /// The abstract base class for option pages.
@@ -30,24 +30,24 @@ namespace SteveCadwallader.CodeMaid.UI.Dialogs.Options
         /// </summary>
         public abstract string Header { get; }
 
-        /// <summary>
-        /// Gets the hosting package.
-        /// </summary>
-        public CodeMaidPackage Package { get; private set; }
+    /// <summary>
+    /// Gets the hosting package.
+    /// </summary>
+    public CodeMaidPackage Package { get; }
 
-        /// <summary>
-        /// Gets the active settings.
-        /// </summary>
-        public Settings ActiveSettings { get; private set; }
+    /// <summary>
+    /// Gets the active settings.
+    /// </summary>
+    public Settings ActiveSettings { get; }
 
-        private IEnumerable<OptionsPageViewModel> _children;
+    private IEnumerable<OptionsPageViewModel> _children;
 
         /// <summary>
         /// Gets or sets the children.
         /// </summary>
         public IEnumerable<OptionsPageViewModel> Children
         {
-            get { return _children ?? (_children = new OptionsPageViewModel[0]); }
+            get { return _children ??= []; }
             set
             {
                 if (_children != value)

@@ -1,6 +1,6 @@
-﻿using SteveCadwallader.CodeMaid.Properties;
+﻿using ASGV.CodeMaid.Properties;
 
-namespace SteveCadwallader.CodeMaid.Model.Comments.Options
+namespace ASGV.CodeMaid.Model.Comments.Options
 {
     public class XmlTagOptions : IXmlTagOptions
     {

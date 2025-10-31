@@ -1,10 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SteveCadwallader.CodeMaid.Helpers;
-using SteveCadwallader.CodeMaid.Properties;
+using ASGV.CodeMaid.Helpers;
+using ASGV.CodeMaid.Properties;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SteveCadwallader.CodeMaid.UnitTests.Helpers
+namespace ASGV.CodeMaid.UnitTests.Helpers
 {
     [TestClass]
     public class SettingsMonitorTests
@@ -18,7 +18,7 @@ namespace SteveCadwallader.CodeMaid.UnitTests.Helpers
         [TestMethod]
         public async Task CallbackShouldBeCalledAtOnce()
         {
-            var monitor = new SettingsMonitor<Settings>(Settings.Default, null);
+      SettingsMonitor<Settings> monitor = new(Settings.Default, null);
 
             int callbackTimes = 0;
             await monitor.WatchAsync(s => s.Feature_CleanupAllCode, _ =>
@@ -35,7 +35,7 @@ namespace SteveCadwallader.CodeMaid.UnitTests.Helpers
         public async Task CallbackShouldNotBeCalledIfSettingNotChanged()
         {
             Settings.Default.Feature_CleanupAllCode = false;
-            var monitor = new SettingsMonitor<Settings>(Settings.Default, null);
+      SettingsMonitor<Settings> monitor = new(Settings.Default, null);
 
             bool? value = null;
             int callbackTimes = 0;
@@ -58,7 +58,7 @@ namespace SteveCadwallader.CodeMaid.UnitTests.Helpers
         public async Task CallbackShouldBeCalledOnceSettingChanged()
         {
             Settings.Default.Feature_CleanupAllCode = false;
-            var monitor = new SettingsMonitor<Settings>(Settings.Default, null);
+      SettingsMonitor<Settings> monitor = new(Settings.Default, null);
 
             bool? value = null;
             int callbackTimes = 0;
@@ -81,7 +81,7 @@ namespace SteveCadwallader.CodeMaid.UnitTests.Helpers
         public async Task AllCallbacksShouldBeCalledOnceSettingChanged()
         {
             Settings.Default.Feature_CleanupAllCode = false;
-            var monitor = new SettingsMonitor<Settings>(Settings.Default, null);
+      SettingsMonitor<Settings> monitor = new(Settings.Default, null);
 
             bool? value1 = null, value2 = null;
             int callbackTimes1 = 0, callbackTimes2 = 0;
@@ -115,15 +115,15 @@ namespace SteveCadwallader.CodeMaid.UnitTests.Helpers
             Settings.Default.Feature_CleanupAllCode = false;
             Settings.Default.Feature_CleanupOpenCode = false;
             Settings.Default.Feature_CleanupSelectedCode = true;
-            var monitor = new SettingsMonitor<Settings>(Settings.Default, null);
+      SettingsMonitor<Settings> monitor = new(Settings.Default, null);
 
             bool[] values = null;
             int callbackTimes = 0;
-            await monitor.WatchAsync<bool>(new[]{
+            await monitor.WatchAsync<bool>([
                 nameof(Settings.Default.Feature_CleanupAllCode),
                 nameof(Settings.Default.Feature_CleanupOpenCode),
                 nameof(Settings.Default.Feature_CleanupSelectedCode)
-            }, v =>
+            ], v =>
             {
                 values = v;
                 callbackTimes++;

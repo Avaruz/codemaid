@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using System.Windows.Data;
 
-namespace SteveCadwallader.CodeMaid.UI.Converters
+namespace ASGV.CodeMaid.UI.Converters
 {
     /// <summary>
     /// A converter for running <see cref="string.Replace(string,string)" /> on a specified value.
@@ -12,7 +12,7 @@ namespace SteveCadwallader.CodeMaid.UI.Converters
         /// <summary>
         /// An instance of <see cref="StringReplaceConverter" /> that replaces "||" with a new line.
         /// </summary>
-        public static StringReplaceConverter DoublePipeToNewLine = new StringReplaceConverter { OldValue = "||", NewValue = Environment.NewLine };
+        public static StringReplaceConverter DoublePipeToNewLine = new() { OldValue = "||", NewValue = Environment.NewLine };
 
         /// <summary>
         /// Gets or sets the old value.

@@ -1,11 +1,11 @@
-﻿using SteveCadwallader.CodeMaid.Helpers;
-using SteveCadwallader.CodeMaid.Model.CodeItems;
+﻿using ASGV.CodeMaid.Helpers;
+using ASGV.CodeMaid.Model.CodeItems;
 using System;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
 
-namespace SteveCadwallader.CodeMaid.UI.Converters
+namespace ASGV.CodeMaid.UI.Converters
 {
     /// <summary>
     /// A converter that finds the specified member count within a specified parent.
@@ -15,7 +15,7 @@ namespace SteveCadwallader.CodeMaid.UI.Converters
         /// <summary>
         /// The default <see cref="CodeItemParentMemberCountConverter" />.
         /// </summary>
-        public static CodeItemParentMemberCountConverter Default = new CodeItemParentMemberCountConverter();
+        public static CodeItemParentMemberCountConverter Default = new();
 
         /// <summary>
         /// Converts source values to a value for the binding target. The data binding engine calls
@@ -45,10 +45,10 @@ namespace SteveCadwallader.CodeMaid.UI.Converters
         {
             if (values == null || values.Length < 2) return null;
 
-            var parent = values[0] as ICodeItemParent;
-            if (parent == null || !(values[1] is KindCodeItem)) return null;
+      ICodeItemParent parent = values[0] as ICodeItemParent;
+            if (parent == null || values[1] is not KindCodeItem) return null;
 
-            var count = parent.GetChildrenRecursive().Count(x => x.Kind == (KindCodeItem)values[1]);
+      int count = parent.GetChildrenRecursive().Count(x => x.Kind == (KindCodeItem)values[1]);
 
             return count != 0 ? (object)count : null;
         }

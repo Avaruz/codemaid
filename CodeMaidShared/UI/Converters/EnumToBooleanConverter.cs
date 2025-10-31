@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace SteveCadwallader.CodeMaid.UI.Converters
+namespace ASGV.CodeMaid.UI.Converters
 {
     /// <summary>
     /// A converter for turning enumeration values into booleans.
@@ -12,7 +12,7 @@ namespace SteveCadwallader.CodeMaid.UI.Converters
         /// <summary>
         /// A default instance of the <see cref="EnumToBooleanConverter" />.
         /// </summary>
-        public static EnumToBooleanConverter Default = new EnumToBooleanConverter();
+        public static EnumToBooleanConverter Default = new();
 
         /// <summary>
         /// Converts a value.

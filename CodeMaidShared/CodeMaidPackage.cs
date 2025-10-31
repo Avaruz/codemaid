@@ -3,14 +3,14 @@ using EnvDTE80;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.Shell;
-using SteveCadwallader.CodeMaid.Helpers;
-using SteveCadwallader.CodeMaid.Integration.Commands;
-using SteveCadwallader.CodeMaid.Integration.Events;
-using SteveCadwallader.CodeMaid.Model;
-using SteveCadwallader.CodeMaid.Properties;
-using SteveCadwallader.CodeMaid.UI;
-using SteveCadwallader.CodeMaid.UI.ToolWindows.BuildProgress;
-using SteveCadwallader.CodeMaid.UI.ToolWindows.Spade;
+using ASGV.CodeMaid.Helpers;
+using ASGV.CodeMaid.Integration.Commands;
+using ASGV.CodeMaid.Integration.Events;
+using ASGV.CodeMaid.Model;
+using ASGV.CodeMaid.Properties;
+using ASGV.CodeMaid.UI;
+using ASGV.CodeMaid.UI.ToolWindows.BuildProgress;
+using ASGV.CodeMaid.UI.ToolWindows.Spade;
 using System;
 using System.Diagnostics;
 using System.Globalization;
@@ -22,7 +22,7 @@ using System.Windows.Threading;
 using Task = System.Threading.Tasks.Task;
 using VSColorTheme = Microsoft.VisualStudio.PlatformUI.VSColorTheme;
 
-namespace SteveCadwallader.CodeMaid
+namespace ASGV.CodeMaid
 {
     /// <summary>
     /// This is the class that implements the package exposed by this assembly.
@@ -114,6 +114,7 @@ namespace SteveCadwallader.CodeMaid
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
                 try
                 {
                     return IDE.ActiveDocument;
@@ -129,30 +130,41 @@ namespace SteveCadwallader.CodeMaid
         /// <summary>
         /// Gets the build progress tool window, if it already exists.
         /// </summary>
-        public BuildProgressToolWindow BuildProgress =>
-            _buildProgress ?? (_buildProgress = (FindToolWindow(typeof(BuildProgressToolWindow), 0, false) as BuildProgressToolWindow));
+        public BuildProgressToolWindow BuildProgress => _buildProgress ??= (FindToolWindow(typeof(BuildProgressToolWindow), 0, false) as BuildProgressToolWindow);
 
         /// <summary>
         /// Gets the build progress tool window, creating it if necessary.
         /// </summary>
-        public BuildProgressToolWindow BuildProgressForceLoad =>
-            _buildProgress ?? (_buildProgress = (FindToolWindow(typeof(BuildProgressToolWindow), 0, true) as BuildProgressToolWindow));
+        public BuildProgressToolWindow BuildProgressForceLoad => _buildProgress ??= (FindToolWindow(typeof(BuildProgressToolWindow), 0, true) as BuildProgressToolWindow);
 
         /// <summary>
         /// Gets the IComponentModel service.
         /// </summary>
-        public IComponentModel ComponentModel =>
-            _componentModel ?? (_componentModel = GetGlobalService(typeof(SComponentModel)) as IComponentModel);
+        public IComponentModel ComponentModel => _componentModel ??= GetGlobalService(typeof(SComponentModel)) as IComponentModel;
 
         /// <summary>
         /// Gets the top level application instance of the VS IDE that is executing this package.
         /// </summary>
-        public DTE2 IDE => _ide ?? (_ide = (DTE2)GetService(typeof(DTE)));
+        public DTE2 IDE
+        {
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return _ide ??= GetService(typeof(DTE)) as DTE2;
+            }
+        }
 
         /// <summary>
         /// Gets the version of the running IDE instance.
         /// </summary>
-        public double IDEVersion => Convert.ToDouble(IDE.Version, CultureInfo.InvariantCulture);
+        public double IDEVersion
+        {
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return Convert.ToDouble(IDE.Version, CultureInfo.InvariantCulture);
+            }
+        }
 
         /// <summary>
         /// Gets or sets a flag indicating if CodeMaid is running inside an AutoSave context.
@@ -167,19 +179,17 @@ namespace SteveCadwallader.CodeMaid
         /// <summary>
         /// Gets the Spade tool window, if it already exists.
         /// </summary>
-        public SpadeToolWindow Spade =>
-            _spade ?? (_spade = (FindToolWindow(typeof(SpadeToolWindow), 0, false) as SpadeToolWindow));
+        public SpadeToolWindow Spade => _spade ??= (FindToolWindow(typeof(SpadeToolWindow), 0, false) as SpadeToolWindow);
 
         /// <summary>
         /// Gets the Spade tool window, creating it if necessary.
         /// </summary>
-        public SpadeToolWindow SpadeForceLoad =>
-            _spade ?? (_spade = (FindToolWindow(typeof(SpadeToolWindow), 0, true) as SpadeToolWindow));
+        public SpadeToolWindow SpadeForceLoad => _spade ??= (FindToolWindow(typeof(SpadeToolWindow), 0, true) as SpadeToolWindow);
 
         /// <summary>
         /// Gets the theme manager.
         /// </summary>
-        public ThemeManager ThemeManager => _themeManager ?? (_themeManager = ThemeManager.GetInstance(this));
+        public ThemeManager ThemeManager => _themeManager ??= ThemeManager.GetInstance(this);
 
         /// <summary>
         /// Initialization of the package; this method is called right after the package is sited, so
@@ -218,8 +228,11 @@ namespace SteveCadwallader.CodeMaid
         /// </param>
         private void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            if (!Settings.Default.General_DiagnosticsMode) return;
-
+            if (!Settings.Default.General_DiagnosticsMode)
+            {
+                return;
+            }
+            ThreadHelper.ThrowIfNotOnUIThread();
             OutputWindowHelper.ExceptionWriteLine("Diagnostics mode caught and marked as handled the following DispatcherUnhandledException raised in Visual Studio", e.Exception);
             e.Handled = true;
         }
@@ -229,7 +242,11 @@ namespace SteveCadwallader.CodeMaid
         /// </summary>
         private void OnSolutionClosedShowStartPage()
         {
-            if (!Settings.Default.General_ShowStartPageOnSolutionClose) return;
+            ThreadHelper.ThrowIfNotOnUIThread();
+            if (!Settings.Default.General_ShowStartPageOnSolutionClose)
+            {
+                return;
+            }
 
             IDE.ExecuteCommand("View.StartPage");
         }
@@ -280,8 +297,9 @@ namespace SteveCadwallader.CodeMaid
         /// </remarks>
         private async Task RegisterEventListenersAsync()
         {
-            var codeModelManager = CodeModelManager.GetInstance(this);
-            var settingsContextHelper = SettingsContextHelper.GetInstance(this);
+            await JoinableTaskFactory.SwitchToMainThreadAsync(DisposalToken);
+            CodeModelManager codeModelManager = CodeModelManager.GetInstance(this);
+            SettingsContextHelper settingsContextHelper = SettingsContextHelper.GetInstance(this);
 
             VSColorTheme.ThemeChanged += _ => ThemeManager.ApplyTheme();
 

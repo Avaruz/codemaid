@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace SteveCadwallader.CodeMaid.Integration
+namespace ASGV.CodeMaid.Integration
 {
     internal interface ISwitchableFeature
     {

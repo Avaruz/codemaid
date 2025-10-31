@@ -1,8 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SteveCadwallader.CodeMaid.Helpers;
-using SteveCadwallader.CodeMaid.Properties;
+using ASGV.CodeMaid.Helpers;
+using ASGV.CodeMaid.Properties;
 
-namespace SteveCadwallader.CodeMaid.UnitTests
+namespace ASGV.CodeMaid.UnitTests
 {
     [TestClass]
     public class CachedSettingTests
@@ -38,7 +38,7 @@ namespace SteveCadwallader.CodeMaid.UnitTests
         [TestMethod]
         public void CachedSettingCanLookupAndParse()
         {
-            var memberTypeSetting = _cachedSetting.Value;
+      MemberTypeSetting memberTypeSetting = _cachedSetting.Value;
 
             Assert.IsNotNull(memberTypeSetting);
             Assert.AreEqual(1, _lookupCount);
@@ -48,13 +48,13 @@ namespace SteveCadwallader.CodeMaid.UnitTests
         [TestMethod]
         public void CachedSettingUsesCacheOnSecondLookup()
         {
-            var memberTypeSetting = _cachedSetting.Value;
+      MemberTypeSetting memberTypeSetting = _cachedSetting.Value;
 
             Assert.IsNotNull(memberTypeSetting);
             Assert.AreEqual(1, _lookupCount);
             Assert.AreEqual(1, _parseCount);
 
-            var memberTypeSetting2 = _cachedSetting.Value;
+      MemberTypeSetting memberTypeSetting2 = _cachedSetting.Value;
 
             Assert.IsNotNull(memberTypeSetting2);
             Assert.AreEqual(2, _lookupCount);
@@ -64,7 +64,7 @@ namespace SteveCadwallader.CodeMaid.UnitTests
         [TestMethod]
         public void CachedSettingReParsesOnChange()
         {
-            var memberTypeSetting = _cachedSetting.Value;
+      MemberTypeSetting memberTypeSetting = _cachedSetting.Value;
 
             Assert.IsNotNull(memberTypeSetting);
             Assert.AreEqual(1, _lookupCount);
@@ -73,7 +73,7 @@ namespace SteveCadwallader.CodeMaid.UnitTests
             memberTypeSetting.EffectiveName = "Member Variables";
             Settings.Default.Reorganizing_MemberTypeFields = (string)memberTypeSetting;
 
-            var memberTypeSetting2 = _cachedSetting.Value;
+      MemberTypeSetting memberTypeSetting2 = _cachedSetting.Value;
 
             Assert.IsNotNull(memberTypeSetting2);
             Assert.AreEqual(2, _lookupCount);

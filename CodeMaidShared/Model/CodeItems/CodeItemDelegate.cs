@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SteveCadwallader.CodeMaid.Model.CodeItems
+namespace ASGV.CodeMaid.Model.CodeItems
 {
     /// <summary>
     /// The representation of a code delegate.
@@ -60,8 +60,8 @@ namespace SteveCadwallader.CodeMaid.Model.CodeItems
         {
             base.LoadLazyInitializedValues();
 
-            var ns = Namespace;
-            var p = Parameters;
+      string ns = Namespace;
+      IEnumerable<CodeParameter> p = Parameters;
         }
 
         #endregion BaseCodeItem Overrides

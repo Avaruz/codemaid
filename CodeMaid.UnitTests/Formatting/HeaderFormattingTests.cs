@@ -1,8 +1,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SteveCadwallader.CodeMaid.Properties;
+using ASGV.CodeMaid.Properties;
 using System;
 
-namespace SteveCadwallader.CodeMaid.UnitTests.Formatting
+namespace ASGV.CodeMaid.UnitTests.Formatting
 {
     /// <summary>
     /// Class with simple unit tests for formatting header type comments. This calls the formatter
@@ -24,15 +24,15 @@ namespace SteveCadwallader.CodeMaid.UnitTests.Formatting
         [TestCategory("Formatting UnitTests")]
         public void HeaderFormattingTests_Copyright_Indenting()
         {
-            var input =
+      string input =
                 @"<copyright file=""NameOfFile.cs"" company=""CompanyName"">" + Environment.NewLine +
-                @"Company copyright tag." + Environment.NewLine +
-                @"</copyright>";
+                "Company copyright tag." + Environment.NewLine +
+                "</copyright>";
 
-            var expected =
+      string expected =
                 @"<copyright file=""NameOfFile.cs"" company=""CompanyName"">" + Environment.NewLine +
-                @"    Company copyright tag." + Environment.NewLine +
-                @"</copyright>";
+                "    Company copyright tag." + Environment.NewLine +
+                "</copyright>";
 
             CommentFormatHelper.AssertEqualAfterFormat(input, expected, o => o.Xml.Default.Indent = 0);
         }
@@ -41,12 +41,12 @@ namespace SteveCadwallader.CodeMaid.UnitTests.Formatting
         [TestCategory("Formatting UnitTests")]
         public void HeaderFormattingTests_PreservesHyphenLinesWithoutXML()
         {
-            var input =
-                @"--------------------------------------------------------------------------------------------------------------------" + Environment.NewLine +
+      string input =
+                "--------------------------------------------------------------------------------------------------------------------" + Environment.NewLine +
                 Environment.NewLine +
-                @"Copyright (c) 2012 - 2013 . All rights reserved." + Environment.NewLine +
+                "Copyright (c) 2012 - 2013 . All rights reserved." + Environment.NewLine +
                 Environment.NewLine +
-                @"--------------------------------------------------------------------------------------------------------------------";
+                "--------------------------------------------------------------------------------------------------------------------";
 
             CommentFormatHelper.AssertEqualAfterFormat(input);
         }
@@ -55,12 +55,12 @@ namespace SteveCadwallader.CodeMaid.UnitTests.Formatting
         [TestCategory("Formatting UnitTests")]
         public void HeaderFormattingTests_Copyright_PreservesHyphenLinesWithXML()
         {
-            var input =
-                @"-----------------------------------------------------------------------" + Environment.NewLine +
+      string input =
+                "-----------------------------------------------------------------------" + Environment.NewLine +
                 @"<copyright file=""NameOfFile.cs"" company=""CompanyName"">" + Environment.NewLine +
-                @"    Company copyright tag." + Environment.NewLine +
-                @"</copyright>" + Environment.NewLine +
-                @"-----------------------------------------------------------------------";
+                "    Company copyright tag." + Environment.NewLine +
+                "</copyright>" + Environment.NewLine +
+                "-----------------------------------------------------------------------";
 
             CommentFormatHelper.AssertEqualAfterFormat(input);
         }

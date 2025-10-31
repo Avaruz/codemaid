@@ -4,7 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 
-namespace SteveCadwallader.CodeMaid.UI.Converters
+namespace ASGV.CodeMaid.UI.Converters
 {
     /// <summary>
     /// A converter for performing is greater than or equal to comparisons between two specified values.
@@ -16,7 +16,7 @@ namespace SteveCadwallader.CodeMaid.UI.Converters
         /// <summary>
         /// A default instance of the <see cref="IsGreaterThanOrEqualToConverter" />.
         /// </summary>
-        public static IsGreaterThanOrEqualToConverter Default = new IsGreaterThanOrEqualToConverter();
+        public static IsGreaterThanOrEqualToConverter Default = new();
 
         #endregion Fields
 
@@ -34,8 +34,8 @@ namespace SteveCadwallader.CodeMaid.UI.Converters
         {
             if (value != null && parameter != null)
             {
-                var first = System.Convert.ToDouble(value);
-                var second = System.Convert.ToDouble(parameter);
+        double first = System.Convert.ToDouble(value);
+        double second = System.Convert.ToDouble(parameter);
 
                 return first >= second;
             }
@@ -86,10 +86,10 @@ namespace SteveCadwallader.CodeMaid.UI.Converters
         /// </returns>
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (values != null && values.Length >= 2 && values.All(x => x != DependencyProperty.UnsetValue))
+            if (values?.Length >= 2 && values.All(x => x != DependencyProperty.UnsetValue))
             {
-                var first = System.Convert.ToDouble(values[0]);
-                var second = System.Convert.ToDouble(values[1]);
+        double first = System.Convert.ToDouble(values[0]);
+        double second = System.Convert.ToDouble(values[1]);
 
                 return first >= second;
             }

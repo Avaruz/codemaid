@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31729.503
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11123.170
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{69127706-88D9-4314-B801-4FB2E615B700}"
 	ProjectSection(SolutionItems) = preProject
@@ -25,34 +25,61 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeMaid.VS2022", "CodeMaid.VS2022\CodeMaid.VS2022.csproj", "{6D3EDF86-D2F8-4779-8A95-052227ED56A9}"
 EndProject
 Global
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		CodeMaidShared\CodeMaidShared.projitems*{19b1ab9e-4603-4a9c-9284-32aae57fb7bc}*SharedItemsImports = 4
-		CodeMaidShared\CodeMaidShared.projitems*{6d3edf86-d2f8-4779-8a95-052227ed56a9}*SharedItemsImports = 4
-		CodeMaidShared\CodeMaidShared.projitems*{e94629d8-7803-4242-a0c6-3560005515e6}*SharedItemsImports = 13
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|arm64 = Debug|arm64
+		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
+		Release|arm64 = Release|arm64
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{19B1AB9E-4603-4A9C-9284-32AAE57FB7BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{19B1AB9E-4603-4A9C-9284-32AAE57FB7BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19B1AB9E-4603-4A9C-9284-32AAE57FB7BC}.Debug|arm64.ActiveCfg = Debug|arm64
+		{19B1AB9E-4603-4A9C-9284-32AAE57FB7BC}.Debug|arm64.Build.0 = Debug|arm64
+		{19B1AB9E-4603-4A9C-9284-32AAE57FB7BC}.Debug|x86.ActiveCfg = Debug|x86
+		{19B1AB9E-4603-4A9C-9284-32AAE57FB7BC}.Debug|x86.Build.0 = Debug|x86
 		{19B1AB9E-4603-4A9C-9284-32AAE57FB7BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19B1AB9E-4603-4A9C-9284-32AAE57FB7BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19B1AB9E-4603-4A9C-9284-32AAE57FB7BC}.Release|arm64.ActiveCfg = Release|arm64
+		{19B1AB9E-4603-4A9C-9284-32AAE57FB7BC}.Release|arm64.Build.0 = Release|arm64
+		{19B1AB9E-4603-4A9C-9284-32AAE57FB7BC}.Release|x86.ActiveCfg = Release|x86
+		{19B1AB9E-4603-4A9C-9284-32AAE57FB7BC}.Release|x86.Build.0 = Release|x86
 		{27C78B2A-18BC-4CE0-BCB1-DB4C30D805BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{27C78B2A-18BC-4CE0-BCB1-DB4C30D805BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27C78B2A-18BC-4CE0-BCB1-DB4C30D805BE}.Debug|arm64.ActiveCfg = Debug|Any CPU
+		{27C78B2A-18BC-4CE0-BCB1-DB4C30D805BE}.Debug|arm64.Build.0 = Debug|Any CPU
+		{27C78B2A-18BC-4CE0-BCB1-DB4C30D805BE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{27C78B2A-18BC-4CE0-BCB1-DB4C30D805BE}.Debug|x86.Build.0 = Debug|Any CPU
 		{27C78B2A-18BC-4CE0-BCB1-DB4C30D805BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27C78B2A-18BC-4CE0-BCB1-DB4C30D805BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27C78B2A-18BC-4CE0-BCB1-DB4C30D805BE}.Release|arm64.ActiveCfg = Release|Any CPU
+		{27C78B2A-18BC-4CE0-BCB1-DB4C30D805BE}.Release|arm64.Build.0 = Release|Any CPU
+		{27C78B2A-18BC-4CE0-BCB1-DB4C30D805BE}.Release|x86.ActiveCfg = Release|Any CPU
+		{27C78B2A-18BC-4CE0-BCB1-DB4C30D805BE}.Release|x86.Build.0 = Release|Any CPU
 		{6D3EDF86-D2F8-4779-8A95-052227ED56A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6D3EDF86-D2F8-4779-8A95-052227ED56A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D3EDF86-D2F8-4779-8A95-052227ED56A9}.Debug|arm64.ActiveCfg = Debug|arm64
+		{6D3EDF86-D2F8-4779-8A95-052227ED56A9}.Debug|arm64.Build.0 = Debug|arm64
+		{6D3EDF86-D2F8-4779-8A95-052227ED56A9}.Debug|x86.ActiveCfg = Debug|x86
+		{6D3EDF86-D2F8-4779-8A95-052227ED56A9}.Debug|x86.Build.0 = Debug|x86
 		{6D3EDF86-D2F8-4779-8A95-052227ED56A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D3EDF86-D2F8-4779-8A95-052227ED56A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D3EDF86-D2F8-4779-8A95-052227ED56A9}.Release|arm64.ActiveCfg = Release|arm64
+		{6D3EDF86-D2F8-4779-8A95-052227ED56A9}.Release|arm64.Build.0 = Release|arm64
+		{6D3EDF86-D2F8-4779-8A95-052227ED56A9}.Release|x86.ActiveCfg = Release|x86
+		{6D3EDF86-D2F8-4779-8A95-052227ED56A9}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {54B15E96-7E75-4C46-858D-E5DAC0343C58}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		CodeMaidShared\CodeMaidShared.projitems*{6d3edf86-d2f8-4779-8a95-052227ed56a9}*SharedItemsImports = 4
+		CodeMaidShared\CodeMaidShared.projitems*{e94629d8-7803-4242-a0c6-3560005515e6}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = CodeMaid.vsmdi

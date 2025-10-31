@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SteveCadwallader.CodeMaid.UI.Dialogs.Options
+namespace ASGV.CodeMaid.UI.Dialogs.Options
 {
     /// <summary>
     /// A set of extensions methods for enumerable sets of <see cref="OptionsPageViewModel" />.

@@ -1,6 +1,6 @@
 using EnvDTE;
 
-namespace SteveCadwallader.CodeMaid.Model.CodeItems
+namespace ASGV.CodeMaid.Model.CodeItems
 {
     /// <summary>
     /// A snapshot of a document and its associated code items at a point in time.
@@ -20,20 +20,20 @@ namespace SteveCadwallader.CodeMaid.Model.CodeItems
             CodeItems = codeItems;
         }
 
-        #endregion Constructors
+    #endregion Constructors
 
-        #region Properties
+    #region Properties
 
-        /// <summary>
-        /// Gets the document.
-        /// </summary>
-        internal Document Document { get; private set; }
+    /// <summary>
+    /// Gets the document.
+    /// </summary>
+    internal Document Document { get; }
 
-        /// <summary>
-        /// Gets the code items.
-        /// </summary>
-        internal SetCodeItems CodeItems { get; private set; }
+    /// <summary>
+    /// Gets the code items.
+    /// </summary>
+    internal SetCodeItems CodeItems { get; }
 
-        #endregion Properties
-    }
+    #endregion Properties
+  }
 }

@@ -1,6 +1,6 @@
-using SteveCadwallader.CodeMaid.Properties;
+using ASGV.CodeMaid.Properties;
 
-namespace SteveCadwallader.CodeMaid.UI.Dialogs.Options.Cleaning
+namespace ASGV.CodeMaid.UI.Dialogs.Options.Cleaning
 {
     /// <summary>
     /// The view model for cleaning insert options.

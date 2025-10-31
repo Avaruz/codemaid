@@ -1,11 +1,11 @@
 using EnvDTE;
-using SteveCadwallader.CodeMaid.Model.CodeItems;
+using ASGV.CodeMaid.Model.CodeItems;
 using System;
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
-namespace SteveCadwallader.CodeMaid.UI.Converters
+namespace ASGV.CodeMaid.UI.Converters
 {
     /// <summary>
     /// Converts a code item into an image.
@@ -15,17 +15,17 @@ namespace SteveCadwallader.CodeMaid.UI.Converters
         /// <summary>
         /// A <see cref="CodeItemToImageConverter" /> that retrieves VS2010 based images.
         /// </summary>
-        public static CodeItemToImageConverter VS2010 = new CodeItemToImageConverter { ImagePath = "VS2010" };
+        public static CodeItemToImageConverter VS2010 = new() { ImagePath = "VS2010" };
 
         /// <summary>
         /// A <see cref="CodeItemToImageConverter" /> that retrieves VS2012 light based images.
         /// </summary>
-        public static CodeItemToImageConverter VS2012Light = new CodeItemToImageConverter { ImagePath = "VS2012_Light" };
+        public static CodeItemToImageConverter VS2012Light = new() { ImagePath = "VS2012_Light" };
 
         /// <summary>
         /// A <see cref="CodeItemToImageConverter" /> that retrieves VS2012 dark based images.
         /// </summary>
-        public static CodeItemToImageConverter VS2012Dark = new CodeItemToImageConverter { ImagePath = "VS2012_Dark" };
+        public static CodeItemToImageConverter VS2012Dark = new() { ImagePath = "VS2012_Dark" };
 
         /// <summary>
         /// Gets or sets the image path.
@@ -42,7 +42,7 @@ namespace SteveCadwallader.CodeMaid.UI.Converters
         /// <returns>A converted value. If the method returns null, the valid null value is used.</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var codeItem = value as BaseCodeItem;
+      BaseCodeItem codeItem = value as BaseCodeItem;
             if (codeItem == null) return null;
 
             try
@@ -104,7 +104,7 @@ namespace SteveCadwallader.CodeMaid.UI.Converters
                 case KindCodeItem.Enum: return "Enum";
                 case KindCodeItem.Event: return "Event";
                 case KindCodeItem.Field:
-                    var codeItemField = (CodeItemField)codeItem;
+          CodeItemField codeItemField = (CodeItemField)codeItem;
                     if (codeItemField.IsEnumItem) return "EnumItem";
                     if (codeItemField.IsConstant) return "Constant";
                     return "Field";
@@ -128,16 +128,14 @@ namespace SteveCadwallader.CodeMaid.UI.Converters
         {
             if (codeItem == null) return string.Empty;
 
-            switch (codeItem.Access)
-            {
-                case vsCMAccess.vsCMAccessProject:
-                case vsCMAccess.vsCMAccessAssemblyOrFamily: return "_Friend";
-                case vsCMAccess.vsCMAccessPrivate: return "_Private";
-                case vsCMAccess.vsCMAccessProjectOrProtected:
-                case vsCMAccess.vsCMAccessProtected: return "_Protected";
-                case vsCMAccess.vsCMAccessPublic: return string.Empty;
-                default: return string.Empty;
-            }
-        }
+      return codeItem.Access switch
+      {
+        vsCMAccess.vsCMAccessProject or vsCMAccess.vsCMAccessAssemblyOrFamily => "_Friend",
+        vsCMAccess.vsCMAccessPrivate => "_Private",
+        vsCMAccess.vsCMAccessProjectOrProtected or vsCMAccess.vsCMAccessProtected => "_Protected",
+        vsCMAccess.vsCMAccessPublic => string.Empty,
+        _ => string.Empty,
+      };
+    }
     }
 }

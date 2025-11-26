@@ -9,12 +9,12 @@ namespace ASGV.CodeMaid
     internal sealed partial class Vsix
     {
         public const string Id = "35985C0A-7E1A-4DE8-896E-1E846FE56D17";
-        public const string Name = "CodeMaid VS2022/VS2026";
+        public const string Name = "CM 2026";
         public const string Description = @"CodeMaid is an open source Visual Studio extension to cleanup and simplify our C#, C++, F#, VB, PHP, PowerShell, R, JSON, XAML, XML, ASP, HTML, CSS, LESS, SCSS, JavaScript and TypeScript coding. 
 
 Based in the Steve Cadwallader Codemaid Version";
         public const string Language = "en-US";
-        public const string Version = "12.2";
+        public const string Version = "12.3";
         public const string Author = "Adhemar Soria Galvarro Vargas";
         public const string Tags = "build, code, c#, beautify, cleanup, cleaning, digging, reorganizing, formatting";
         public const bool IsPreview = false;

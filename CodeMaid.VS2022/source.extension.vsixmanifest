@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Publisher="Adhemar Soria Galvarro Vargas" Version="12.2" Id="35985C0A-7E1A-4DE8-896E-1E846FE56D17" Language="en-US" />
-        <DisplayName>CodeMaid VS2022/VS2026</DisplayName>
+        <Identity Publisher="Adhemar Soria Galvarro Vargas" Version="12.3" Id="35985C0A-7E1A-4DE8-896E-1E846FE56D17" Language="en-US" />
+        <DisplayName>CM 2026</DisplayName>
         <Description xml:space="preserve">CodeMaid is an open source Visual Studio extension to cleanup and simplify our C#, C++, F#, VB, PHP, PowerShell, R, JSON, XAML, XML, ASP, HTML, CSS, LESS, SCSS, JavaScript and TypeScript coding. 
 
 Based in the Steve Cadwallader Codemaid Version</Description>

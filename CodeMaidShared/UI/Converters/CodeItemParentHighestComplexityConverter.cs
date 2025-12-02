@@ -27,14 +27,13 @@ namespace ASGV.CodeMaid.UI.Converters
         /// <returns>A converted value. If the method returns null, the valid null value is used.</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-      ICodeItemParent parent = value as ICodeItemParent;
-            if (parent == null) return null;
+            if (value is not ICodeItemParent parent) return null;
 
-      ICodeItemComplexity[] childrenWithComplexity = [.. parent.GetChildrenRecursive().OfType<ICodeItemComplexity>()];
+            ICodeItemComplexity[] childrenWithComplexity = [.. parent.GetChildrenRecursive().OfType<ICodeItemComplexity>()];
 
             if (!childrenWithComplexity.Any()) return null;
 
-      int maxComplexity = childrenWithComplexity.Max(x => x.Complexity);
+            int maxComplexity = childrenWithComplexity.Max(x => x.Complexity);
 
             return childrenWithComplexity.FirstOrDefault(x => x.Complexity == maxComplexity);
         }

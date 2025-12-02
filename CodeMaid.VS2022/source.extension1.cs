@@ -10,11 +10,11 @@ namespace ASGV.CodeMaid
     {
         public const string Id = "35985C0A-7E1A-4DE8-896E-1E846FE56D17";
         public const string Name = "CM 2026";
-        public const string Description = @"CodeMaid is an open source Visual Studio extension to cleanup and simplify our C#, C++, F#, VB, PHP, PowerShell, R, JSON, XAML, XML, ASP, HTML, CSS, LESS, SCSS, JavaScript and TypeScript coding. 
+        public const string Description = @"CM is an open-source extension for Visual Studio created to enhance code quality and developer productivity. It provides automated tools to clean up, reformat, and simplify source code across a wide range of programming and markup languages, including C#, C++, F#, Visual Basic, PHP, PowerShell, R, JSON, XAML, XML, ASP, HTML, CSS, LESS, SCSS, JavaScript, and TypeScript. By applying consistent formatting rules and eliminating unnecessary clutter, CM helps teams maintain readable, maintainable, and standardized codebases. Its seamless integration into Visual Studio makes it easy to adopt without disrupting existing workflows, while its open-source nature ensures continuous improvement through community contributions. More than a formatter, CM is a practical solution for developers who want cleaner projects, faster collaboration, and code that reflects best practices across diverse technologies
 
 Based in the Steve Cadwallader Codemaid Version";
         public const string Language = "en-US";
-        public const string Version = "12.3";
+        public const string Version = "12.4";
         public const string Author = "Adhemar Soria Galvarro Vargas";
         public const string Tags = "build, code, c#, beautify, cleanup, cleaning, digging, reorganizing, formatting";
         public const bool IsPreview = false;

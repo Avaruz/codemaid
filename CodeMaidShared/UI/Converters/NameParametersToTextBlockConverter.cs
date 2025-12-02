@@ -12,316 +12,316 @@ using ASGV.CodeMaid.Properties;
 
 namespace ASGV.CodeMaid.UI.Converters
 {
-  /// <summary>
-  /// Converts a code item into a single TextBlock object containing its name and optionally its parameters.
-  /// </summary>
-  public class NameParametersToTextBlockConverter : IMultiValueConverter
-  {
-    #region Fields
-
     /// <summary>
-    /// A default instance of the <see cref="NameParametersToTextBlockConverter" />.
+    /// Converts a code item into a single TextBlock object containing its name and optionally its parameters.
     /// </summary>
-    public static NameParametersToTextBlockConverter Default = new();
-
-    /// <summary>
-    /// An instance of the <see cref="NameParametersToTextBlockConverter" /> for parent items.
-    /// </summary>
-    public static NameParametersToTextBlockConverter Parent = new()
+    public class NameParametersToTextBlockConverter : IMultiValueConverter
     {
-      FontSize = 14,
-      FontStyle = FontStyles.Normal,
-      FontWeight = FontWeights.SemiBold
-    };
+        #region Fields
 
-    #endregion Fields
+        /// <summary>
+        /// A default instance of the <see cref="NameParametersToTextBlockConverter" />.
+        /// </summary>
+        public static NameParametersToTextBlockConverter Default = new();
 
-    #region Properties
-
-    /// <summary>
-    /// Gets or sets the size of the font.
-    /// </summary>
-    public int FontSize { get; set; }
-
-    /// <summary>
-    /// Gets or sets the font style.
-    /// </summary>
-    public FontStyle FontStyle { get; set; }
-
-    /// <summary>
-    /// Gets or sets the font weight.
-    /// </summary>
-    public FontWeight FontWeight { get; set; }
-
-    #endregion Properties
-
-    #region Constructors
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="NameParametersToTextBlockConverter"/> class.
-    /// </summary>
-    public NameParametersToTextBlockConverter()
-    {
-      FontSize = 12;
-      FontStyle = FontStyles.Normal;
-      FontWeight = FontWeights.Normal;
-    }
-
-    #endregion Constructors
-
-    #region Implementation of IMultiValueConverter
-
-    /// <summary>
-    /// Converts a set of values.
-    /// </summary>
-    /// <param name="values">The values produced by the binding source.</param>
-    /// <param name="targetType">The type of the binding target property.</param>
-    /// <param name="parameter">The converter parameter to use.</param>
-    /// <param name="culture">The culture to use in the converter.</param>
-    /// <returns>A converted value. If the method returns null, the valid null value is used.</returns>
-    public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
-    {
-      if (values[0] is not ICodeItem codeItem)
-      {
-        return null;
-      }
-
-      string textToHighlight = values[1] as string;
-      TextBlock textBlock = new();
-
-      textBlock.Inlines.AddRange(CreateInlinesForName(codeItem.Name, textToHighlight));
-      ThreadHelper.ThrowIfNotOnUIThread();
-      if (Settings.Default.Digging_ShowMethodParameters && codeItem is ICodeItemParameters codeItemParameters)
-      {
-        textBlock.Inlines.AddRange(CreateInlinesForParameters(codeItemParameters));
-      }
-
-      if (Settings.Default.Digging_ShowItemTypes)
-      {
-        if (codeItem is BaseCodeItemElement codeItemElement)
+        /// <summary>
+        /// An instance of the <see cref="NameParametersToTextBlockConverter" /> for parent items.
+        /// </summary>
+        public static NameParametersToTextBlockConverter Parent = new()
         {
-          textBlock.Inlines.AddRange(CreateInlinesForType(codeItemElement));
-        }
-      }
+            FontSize = 14,
+            FontStyle = FontStyles.Normal,
+            FontWeight = FontWeights.SemiBold
+        };
 
-      return textBlock;
-    }
+        #endregion Fields
 
-    /// <summary>
-    /// Converts a value.
-    /// </summary>
-    /// <param name="value">The value that is produced by the binding target.</param>
-    /// <param name="targetTypes">The types to convert to.</param>
-    /// <param name="parameter">The converter parameter to use.</param>
-    /// <param name="culture">The culture to use in the converter.</param>
-    /// <returns>A converted value. If the method returns null, the valid null value is used.</returns>
-    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
-    {
-      throw new NotImplementedException();
-    }
+        #region Properties
 
-    #endregion Implementation of IMultiValueConverter
+        /// <summary>
+        /// Gets or sets the size of the font.
+        /// </summary>
+        public int FontSize { get; set; }
 
-    #region Methods
+        /// <summary>
+        /// Gets or sets the font style.
+        /// </summary>
+        public FontStyle FontStyle { get; set; }
 
-    /// <summary>
-    /// Creates the inlines for the name, including highlighted sections.
-    /// </summary>
-    /// <param name="text">The text for the name.</param>
-    /// <param name="textToHighlight">The text to highlight, may be null.</param>
-    /// <returns>The inlines representing the name.</returns>
-    private IEnumerable<Inline> CreateInlinesForName(string text, string textToHighlight)
-    {
-      List<Inline> inlines = new();
+        /// <summary>
+        /// Gets or sets the font weight.
+        /// </summary>
+        public FontWeight FontWeight { get; set; }
 
-      if (!string.IsNullOrWhiteSpace(textToHighlight))
-      {
-        int lastIndexOf = 0;
+        #endregion Properties
 
-        while (lastIndexOf >= 0)
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NameParametersToTextBlockConverter"/> class.
+        /// </summary>
+        public NameParametersToTextBlockConverter()
         {
-          int indexOf = text.IndexOf(textToHighlight, lastIndexOf, StringComparison.InvariantCultureIgnoreCase);
-          string commonPart = text.Substring(lastIndexOf, indexOf >= 0 ? indexOf - lastIndexOf : text.Length - lastIndexOf);
-
-          if (commonPart.Length > 0)
-          {
-            inlines.Add(CreateRun(commonPart));
-          }
-
-          if (indexOf >= 0)
-          {
-            string highlightedPart = text.Substring(indexOf, textToHighlight.Length);
-            Run highlightedRun = CreateHighlightedRun(highlightedPart);
-            inlines.Add(highlightedRun);
-          }
-
-          lastIndexOf = indexOf >= 0 ? indexOf + textToHighlight.Length : -1;
+            FontSize = 12;
+            FontStyle = FontStyles.Normal;
+            FontWeight = FontWeights.Normal;
         }
-      }
-      else
-      {
-        inlines.Add(CreateRun(text));
-      }
 
-      return inlines;
-    }
+        #endregion Constructors
 
-    /// <summary>
-    /// Creates the inlines for the specified code item's parameters.
-    /// </summary>
-    /// <param name="codeItem">The code item.</param>
-    /// <returns>The inlines representing the parameters.</returns>
-    private IEnumerable<Inline> CreateInlinesForParameters(ICodeItemParameters codeItem)
-    {
-      List<Inline> inlines = new();
+        #region Implementation of IMultiValueConverter
 
-      string opener = GetOpeningString(codeItem);
-      if (opener != null)
-      {
-        inlines.Add(CreateItalicRun(opener));
-      }
-
-      bool isFirst = true;
-      ThreadHelper.ThrowIfNotOnUIThread();
-
-      try
-      {
-        foreach (EnvDTE.CodeParameter param in codeItem.Parameters)
+        /// <summary>
+        /// Converts a set of values.
+        /// </summary>
+        /// <param name="values">The values produced by the binding source.</param>
+        /// <param name="targetType">The type of the binding target property.</param>
+        /// <param name="parameter">The converter parameter to use.</param>
+        /// <param name="culture">The culture to use in the converter.</param>
+        /// <returns>A converted value. If the method returns null, the valid null value is used.</returns>
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-          if (isFirst)
-          {
-            isFirst = false;
-          }
-          else
-          {
-            inlines.Add(CreateItalicRun(", "));
-          }
+            if (values[0] is not ICodeItem codeItem)
+            {
+                return null;
+            }
 
-          try
-          {
-            inlines.Add(CreateTypeRun(TypeFormatHelper.Format(param.Type.AsString) + " "));
-            inlines.Add(CreateItalicRun(param.Name));
-          }
-          catch (Exception)
-          {
-            inlines.Add(CreateItalicRun("?"));
-          }
+            string textToHighlight = values[1] as string;
+            TextBlock textBlock = new();
+
+            textBlock.Inlines.AddRange(CreateInlinesForName(codeItem.Name, textToHighlight));
+            ThreadHelper.ThrowIfNotOnUIThread();
+            if (Settings.Default.Digging_ShowMethodParameters && codeItem is ICodeItemParameters codeItemParameters)
+            {
+                textBlock.Inlines.AddRange(CreateInlinesForParameters(codeItemParameters));
+            }
+
+            if (Settings.Default.Digging_ShowItemTypes)
+            {
+                if (codeItem is BaseCodeItemElement codeItemElement)
+                {
+                    textBlock.Inlines.AddRange(CreateInlinesForType(codeItemElement));
+                }
+            }
+
+            return textBlock;
         }
-      }
-      catch (Exception)
-      {
-        inlines.Add(CreateItalicRun("?"));
-      }
 
-      string closer = GetClosingString(codeItem);
-      if (closer != null)
-      {
-        inlines.Add(CreateItalicRun(closer));
-      }
+        /// <summary>
+        /// Converts a value.
+        /// </summary>
+        /// <param name="value">The value that is produced by the binding target.</param>
+        /// <param name="targetTypes">The types to convert to.</param>
+        /// <param name="parameter">The converter parameter to use.</param>
+        /// <param name="culture">The culture to use in the converter.</param>
+        /// <returns>A converted value. If the method returns null, the valid null value is used.</returns>
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
 
-      return inlines;
+        #endregion Implementation of IMultiValueConverter
+
+        #region Methods
+
+        /// <summary>
+        /// Creates the inlines for the name, including highlighted sections.
+        /// </summary>
+        /// <param name="text">The text for the name.</param>
+        /// <param name="textToHighlight">The text to highlight, may be null.</param>
+        /// <returns>The inlines representing the name.</returns>
+        private IEnumerable<Inline> CreateInlinesForName(string text, string textToHighlight)
+        {
+            List<Inline> inlines = [];
+
+            if (!string.IsNullOrWhiteSpace(textToHighlight))
+            {
+                int lastIndexOf = 0;
+
+                while (lastIndexOf >= 0)
+                {
+                    int indexOf = text.IndexOf(textToHighlight, lastIndexOf, StringComparison.InvariantCultureIgnoreCase);
+                    string commonPart = text.Substring(lastIndexOf, indexOf >= 0 ? indexOf - lastIndexOf : text.Length - lastIndexOf);
+
+                    if (commonPart.Length > 0)
+                    {
+                        inlines.Add(CreateRun(commonPart));
+                    }
+
+                    if (indexOf >= 0)
+                    {
+                        string highlightedPart = text.Substring(indexOf, textToHighlight.Length);
+                        Run highlightedRun = CreateHighlightedRun(highlightedPart);
+                        inlines.Add(highlightedRun);
+                    }
+
+                    lastIndexOf = indexOf >= 0 ? indexOf + textToHighlight.Length : -1;
+                }
+            }
+            else
+            {
+                inlines.Add(CreateRun(text));
+            }
+
+            return inlines;
+        }
+
+        /// <summary>
+        /// Creates the inlines for the specified code item's parameters.
+        /// </summary>
+        /// <param name="codeItem">The code item.</param>
+        /// <returns>The inlines representing the parameters.</returns>
+        private IEnumerable<Inline> CreateInlinesForParameters(ICodeItemParameters codeItem)
+        {
+            List<Inline> inlines = [];
+
+            string opener = GetOpeningString(codeItem);
+            if (opener != null)
+            {
+                inlines.Add(CreateItalicRun(opener));
+            }
+
+            bool isFirst = true;
+            ThreadHelper.ThrowIfNotOnUIThread();
+
+            try
+            {
+                foreach (EnvDTE.CodeParameter param in codeItem.Parameters)
+                {
+                    if (isFirst)
+                    {
+                        isFirst = false;
+                    }
+                    else
+                    {
+                        inlines.Add(CreateItalicRun(", "));
+                    }
+
+                    try
+                    {
+                        inlines.Add(CreateTypeRun(TypeFormatHelper.Format(param.Type.AsString) + " "));
+                        inlines.Add(CreateItalicRun(param.Name));
+                    }
+                    catch (Exception)
+                    {
+                        inlines.Add(CreateItalicRun("?"));
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                inlines.Add(CreateItalicRun("?"));
+            }
+
+            string closer = GetClosingString(codeItem);
+            if (closer != null)
+            {
+                inlines.Add(CreateItalicRun(closer));
+            }
+
+            return inlines;
+        }
+
+        /// <summary>
+        /// Creates the inlines for the type.
+        /// </summary>
+        /// <param name="codeItemElement">The code item element.</param>
+        /// <returns>The inlines representing the type.</returns>
+        private IEnumerable<Inline> CreateInlinesForType(BaseCodeItemElement codeItemElement)
+        {
+            List<Inline> inlines = [];
+
+            string formattedTypeString = TypeFormatHelper.Format(codeItemElement.TypeString);
+            if (!string.IsNullOrWhiteSpace(formattedTypeString))
+            {
+                inlines.Add(CreateTypeRun(" : "));
+                inlines.Add(CreateTypeRun(formattedTypeString));
+            }
+
+            return inlines;
+        }
+
+        /// <summary>
+        /// Creates an inline run based on the specified text.
+        /// </summary>
+        /// <param name="text">The text.</param>
+        /// <returns>The created run.</returns>
+        private Run CreateRun(string text)
+        {
+            Run run = new(text)
+            {
+                FontSize = FontSize,
+                FontStyle = FontStyle,
+                FontWeight = FontWeight,
+                BaselineAlignment = BaselineAlignment.Baseline
+            };
+
+            return run;
+        }
+
+        /// <summary>
+        /// Creates a highlighted inline run based on the specified text.
+        /// </summary>
+        /// <param name="text">The text.</param>
+        /// <returns>Highlighted inline run.</returns>
+        private Run CreateHighlightedRun(string text)
+        {
+            Run run = CreateRun(text);
+
+            run.SetResourceReference(TextElement.BackgroundProperty, "BGItemHighlight");
+            run.SetResourceReference(TextElement.ForegroundProperty, "FGItemHighlight");
+
+            return run;
+        }
+
+        /// <summary>
+        /// Creates an italic inline run based on the specified text.
+        /// </summary>
+        /// <param name="text">The text.</param>
+        /// <returns>Italic run.</returns>
+        private Run CreateItalicRun(string text)
+        {
+            Run run = CreateRun(text);
+
+            run.FontStyle = FontStyles.Italic;
+
+            return run;
+        }
+
+        /// <summary>
+        /// Creates an inline run based on the specified text with special styling for types.
+        /// </summary>
+        /// <param name="text">The text.</param>
+        /// <returns>The created run.</returns>
+        private Run CreateTypeRun(string text)
+        {
+            Run run = CreateItalicRun(text);
+
+            run.SetResourceReference(TextElement.ForegroundProperty, "FGType");
+
+            return run;
+        }
+
+        /// <summary>
+        /// Gets the opening string for the specified code item.
+        /// </summary>
+        /// <param name="codeItem">The code item.</param>
+        /// <returns>The opening string, otherwise null.</returns>
+        private static string GetOpeningString(ICodeItemParameters codeItem)
+        {
+            return codeItem is CodeItemProperty property ? property.IsIndexer ? "[" : null : "(";
+        }
+
+        /// <summary>
+        /// Gets the closing string for the specified code item.
+        /// </summary>
+        /// <param name="codeItem">The code item.</param>
+        /// <returns>The closing string, otherwise null.</returns>
+        private static string GetClosingString(ICodeItemParameters codeItem)
+        {
+            return codeItem is CodeItemProperty property ? property.IsIndexer ? "]" : null : ")";
+        }
+
+        #endregion Methods
     }
-
-    /// <summary>
-    /// Creates the inlines for the type.
-    /// </summary>
-    /// <param name="codeItemElement">The code item element.</param>
-    /// <returns>The inlines representing the type.</returns>
-    private IEnumerable<Inline> CreateInlinesForType(BaseCodeItemElement codeItemElement)
-    {
-      List<Inline> inlines = new();
-
-      string formattedTypeString = TypeFormatHelper.Format(codeItemElement.TypeString);
-      if (!string.IsNullOrWhiteSpace(formattedTypeString))
-      {
-        inlines.Add(CreateTypeRun(" : "));
-        inlines.Add(CreateTypeRun(formattedTypeString));
-      }
-
-      return inlines;
-    }
-
-    /// <summary>
-    /// Creates an inline run based on the specified text.
-    /// </summary>
-    /// <param name="text">The text.</param>
-    /// <returns>The created run.</returns>
-    private Run CreateRun(string text)
-    {
-      Run run = new(text)
-      {
-        FontSize = FontSize,
-        FontStyle = FontStyle,
-        FontWeight = FontWeight,
-        BaselineAlignment = BaselineAlignment.Baseline
-      };
-
-      return run;
-    }
-
-    /// <summary>
-    /// Creates a highlighted inline run based on the specified text.
-    /// </summary>
-    /// <param name="text">The text.</param>
-    /// <returns>Highlighted inline run.</returns>
-    private Run CreateHighlightedRun(string text)
-    {
-      Run run = CreateRun(text);
-
-      run.SetResourceReference(TextElement.BackgroundProperty, "BGItemHighlight");
-      run.SetResourceReference(TextElement.ForegroundProperty, "FGItemHighlight");
-
-      return run;
-    }
-
-    /// <summary>
-    /// Creates an italic inline run based on the specified text.
-    /// </summary>
-    /// <param name="text">The text.</param>
-    /// <returns>Italic run.</returns>
-    private Run CreateItalicRun(string text)
-    {
-      Run run = CreateRun(text);
-
-      run.FontStyle = FontStyles.Italic;
-
-      return run;
-    }
-
-    /// <summary>
-    /// Creates an inline run based on the specified text with special styling for types.
-    /// </summary>
-    /// <param name="text">The text.</param>
-    /// <returns>The created run.</returns>
-    private Run CreateTypeRun(string text)
-    {
-      Run run = CreateItalicRun(text);
-
-      run.SetResourceReference(TextElement.ForegroundProperty, "FGType");
-
-      return run;
-    }
-
-    /// <summary>
-    /// Gets the opening string for the specified code item.
-    /// </summary>
-    /// <param name="codeItem">The code item.</param>
-    /// <returns>The opening string, otherwise null.</returns>
-    private static string GetOpeningString(ICodeItemParameters codeItem)
-    {
-      return codeItem is CodeItemProperty property ? property.IsIndexer ? "[" : null : "(";
-    }
-
-    /// <summary>
-    /// Gets the closing string for the specified code item.
-    /// </summary>
-    /// <param name="codeItem">The code item.</param>
-    /// <returns>The closing string, otherwise null.</returns>
-    private static string GetClosingString(ICodeItemParameters codeItem)
-    {
-      return codeItem is CodeItemProperty property ? property.IsIndexer ? "]" : null : ")";
-    }
-
-    #endregion Methods
-  }
 }

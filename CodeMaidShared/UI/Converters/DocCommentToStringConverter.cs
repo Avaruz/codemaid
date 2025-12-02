@@ -26,7 +26,7 @@ namespace ASGV.CodeMaid.UI.Converters
         /// <returns>A converted value. If the method returns null, the valid null value is used.</returns>
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-      string str = value as string;
+            string str = value as string;
             if (string.IsNullOrEmpty(str)) return string.Empty;
 
             try
@@ -38,13 +38,13 @@ namespace ASGV.CodeMaid.UI.Converters
                     str = "<doc>" + str + "</doc>";
                 }
 
-        XElement xElement = XElement.Parse(str);
+                XElement xElement = XElement.Parse(str);
 
-        XElement summaryTag = xElement.DescendantsAndSelf("summary").FirstOrDefault();
+                XElement summaryTag = xElement.DescendantsAndSelf("summary").FirstOrDefault();
                 if (summaryTag == null) return string.Empty;
 
-        // Get the Inner XML for the summary tag.
-        string result = GetInnerXML(summaryTag);
+                // Get the Inner XML for the summary tag.
+                string result = GetInnerXML(summaryTag);
 
                 // Replace para tags with two new lines.
                 result = Regex.Replace(result, "</?para ?/?> ?", Environment.NewLine + Environment.NewLine);
@@ -83,7 +83,7 @@ namespace ASGV.CodeMaid.UI.Converters
         /// <returns>The inner XML for the specified XElement.</returns>
         private static string GetInnerXML(XElement element)
         {
-      System.Xml.XmlReader reader = element.CreateReader();
+            System.Xml.XmlReader reader = element.CreateReader();
             reader.MoveToContent();
             return reader.ReadInnerXml();
         }

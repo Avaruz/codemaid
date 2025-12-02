@@ -42,8 +42,7 @@ namespace ASGV.CodeMaid.UI.Converters
         /// <returns>A converted value. If the method returns null, the valid null value is used.</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-      BaseCodeItem codeItem = value as BaseCodeItem;
-            if (codeItem == null) return null;
+            if (value is not BaseCodeItem codeItem) return null;
 
             try
             {
@@ -104,7 +103,7 @@ namespace ASGV.CodeMaid.UI.Converters
                 case KindCodeItem.Enum: return "Enum";
                 case KindCodeItem.Event: return "Event";
                 case KindCodeItem.Field:
-          CodeItemField codeItemField = (CodeItemField)codeItem;
+                    CodeItemField codeItemField = (CodeItemField)codeItem;
                     if (codeItemField.IsEnumItem) return "EnumItem";
                     if (codeItemField.IsConstant) return "Constant";
                     return "Field";
@@ -128,14 +127,14 @@ namespace ASGV.CodeMaid.UI.Converters
         {
             if (codeItem == null) return string.Empty;
 
-      return codeItem.Access switch
-      {
-        vsCMAccess.vsCMAccessProject or vsCMAccess.vsCMAccessAssemblyOrFamily => "_Friend",
-        vsCMAccess.vsCMAccessPrivate => "_Private",
-        vsCMAccess.vsCMAccessProjectOrProtected or vsCMAccess.vsCMAccessProtected => "_Protected",
-        vsCMAccess.vsCMAccessPublic => string.Empty,
-        _ => string.Empty,
-      };
-    }
+            return codeItem.Access switch
+            {
+                vsCMAccess.vsCMAccessProject or vsCMAccess.vsCMAccessAssemblyOrFamily => "_Friend",
+                vsCMAccess.vsCMAccessPrivate => "_Private",
+                vsCMAccess.vsCMAccessProjectOrProtected or vsCMAccess.vsCMAccessProtected => "_Protected",
+                vsCMAccess.vsCMAccessPublic => string.Empty,
+                _ => string.Empty,
+            };
+        }
     }
 }

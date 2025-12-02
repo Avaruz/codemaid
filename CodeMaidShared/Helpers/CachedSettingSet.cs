@@ -58,7 +58,7 @@ namespace ASGV.CodeMaid.Helpers
         {
             get
             {
-        string expression = _lookupFunction();
+                string expression = _lookupFunction();
                 if (expression != _cachedExpression)
                 {
                     _cachedResult = string.IsNullOrEmpty(expression) ? [] : _parseFunction(expression);

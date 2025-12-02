@@ -7,7 +7,7 @@ namespace ASGV.CodeMaid.UI.ToolWindows.Spade
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-      double result = (double)value / 2.0;
+            double result = (double)value / 2.0;
             return result;
         }
 

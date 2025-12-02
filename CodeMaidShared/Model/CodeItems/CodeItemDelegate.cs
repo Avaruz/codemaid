@@ -60,8 +60,8 @@ namespace ASGV.CodeMaid.Model.CodeItems
         {
             base.LoadLazyInitializedValues();
 
-      string ns = Namespace;
-      IEnumerable<CodeParameter> p = Parameters;
+            string ns = Namespace;
+            IEnumerable<CodeParameter> p = Parameters;
         }
 
         #endregion BaseCodeItem Overrides

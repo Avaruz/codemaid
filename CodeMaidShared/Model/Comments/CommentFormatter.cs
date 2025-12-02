@@ -71,14 +71,14 @@ namespace ASGV.CodeMaid.Model.Comments
 
         private static void AlignParamTags(CommentLineXml xml)
         {
-      System.Collections.Generic.IEnumerable<CommentLineXml> paramPhrases = xml.Lines.OfType<CommentLineXml>().Where(p => string.Equals(p.TagName, "param", StringComparison.OrdinalIgnoreCase));
+            System.Collections.Generic.IEnumerable<CommentLineXml> paramPhrases = xml.Lines.OfType<CommentLineXml>().Where(p => string.Equals(p.TagName, "param", StringComparison.OrdinalIgnoreCase));
             if (paramPhrases.Count() > 1)
             {
-        // If param tags are broken into seperate lines there is nothing to align.
-        bool paramSplit = paramPhrases.First().TagOptions.Split.HasFlag(XmlTagNewLine.AfterOpen);
+                // If param tags are broken into seperate lines there is nothing to align.
+                bool paramSplit = paramPhrases.First().TagOptions.Split.HasFlag(XmlTagNewLine.AfterOpen);
                 if (!paramSplit)
                 {
-          int longestParam = paramPhrases.Max(p => p.OpenTag.Length);
+                    int longestParam = paramPhrases.Max(p => p.OpenTag.Length);
                     foreach (CommentLineXml phrase in paramPhrases)
                     {
                         phrase.OpenTag = phrase.OpenTag.PadRight(longestParam);
@@ -166,7 +166,7 @@ namespace ASGV.CodeMaid.Model.Comments
             if (line.Content == null)
                 return true;
 
-      System.Collections.Generic.List<CodeCommentMatch> matches = [.. _commentOptions.Regex.Matches(line.Content).OfType<Match>().Select(x => new CodeCommentMatch(x, _formatterOptions))];
+            System.Collections.Generic.List<CodeCommentMatch> matches = [.. _commentOptions.Regex.Matches(line.Content).OfType<Match>().Select(x => new CodeCommentMatch(x, _formatterOptions))];
 
             // Remove empty matches from the start and end of the comment.
             CodeCommentMatch m;
@@ -193,17 +193,17 @@ namespace ASGV.CodeMaid.Model.Comments
                 } while (i < matches.Count - 1);
             }
 
-      // Extended logic for line breaks.
-      // - Break if there is more than 1 line match (eg. due to a list or child xml tags).
-      // - Break if the content does not fit on a single line.
-      int matchCount = matches.Count;
-      bool forceBreak = matchCount > 1;
-      bool fittedOnLine = true;
+            // Extended logic for line breaks.
+            // - Break if there is more than 1 line match (eg. due to a list or child xml tags).
+            // - Break if the content does not fit on a single line.
+            int matchCount = matches.Count;
+            bool forceBreak = matchCount > 1;
+            bool fittedOnLine = true;
 
             if (!forceBreak && matchCount == 1 && matches[0].Words.Any())
             {
-        // Calculate the length of the first line.
-        int firstLineLength = _commentPrefixLength + xmlTagLength + matches[0].Length + _indentAmount;
+                // Calculate the length of the first line.
+                int firstLineLength = _commentPrefixLength + xmlTagLength + matches[0].Length + _indentAmount;
 
                 // If set to skip wrapping on the last word, the last word's length does not matter.
                 if (_formatterOptions.SkipWrapOnLastWord)
@@ -251,13 +251,13 @@ namespace ASGV.CodeMaid.Model.Comments
 
                 if (!match.IsEmpty)
                 {
-          int wordCount = match.Words.Count - 1;
+                    int wordCount = match.Words.Count - 1;
 
                     for (int i = 0; i <= wordCount; i++)
                     {
-            string word = match.Words[i];
-            int length = WordLength(word);
-            bool wrap = false;
+                        string word = match.Words[i];
+                        int length = WordLength(word);
+                        bool wrap = false;
 
                         // If current position plus word length exceeds the maximum comment length,
                         // wrap to the next line. Take care not to wrap on the first word, otherwise
@@ -318,8 +318,8 @@ namespace ASGV.CodeMaid.Model.Comments
         /// </returns>
         private bool FormatXml(CommentLineXml xml)
         {
-      bool isLiteralContent = !string.IsNullOrEmpty(xml.Content);
-      XmlTagNewLine split = xml.TagOptions.Split;
+            bool isLiteralContent = !string.IsNullOrEmpty(xml.Content);
+            XmlTagNewLine split = xml.TagOptions.Split;
 
             if (isLiteralContent)
             {
@@ -365,8 +365,8 @@ namespace ASGV.CodeMaid.Model.Comments
 
             if (isLiteralContent)
             {
-        // If the literal content of an XML tag is set, output that content without formatting.
-        string[] literals = xml.Content.Trim('\r', '\n').TrimEnd('\r', '\n', '\t', ' ').Split('\n');
+                // If the literal content of an XML tag is set, output that content without formatting.
+                string[] literals = xml.Content.Trim('\r', '\n').TrimEnd('\r', '\n', '\t', ' ').Split('\n');
                 for (int i = 0; i < literals.Length; i++)
                 {
                     if (i > 0)
@@ -376,8 +376,8 @@ namespace ASGV.CodeMaid.Model.Comments
             }
             else
             {
-        // Else output the child lines.
-        int xmlTagLength = WordLength(xml.OpenTag) + WordLength(xml.CloseTag) + (xml.TagOptions.SpaceContent ? 2 : 0);
+                // Else output the child lines.
+                int xmlTagLength = WordLength(xml.OpenTag) + WordLength(xml.CloseTag) + (xml.TagOptions.SpaceContent ? 2 : 0);
 
                 foreach (ICommentLine line in xml.Lines)
                 {

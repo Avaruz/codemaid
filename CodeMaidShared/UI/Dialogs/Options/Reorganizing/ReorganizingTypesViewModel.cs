@@ -140,15 +140,14 @@ namespace ASGV.CodeMaid.UI.Dialogs.Options.Reorganizing
         /// <param name="parameter">The command parameter.</param>
         private void OnSplitCommandExecuted(object parameter)
         {
-      IList list = parameter as IList;
-            if (list != null)
+            if (parameter is IList list)
             {
                 // Determine the position of the combined item and remove it.
                 int index = MemberTypes.IndexOf(parameter);
                 MemberTypes.Remove(parameter);
 
-        // Reset each item in the list and insert it into the specified position.
-        IEnumerable<MemberTypeSetting> memberTypeSettings = list.OfType<MemberTypeSetting>().Reverse();
+                // Reset each item in the list and insert it into the specified position.
+                IEnumerable<MemberTypeSetting> memberTypeSettings = list.OfType<MemberTypeSetting>().Reverse();
                 foreach (MemberTypeSetting memberTypeSetting in memberTypeSettings)
                 {
                     memberTypeSetting.EffectiveName = memberTypeSetting.DefaultName;
@@ -175,7 +174,7 @@ namespace ASGV.CodeMaid.UI.Dialogs.Options.Reorganizing
         /// </summary>
         private void CreateMemberTypesFromCurrentState()
         {
-      MemberTypeSetting[] allMemberTypes = new[] { Classes, Constructors, Delegates, Destructors, Enums, Events, Fields, Indexers, Interfaces, Methods, Properties, Structs };
+            MemberTypeSetting[] allMemberTypes = [Classes, Constructors, Delegates, Destructors, Enums, Events, Fields, Indexers, Interfaces, Methods, Properties, Structs];
             foreach (MemberTypeSetting memberType in allMemberTypes)
             {
                 memberType.PropertyChanged += OnMemberTypeSettingPropertyChanged;
@@ -195,8 +194,7 @@ namespace ASGV.CodeMaid.UI.Dialogs.Options.Reorganizing
         /// <param name="e">The event arguments.</param>
         private void OnMemberTypeSettingPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-      MemberTypeSetting memberTypeSetting = sender as MemberTypeSetting;
-            if (memberTypeSetting != null)
+            if (sender is MemberTypeSetting memberTypeSetting)
             {
                 // Raise NotifyPropertyChanged on the DefaultName of the MemberTypeSetting which matches the property name on this class.
                 RaisePropertyChanged(memberTypeSetting.DefaultName);
@@ -204,7 +202,7 @@ namespace ASGV.CodeMaid.UI.Dialogs.Options.Reorganizing
                 // If the EffectiveName changed for one member in a group, be sure all other members in the group are synchronized.
                 if (e.PropertyName == "EffectiveName")
                 {
-          IList list = MemberTypes.OfType<IList>().FirstOrDefault(x => x.Contains(memberTypeSetting));
+                    IList list = MemberTypes.OfType<IList>().FirstOrDefault(x => x.Contains(memberTypeSetting));
                     if (list?.Count > 1)
                     {
                         foreach (MemberTypeSetting type in list.OfType<MemberTypeSetting>())
@@ -225,21 +223,19 @@ namespace ASGV.CodeMaid.UI.Dialogs.Options.Reorganizing
 
             foreach (object memberType in MemberTypes)
             {
-        MemberTypeSetting memberTypeSetting = memberType as MemberTypeSetting;
-                if (memberTypeSetting != null)
+                if (memberType is MemberTypeSetting memberTypeSetting)
                 {
                     memberTypeSetting.Order = index;
                 }
                 else
                 {
-          IList list = memberType as IList;
-                    if (list != null)
+                    if (memberType is IList list)
                     {
-            List<MemberTypeSetting> types = [.. list.OfType<MemberTypeSetting>()];
+                        List<MemberTypeSetting> types = [.. list.OfType<MemberTypeSetting>()];
 
                         // If merged member types have distinct names, create a new effective name from joining their names together.
                         string newEffectiveName = null;
-            List<string> distinctNames = [.. types.Select(x => x.EffectiveName).Distinct()];
+                        List<string> distinctNames = [.. types.Select(x => x.EffectiveName).Distinct()];
                         if (distinctNames.Count > 1)
                         {
                             newEffectiveName = string.Join(" + ", distinctNames);

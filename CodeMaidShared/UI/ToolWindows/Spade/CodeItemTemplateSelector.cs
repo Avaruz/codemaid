@@ -56,8 +56,7 @@ namespace ASGV.CodeMaid.UI.ToolWindows.Spade
         /// </returns>
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-      BaseCodeItem codeItem = item as BaseCodeItem;
-            if (codeItem != null)
+            if (item is BaseCodeItem codeItem)
             {
                 switch (codeItem.Kind)
                 {

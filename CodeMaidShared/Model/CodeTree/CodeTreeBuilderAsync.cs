@@ -4,105 +4,105 @@ using System.ComponentModel;
 
 namespace ASGV.CodeMaid.Model.CodeTree
 {
-  /// <summary>
-  /// A helper class for performing code tree building in an asynchronous context.
-  /// </summary>
-  internal class CodeTreeBuilderAsync
-  {
-    #region Fields
-
-    private readonly BackgroundWorker _bw;
-    private readonly Action<SnapshotCodeItems> _callback;
-    private CodeTreeRequest _pendingRequest;
-
-    #endregion Fields
-
-    #region Constructors
-
     /// <summary>
-    /// Initializes a new instance of the <see cref="CodeTreeBuilderAsync" /> class.
+    /// A helper class for performing code tree building in an asynchronous context.
     /// </summary>
-    /// <param name="callback">The callback for results.</param>
-    internal CodeTreeBuilderAsync(Action<SnapshotCodeItems> callback)
+    internal class CodeTreeBuilderAsync
     {
-      _bw = new BackgroundWorker { WorkerSupportsCancellation = true };
-      _bw.DoWork += OnDoWork;
-      _bw.RunWorkerCompleted += OnRunWorkerCompleted;
+        #region Fields
 
-      _callback = callback;
-    }
+        private readonly BackgroundWorker _bw;
+        private readonly Action<SnapshotCodeItems> _callback;
+        private CodeTreeRequest _pendingRequest;
 
-    #endregion Constructors
+        #endregion Fields
 
-    #region Internal Methods
+        #region Constructors
 
-    /// <summary>
-    /// Builds a code tree asynchronously from the specified request.
-    /// </summary>
-    /// <param name="request">The request.</param>
-    internal void RetrieveCodeTreeAsync(CodeTreeRequest request)
-    {
-      if (_bw.IsBusy)
-      {
-        _pendingRequest = request;
-        _bw.CancelAsync();
-      }
-      else
-      {
-        _pendingRequest = null;
-        _bw.RunWorkerAsync(request);
-      }
-    }
-
-    #endregion Internal Methods
-
-    #region Private Methods
-
-    /// <summary>
-    /// Called when the background worker should perform its work.
-    /// </summary>
-    /// <param name="sender">The sender.</param>
-    /// <param name="e">
-    /// The <see cref="System.ComponentModel.DoWorkEventArgs" /> instance containing the event data.
-    /// </param>
-    private static void OnDoWork(object sender, DoWorkEventArgs e)
-    {
-      if (e.Argument is not CodeTreeRequest request || request.RawCodeItems == null)
-      {
-        return;
-      }
-
-      SetCodeItems codeItems = CodeTreeBuilder.RetrieveCodeTree(request);
-
-      if (!e.Cancel)
-      {
-        e.Result = new SnapshotCodeItems(request.Document, codeItems);
-      }
-    }
-
-    /// <summary>
-    /// Called when the background worker has completed.
-    /// </summary>
-    /// <param name="sender">The sender.</param>
-    /// <param name="e">
-    /// The <see cref="System.ComponentModel.RunWorkerCompletedEventArgs" /> instance containing
-    /// the event data.
-    /// </param>
-    private void OnRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-    {
-      if (_pendingRequest != null)
-      {
-        RetrieveCodeTreeAsync(_pendingRequest);
-      }
-      else if (e.Error == null)
-      {
-        if (e.Result is SnapshotCodeItems snapshot)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CodeTreeBuilderAsync" /> class.
+        /// </summary>
+        /// <param name="callback">The callback for results.</param>
+        internal CodeTreeBuilderAsync(Action<SnapshotCodeItems> callback)
         {
-          _callback(snapshot);
-        }
-      }
-    }
+            _bw = new BackgroundWorker { WorkerSupportsCancellation = true };
+            _bw.DoWork += OnDoWork;
+            _bw.RunWorkerCompleted += OnRunWorkerCompleted;
 
-    #endregion Private Methods
-  }
+            _callback = callback;
+        }
+
+        #endregion Constructors
+
+        #region Internal Methods
+
+        /// <summary>
+        /// Builds a code tree asynchronously from the specified request.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        internal void RetrieveCodeTreeAsync(CodeTreeRequest request)
+        {
+            if (_bw.IsBusy)
+            {
+                _pendingRequest = request;
+                _bw.CancelAsync();
+            }
+            else
+            {
+                _pendingRequest = null;
+                _bw.RunWorkerAsync(request);
+            }
+        }
+
+        #endregion Internal Methods
+
+        #region Private Methods
+
+        /// <summary>
+        /// Called when the background worker should perform its work.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">
+        /// The <see cref="System.ComponentModel.DoWorkEventArgs" /> instance containing the event data.
+        /// </param>
+        private static void OnDoWork(object sender, DoWorkEventArgs e)
+        {
+            if (e.Argument is not CodeTreeRequest request || request.RawCodeItems == null)
+            {
+                return;
+            }
+
+            SetCodeItems codeItems = CodeTreeBuilder.RetrieveCodeTree(request);
+
+            if (!e.Cancel)
+            {
+                e.Result = new SnapshotCodeItems(request.Document, codeItems);
+            }
+        }
+
+        /// <summary>
+        /// Called when the background worker has completed.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">
+        /// The <see cref="System.ComponentModel.RunWorkerCompletedEventArgs" /> instance containing
+        /// the event data.
+        /// </param>
+        private void OnRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (_pendingRequest != null)
+            {
+                RetrieveCodeTreeAsync(_pendingRequest);
+            }
+            else if (e.Error == null)
+            {
+                if (e.Result is SnapshotCodeItems snapshot)
+                {
+                    _callback(snapshot);
+                }
+            }
+        }
+
+        #endregion Private Methods
+    }
 }

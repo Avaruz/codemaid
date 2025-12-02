@@ -34,8 +34,7 @@ namespace ASGV.CodeMaid.UI.Dialogs.CleanupProgress
         /// </param>
         private void OnClosing(object sender, CancelEventArgs e)
         {
-      CleanupProgressViewModel viewModel = DataContext as CleanupProgressViewModel;
-            if (viewModel != null && viewModel.DialogResult == null)
+            if (DataContext is CleanupProgressViewModel viewModel && viewModel.DialogResult == null)
             {
                 viewModel.CancelCommand.Execute(null);
                 e.Cancel = true;

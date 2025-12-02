@@ -21,14 +21,14 @@ namespace ASGV.CodeMaid.UI
             Name = name;
         }
 
-    /// <summary>
-    /// The name of the independent property.
-    /// </summary>
-    public string Name { get; }
+        /// <summary>
+        /// The name of the independent property.
+        /// </summary>
+        public string Name { get; }
 
-    /// <summary>
-    /// A unique identifier for this attribute.
-    /// </summary>
-    public override object TypeId => this;
+        /// <summary>
+        /// A unique identifier for this attribute.
+        /// </summary>
+        public override object TypeId => this;
     }
 }

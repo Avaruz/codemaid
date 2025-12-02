@@ -71,13 +71,13 @@ namespace ASGV.CodeMaid.Model.CodeTree
         /// <returns>The organized code items.</returns>
         private static SetCodeItems OrganizeCodeItemsByAlphaSortOrder(SetCodeItems rawCodeItems)
         {
-      SetCodeItems organizedCodeItems = new();
+            SetCodeItems organizedCodeItems = [];
 
             if (rawCodeItems != null)
             {
-        IEnumerable<BaseCodeItem> codeItemsWithoutRegions = rawCodeItems.Where(x => x is not CodeItemRegion);
+                IEnumerable<BaseCodeItem> codeItemsWithoutRegions = rawCodeItems.Where(x => x is not CodeItemRegion);
 
-        SetCodeItems structuredCodeItems = OrganizeCodeItemsByFileSortOrder(codeItemsWithoutRegions);
+                SetCodeItems structuredCodeItems = OrganizeCodeItemsByFileSortOrder(codeItemsWithoutRegions);
                 organizedCodeItems.AddRange(structuredCodeItems);
 
                 // Sort the list of code items by name recursively.
@@ -94,13 +94,13 @@ namespace ASGV.CodeMaid.Model.CodeTree
         /// <returns>The organized code items.</returns>
         private static SetCodeItems OrganizeCodeItemsByFileSortOrder(IEnumerable<BaseCodeItem> rawCodeItems)
         {
-      SetCodeItems organizedCodeItems = new();
+            SetCodeItems organizedCodeItems = [];
 
             if (rawCodeItems != null)
             {
-        // Sort the raw list of code items by starting position.
-        IOrderedEnumerable<BaseCodeItem> sortedCodeItems = rawCodeItems.OrderBy(x => x.StartOffset);
-        Stack<BaseCodeItem> codeItemStack = new();
+                // Sort the raw list of code items by starting position.
+                IOrderedEnumerable<BaseCodeItem> sortedCodeItems = rawCodeItems.OrderBy(x => x.StartOffset);
+                Stack<BaseCodeItem> codeItemStack = new();
 
                 foreach (BaseCodeItem codeItem in sortedCodeItems)
                 {
@@ -113,11 +113,10 @@ namespace ASGV.CodeMaid.Model.CodeTree
                             break;
                         }
 
-            BaseCodeItem top = codeItemStack.Peek();
+                        BaseCodeItem top = codeItemStack.Peek();
                         if (codeItem.EndOffset < top.EndOffset)
                         {
-              ICodeItemParent topParent = top as ICodeItemParent;
-                            if (topParent != null)
+                            if (top is ICodeItemParent topParent)
                             {
                                 topParent.Children.Add(codeItem);
                                 codeItemStack.Push(codeItem);
@@ -146,13 +145,13 @@ namespace ASGV.CodeMaid.Model.CodeTree
         /// <returns>The organized code items.</returns>
         private static SetCodeItems OrganizeCodeItemsByTypeSortOrder(SetCodeItems rawCodeItems)
         {
-      SetCodeItems organizedCodeItems = new();
+            SetCodeItems organizedCodeItems = [];
 
             if (rawCodeItems != null)
             {
-        IEnumerable<BaseCodeItem> codeItemsWithoutRegions = rawCodeItems.Where(x => x is not CodeItemRegion);
+                IEnumerable<BaseCodeItem> codeItemsWithoutRegions = rawCodeItems.Where(x => x is not CodeItemRegion);
 
-        SetCodeItems structuredCodeItems = OrganizeCodeItemsByFileSortOrder(codeItemsWithoutRegions);
+                SetCodeItems structuredCodeItems = OrganizeCodeItemsByFileSortOrder(codeItemsWithoutRegions);
                 organizedCodeItems.AddRange(structuredCodeItems);
 
                 // Sort the list of code items by type recursively.
@@ -180,8 +179,8 @@ namespace ASGV.CodeMaid.Model.CodeTree
                 return;
             }
 
-      // Capture the current children, then clear them out so they can be re-added.
-      BaseCodeItem[] children = [.. codeItem.Children];
+            // Capture the current children, then clear them out so they can be re-added.
+            BaseCodeItem[] children = [.. codeItem.Children];
             codeItem.Children.Clear();
 
             CodeItemRegion group = null;
@@ -189,7 +188,7 @@ namespace ASGV.CodeMaid.Model.CodeTree
 
             foreach (BaseCodeItem child in children)
             {
-        MemberTypeSetting memberTypeSetting = MemberTypeSettingHelper.LookupByKind(child.Kind);
+                MemberTypeSetting memberTypeSetting = MemberTypeSettingHelper.LookupByKind(child.Kind);
 
                 // Create a new group unless the right kind has already been defined.
                 if (group == null || memberTypeSetting.Order != groupOrder)
@@ -203,8 +202,7 @@ namespace ASGV.CodeMaid.Model.CodeTree
                 // Add the child to the group and recurse.
                 group.Children.Add(child);
 
-        ICodeItemParent childAsParent = child as ICodeItemParent;
-                if (childAsParent != null)
+                if (child is ICodeItemParent childAsParent)
                 {
                     RecursivelyGroupByType(childAsParent);
                 }
@@ -235,8 +233,7 @@ namespace ASGV.CodeMaid.Model.CodeTree
         {
             codeItems.RemoveAll(codeItem =>
             {
-              ICodeItemParent codeItemParent = codeItem as ICodeItemParent;
-                if (codeItemParent != null)
+                if (codeItem is ICodeItemParent codeItemParent)
                 {
                     RecursivelyFilter(codeItemParent.Children, nameFilter);
                     if (codeItemParent.Children.Any())

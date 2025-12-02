@@ -73,8 +73,8 @@ namespace ASGV.CodeMaid.UI.Converters
         /// <returns>A converted value. If the method returns null, the valid null value is used.</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-      Thickness thickness = parameter as Thickness? ?? new Thickness();
-      int input = System.Convert.ToInt32(value);
+            Thickness thickness = parameter as Thickness? ?? new Thickness();
+            int input = System.Convert.ToInt32(value);
 
             if (Left)
             {

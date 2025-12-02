@@ -6,96 +6,96 @@ using ASGV.CodeMaid.Properties;
 
 namespace ASGV.CodeMaid.Model
 {
-  /// <summary>
-  /// A class for encapsulating a cache of code models.
-  /// </summary>
-  internal class CodeModelCache
-  {
-    #region Fields
-
-    private readonly Dictionary<string, CodeModel> _cache;
-
-    #endregion Fields
-
-    #region Constructors
-
     /// <summary>
-    /// Initializes a new instance of the <see cref="CodeModelCache" /> class.
+    /// A class for encapsulating a cache of code models.
     /// </summary>
-    internal CodeModelCache()
+    internal class CodeModelCache
     {
-      _cache = [];
-    }
+        #region Fields
 
-    #endregion Constructors
+        private readonly Dictionary<string, CodeModel> _cache;
 
-    #region Internal Methods
+        #endregion Fields
 
-    /// <summary>
-    /// Gets a code model for the specified document. If the code model is not present in the
-    /// cache, a new code model will be generated and added to the cache.
-    /// </summary>
-    /// <param name="document">The document.</param>
-    /// <returns>A code model representing the document.</returns>
-    internal CodeModel GetCodeModel(Document document)
-    {
-      CodeModel codeModel;
-      ThreadHelper.ThrowIfNotOnUIThread();
-      OutputWindowHelper.DiagnosticWriteLine($"CodeModelCache.GetCodeModel for '{document.FullName}'");
-      ThreadHelper.ThrowIfNotOnUIThread();
-      lock (_cache)
-      {
-        if (!_cache.TryGetValue(document.FullName, out codeModel))
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CodeModelCache" /> class.
+        /// </summary>
+        internal CodeModelCache()
         {
-          codeModel = new CodeModel(document) { IsStale = true };
-
-          if (Settings.Default.General_CacheFiles)
-          {
-            _cache.Add(document.FullName, codeModel);
-            OutputWindowHelper.DiagnosticWriteLine("  --added to cache (stale).");
-          }
+            _cache = [];
         }
-        else
+
+        #endregion Constructors
+
+        #region Internal Methods
+
+        /// <summary>
+        /// Gets a code model for the specified document. If the code model is not present in the
+        /// cache, a new code model will be generated and added to the cache.
+        /// </summary>
+        /// <param name="document">The document.</param>
+        /// <returns>A code model representing the document.</returns>
+        internal CodeModel GetCodeModel(Document document)
         {
-          OutputWindowHelper.DiagnosticWriteLine(codeModel.IsStale
-              ? "  --retrieved from cache (stale)."
-              : "  --retrieved from cache (not stale).");
+            CodeModel codeModel;
+            ThreadHelper.ThrowIfNotOnUIThread();
+            OutputWindowHelper.DiagnosticWriteLine($"CodeModelCache.GetCodeModel for '{document.FullName}'");
+            ThreadHelper.ThrowIfNotOnUIThread();
+            lock (_cache)
+            {
+                if (!_cache.TryGetValue(document.FullName, out codeModel))
+                {
+                    codeModel = new CodeModel(document) { IsStale = true };
+
+                    if (Settings.Default.General_CacheFiles)
+                    {
+                        _cache.Add(document.FullName, codeModel);
+                        OutputWindowHelper.DiagnosticWriteLine("  --added to cache (stale).");
+                    }
+                }
+                else
+                {
+                    OutputWindowHelper.DiagnosticWriteLine(codeModel.IsStale
+                        ? "  --retrieved from cache (stale)."
+                        : "  --retrieved from cache (not stale).");
+                }
+            }
+
+            return codeModel;
         }
-      }
 
-      return codeModel;
-    }
-
-    /// <summary>
-    /// Removes the code model associated with the specified document if it exists.
-    /// </summary>
-    /// <param name="document">The document.</param>
-    internal void RemoveCodeModel(Document document)
-    {
-      lock (_cache)
-      {
-        ThreadHelper.ThrowIfNotOnUIThread();
-        if (_cache.Remove(document.FullName))
+        /// <summary>
+        /// Removes the code model associated with the specified document if it exists.
+        /// </summary>
+        /// <param name="document">The document.</param>
+        internal void RemoveCodeModel(Document document)
         {
-          OutputWindowHelper.DiagnosticWriteLine($"CodeModelCache.RemoveCodeModel from cache for '{document.FullName}'");
+            lock (_cache)
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                if (_cache.Remove(document.FullName))
+                {
+                    OutputWindowHelper.DiagnosticWriteLine($"CodeModelCache.RemoveCodeModel from cache for '{document.FullName}'");
+                }
+            }
         }
-      }
-    }
 
-    /// <summary>
-    /// Marks the code model associated with the specified document as stale if it exists.
-    /// </summary>
-    /// <param name="document">The document.</param>
-    internal void StaleCodeModel(Document document)
-    {
-      ThreadHelper.ThrowIfNotOnUIThread();
-      if (_cache.TryGetValue(document.FullName, out CodeModel codeModel))
-      {
-        codeModel.IsStale = true;
-        OutputWindowHelper.DiagnosticWriteLine($"CodeModelCache.StaleCodeModel in cache for '{document.FullName}'");
-      }
-    }
+        /// <summary>
+        /// Marks the code model associated with the specified document as stale if it exists.
+        /// </summary>
+        /// <param name="document">The document.</param>
+        internal void StaleCodeModel(Document document)
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
+            if (_cache.TryGetValue(document.FullName, out CodeModel codeModel))
+            {
+                codeModel.IsStale = true;
+                OutputWindowHelper.DiagnosticWriteLine($"CodeModelCache.StaleCodeModel in cache for '{document.FullName}'");
+            }
+        }
 
-    #endregion Internal Methods
-  }
+        #endregion Internal Methods
+    }
 }

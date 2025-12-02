@@ -132,23 +132,23 @@ namespace ASGV.CodeMaid.Helpers
         /// <returns>The associated <see cref="MemberTypeSetting"/>, otherwise null.</returns>
         public static MemberTypeSetting LookupByKind(KindCodeItem kindCodeItem)
         {
-      return kindCodeItem switch
-      {
-        KindCodeItem.Class => ClassSettings,
-        KindCodeItem.Constructor => ConstructorSettings,
-        KindCodeItem.Delegate => DelegateSettings,
-        KindCodeItem.Destructor => DestructorSettings,
-        KindCodeItem.Enum => EnumSettings,
-        KindCodeItem.Event => EventSettings,
-        KindCodeItem.Field => FieldSettings,
-        KindCodeItem.Indexer => IndexerSettings,
-        KindCodeItem.Interface => InterfaceSettings,
-        KindCodeItem.Method => MethodSettings,
-        KindCodeItem.Property => PropertySettings,
-        KindCodeItem.Struct => StructSettings,
-        _ => null,
-      };
-    }
+            return kindCodeItem switch
+            {
+                KindCodeItem.Class => ClassSettings,
+                KindCodeItem.Constructor => ConstructorSettings,
+                KindCodeItem.Delegate => DelegateSettings,
+                KindCodeItem.Destructor => DestructorSettings,
+                KindCodeItem.Enum => EnumSettings,
+                KindCodeItem.Event => EventSettings,
+                KindCodeItem.Field => FieldSettings,
+                KindCodeItem.Indexer => IndexerSettings,
+                KindCodeItem.Interface => InterfaceSettings,
+                KindCodeItem.Method => MethodSettings,
+                KindCodeItem.Property => PropertySettings,
+                KindCodeItem.Struct => StructSettings,
+                _ => null,
+            };
+        }
 
         #endregion Methods
     }

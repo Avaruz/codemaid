@@ -15,14 +15,13 @@ namespace ASGV.CodeMaid.Helpers
         /// <returns>The recursive set of children.</returns>
         public static SetCodeItems GetChildrenRecursive(this ICodeItemParent parent)
         {
-      SetCodeItems children = new();
+            SetCodeItems children = [];
 
             foreach (BaseCodeItem child in parent.Children)
             {
                 children.Add(child);
 
-        ICodeItemParent childAsParent = child as ICodeItemParent;
-                if (childAsParent != null && child is not BaseCodeItemElementParent)
+                if (child is ICodeItemParent childAsParent && child is not BaseCodeItemElementParent)
                 {
                     children.AddRange(childAsParent.GetChildrenRecursive());
                 }

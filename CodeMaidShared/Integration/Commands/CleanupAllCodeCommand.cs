@@ -11,90 +11,90 @@ using ASGV.CodeMaid.UI.Dialogs.CleanupProgress;
 
 namespace ASGV.CodeMaid.Integration.Commands
 {
-  /// <summary>
-  /// A command that provides for cleaning up code in all documents.
-  /// </summary>
-  internal sealed class CleanupAllCodeCommand : BaseCommand
-  {
     /// <summary>
-    /// Initializes a new instance of the <see cref="CleanupAllCodeCommand" /> class.
+    /// A command that provides for cleaning up code in all documents.
     /// </summary>
-    /// <param name="package">The hosting package.</param>
-    internal CleanupAllCodeCommand(CodeMaidPackage package)
-        : base(package, PackageGuids.GuidCodeMaidMenuSet, PackageIds.CmdIDCodeMaidCleanupAllCode)
+    internal sealed class CleanupAllCodeCommand : BaseCommand
     {
-      CodeCleanupAvailabilityLogic = CodeCleanupAvailabilityLogic.GetInstance(Package);
-    }
-
-    /// <summary>
-    /// A singleton instance of this command.
-    /// </summary>
-    public static CleanupAllCodeCommand Instance { get; private set; }
-
-    /// <summary>
-    /// Gets the list of all project items.
-    /// </summary>
-    private IEnumerable<ProjectItem> AllProjectItems
-    {
-      get
-      {
-        ThreadHelper.ThrowIfNotOnUIThread();
-        return SolutionHelper.GetAllItemsInSolution<ProjectItem>(Package.IDE.Solution).Where(x => CodeCleanupAvailabilityLogic.CanCleanupProjectItem(x));
-      }
-    }
-
-    /// <summary>
-    /// Gets or sets the code cleanup availability logic.
-    /// </summary>
-    private CodeCleanupAvailabilityLogic CodeCleanupAvailabilityLogic { get; }
-
-    /// <summary>
-    /// Initializes a singleton instance of this command.
-    /// </summary>
-    /// <param name="package">The hosting package.</param>
-    /// <returns>A task.</returns>
-    public static async Task InitializeAsync(CodeMaidPackage package)
-    {
-      Instance = new CleanupAllCodeCommand(package);
-      await package.SettingsMonitor.WatchAsync(s => s.Feature_CleanupAllCode, Instance.SwitchAsync);
-    }
-
-    /// <summary>
-    /// Called to update the current status of the command.
-    /// </summary>
-    protected override void OnBeforeQueryStatus()
-    {
-      ThreadHelper.ThrowIfNotOnUIThread();
-      Enabled = Package.IDE.Solution.IsOpen;
-    }
-
-    /// <summary>
-    /// Called to execute the command.
-    /// </summary>
-    protected override void OnExecute()
-    {
-      ThreadHelper.ThrowIfNotOnUIThread();
-      base.OnExecute();
-
-      if (!CodeCleanupAvailabilityLogic.IsCleanupEnvironmentAvailable())
-      {
-        MessageBox.Show(Resources.CleanupCannotRunWhileDebugging,
-                        Resources.CodeMaidCleanupAllCode,
-                        MessageBoxButton.OK, MessageBoxImage.Warning);
-      }
-      else if (MessageBox.Show(Resources.AreYouReadyForCodeMaidToCleanEverythingInTheSolution,
-                               Resources.CodeMaidConfirmationForCleanupAllCode,
-                               MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No)
-                   == MessageBoxResult.Yes)
-      {
-        using (new ActiveDocumentRestorer(Package))
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CleanupAllCodeCommand" /> class.
+        /// </summary>
+        /// <param name="package">The hosting package.</param>
+        internal CleanupAllCodeCommand(CodeMaidPackage package)
+            : base(package, PackageGuids.GuidCodeMaidMenuSet, PackageIds.CmdIDCodeMaidCleanupAllCode)
         {
-          CleanupProgressViewModel viewModel = new(Package, AllProjectItems);
-          CleanupProgressWindow window = new() { DataContext = viewModel };
-
-          window.ShowModal();
+            CodeCleanupAvailabilityLogic = CodeCleanupAvailabilityLogic.GetInstance(Package);
         }
-      }
+
+        /// <summary>
+        /// A singleton instance of this command.
+        /// </summary>
+        public static CleanupAllCodeCommand Instance { get; private set; }
+
+        /// <summary>
+        /// Gets the list of all project items.
+        /// </summary>
+        private IEnumerable<ProjectItem> AllProjectItems
+        {
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return SolutionHelper.GetAllItemsInSolution<ProjectItem>(Package.IDE.Solution).Where(x => CodeCleanupAvailabilityLogic.CanCleanupProjectItem(x));
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the code cleanup availability logic.
+        /// </summary>
+        private CodeCleanupAvailabilityLogic CodeCleanupAvailabilityLogic { get; }
+
+        /// <summary>
+        /// Initializes a singleton instance of this command.
+        /// </summary>
+        /// <param name="package">The hosting package.</param>
+        /// <returns>A task.</returns>
+        public static async Task InitializeAsync(CodeMaidPackage package)
+        {
+            Instance = new CleanupAllCodeCommand(package);
+            await package.SettingsMonitor.WatchAsync(s => s.Feature_CleanupAllCode, Instance.SwitchAsync);
+        }
+
+        /// <summary>
+        /// Called to update the current status of the command.
+        /// </summary>
+        protected override void OnBeforeQueryStatus()
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
+            Enabled = Package.IDE.Solution.IsOpen;
+        }
+
+        /// <summary>
+        /// Called to execute the command.
+        /// </summary>
+        protected override void OnExecute()
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
+            base.OnExecute();
+
+            if (!CodeCleanupAvailabilityLogic.IsCleanupEnvironmentAvailable())
+            {
+                MessageBox.Show(Resources.CleanupCannotRunWhileDebugging,
+                                Resources.CodeMaidCleanupAllCode,
+                                MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else if (MessageBox.Show(Resources.AreYouReadyForCodeMaidToCleanEverythingInTheSolution,
+                                     Resources.CodeMaidConfirmationForCleanupAllCode,
+                                     MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No)
+                         == MessageBoxResult.Yes)
+            {
+                using (new ActiveDocumentRestorer(Package))
+                {
+                    CleanupProgressViewModel viewModel = new(Package, AllProjectItems);
+                    CleanupProgressWindow window = new() { DataContext = viewModel };
+
+                    window.ShowModal();
+                }
+            }
+        }
     }
-  }
 }

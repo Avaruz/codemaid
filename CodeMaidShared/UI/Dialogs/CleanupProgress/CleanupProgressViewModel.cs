@@ -93,16 +93,16 @@ namespace ASGV.CodeMaid.UI.Dialogs.CleanupProgress
             set { SetPropertyValue(value); }
         }
 
-    /// <summary>
-    /// Gets or sets the code cleanup manager.
-    /// </summary>
-    private CodeCleanupManager CodeCleanupManager { get; }
+        /// <summary>
+        /// Gets or sets the code cleanup manager.
+        /// </summary>
+        private CodeCleanupManager CodeCleanupManager { get; }
 
-    #endregion Properties
+        #endregion Properties
 
-    #region Cancel Command
+        #region Cancel Command
 
-    private DelegateCommand _cancelCommand;
+        private DelegateCommand _cancelCommand;
 
         /// <summary>
         /// Gets the cancel command.
@@ -144,8 +144,8 @@ namespace ASGV.CodeMaid.UI.Dialogs.CleanupProgress
         /// </param>
         private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-      BackgroundWorker bw = (BackgroundWorker)sender;
-      IEnumerable<object> items = (IEnumerable<object>)e.Argument;
+            BackgroundWorker bw = (BackgroundWorker)sender;
+            IEnumerable<object> items = (IEnumerable<object>)e.Argument;
             int i = 0;
 
             foreach (dynamic item in items)

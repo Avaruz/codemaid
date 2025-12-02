@@ -95,38 +95,37 @@ namespace ASGV.CodeMaid.Helpers
 
         private static int CalculateTypeOffset(BaseCodeItem codeItem)
         {
-      return codeItem.Kind switch
-      {
-        KindCodeItem.Class => MemberTypeSettingHelper.ClassSettings.Order,
-        KindCodeItem.Constructor => MemberTypeSettingHelper.ConstructorSettings.Order,
-        KindCodeItem.Delegate => MemberTypeSettingHelper.DelegateSettings.Order,
-        KindCodeItem.Destructor => MemberTypeSettingHelper.DestructorSettings.Order,
-        KindCodeItem.Enum => MemberTypeSettingHelper.EnumSettings.Order,
-        KindCodeItem.Event => MemberTypeSettingHelper.EventSettings.Order,
-        KindCodeItem.Field => MemberTypeSettingHelper.FieldSettings.Order,
-        KindCodeItem.Indexer => MemberTypeSettingHelper.IndexerSettings.Order,
-        KindCodeItem.Interface => MemberTypeSettingHelper.InterfaceSettings.Order,
-        KindCodeItem.Method => MemberTypeSettingHelper.MethodSettings.Order,
-        KindCodeItem.Property => MemberTypeSettingHelper.PropertySettings.Order,
-        KindCodeItem.Struct => MemberTypeSettingHelper.StructSettings.Order,
-        _ => 0,
-      };
-    }
+            return codeItem.Kind switch
+            {
+                KindCodeItem.Class => MemberTypeSettingHelper.ClassSettings.Order,
+                KindCodeItem.Constructor => MemberTypeSettingHelper.ConstructorSettings.Order,
+                KindCodeItem.Delegate => MemberTypeSettingHelper.DelegateSettings.Order,
+                KindCodeItem.Destructor => MemberTypeSettingHelper.DestructorSettings.Order,
+                KindCodeItem.Enum => MemberTypeSettingHelper.EnumSettings.Order,
+                KindCodeItem.Event => MemberTypeSettingHelper.EventSettings.Order,
+                KindCodeItem.Field => MemberTypeSettingHelper.FieldSettings.Order,
+                KindCodeItem.Indexer => MemberTypeSettingHelper.IndexerSettings.Order,
+                KindCodeItem.Interface => MemberTypeSettingHelper.InterfaceSettings.Order,
+                KindCodeItem.Method => MemberTypeSettingHelper.MethodSettings.Order,
+                KindCodeItem.Property => MemberTypeSettingHelper.PropertySettings.Order,
+                KindCodeItem.Struct => MemberTypeSettingHelper.StructSettings.Order,
+                _ => 0,
+            };
+        }
 
         private static int CalculateAccessOffset(BaseCodeItem codeItem)
         {
-      BaseCodeItemElement codeItemElement = codeItem as BaseCodeItemElement;
-            if (codeItemElement == null) return 0;
+            if (codeItem is not BaseCodeItemElement codeItemElement) return 0;
 
-      List<vsCMAccess> itemsOrder = new()
-      {
-                vsCMAccess.vsCMAccessPublic,
+            List<vsCMAccess> itemsOrder =
+            [
+                      vsCMAccess.vsCMAccessPublic,
                 vsCMAccess.vsCMAccessAssemblyOrFamily,
                 vsCMAccess.vsCMAccessProject,
                 vsCMAccess.vsCMAccessProjectOrProtected,
                 vsCMAccess.vsCMAccessProtected,
                 vsCMAccess.vsCMAccessPrivate
-            };
+                  ];
 
             if (Settings.Default.Reorganizing_ReverseOrderByAccessLevel)
             {
@@ -140,7 +139,7 @@ namespace ASGV.CodeMaid.Helpers
         {
             if (Settings.Default.Reorganizing_ExplicitMembersAtEnd)
             {
-        IInterfaceItem interfaceItem = codeItem as IInterfaceItem;
+                IInterfaceItem interfaceItem = codeItem as IInterfaceItem;
                 if ((interfaceItem?.IsExplicitInterfaceImplementation == true))
                 {
                     return 1;
@@ -152,24 +151,21 @@ namespace ASGV.CodeMaid.Helpers
 
         private static int CalculateConstantOffset(BaseCodeItem codeItem)
         {
-      CodeItemField codeItemField = codeItem as CodeItemField;
-            if (codeItemField == null) return 0;
+            if (codeItem is not CodeItemField codeItemField) return 0;
 
             return codeItemField.IsConstant ? 0 : 1;
         }
 
         private static int CalculateStaticOffset(BaseCodeItem codeItem)
         {
-      BaseCodeItemElement codeItemElement = codeItem as BaseCodeItemElement;
-            if (codeItemElement == null) return 0;
+            if (codeItem is not BaseCodeItemElement codeItemElement) return 0;
 
             return codeItemElement.IsStatic ? 0 : 1;
         }
 
         private static int CalculateReadOnlyOffset(BaseCodeItem codeItem)
         {
-      CodeItemField codeItemField = codeItem as CodeItemField;
-            if (codeItemField == null) return 0;
+            if (codeItem is not CodeItemField codeItemField) return 0;
 
             return codeItemField.IsReadOnly ? 0 : 1;
         }
@@ -177,7 +173,7 @@ namespace ASGV.CodeMaid.Helpers
         private static string NormalizeName(BaseCodeItem codeItem)
         {
             string name = codeItem.Name;
-      IInterfaceItem interfaceItem = codeItem as IInterfaceItem;
+            IInterfaceItem interfaceItem = codeItem as IInterfaceItem;
             if ((interfaceItem?.IsExplicitInterfaceImplementation == true))
             {
                 // Try to find where the interface ends and the method starts

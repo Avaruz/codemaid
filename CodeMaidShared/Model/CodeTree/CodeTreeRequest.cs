@@ -23,24 +23,24 @@ namespace ASGV.CodeMaid.Model.CodeTree
             NameFilter = nameFilter;
         }
 
-    /// <summary>
-    /// Gets the document.
-    /// </summary>
-    internal Document Document { get; }
+        /// <summary>
+        /// Gets the document.
+        /// </summary>
+        internal Document Document { get; }
 
-    /// <summary>
-    /// Gets the raw code items.
-    /// </summary>
-    internal SetCodeItems RawCodeItems { get; }
+        /// <summary>
+        /// Gets the raw code items.
+        /// </summary>
+        internal SetCodeItems RawCodeItems { get; }
 
-    /// <summary>
-    /// Gets the sort order.
-    /// </summary>
-    internal CodeSortOrder SortOrder { get; }
+        /// <summary>
+        /// Gets the sort order.
+        /// </summary>
+        internal CodeSortOrder SortOrder { get; }
 
-    /// <summary>
-    /// Gets the name filter.
-    /// </summary>
-    internal string NameFilter { get; }
-  }
+        /// <summary>
+        /// Gets the name filter.
+        /// </summary>
+        internal string NameFilter { get; }
+    }
 }

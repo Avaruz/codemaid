@@ -26,10 +26,10 @@ namespace ASGV.CodeMaid.UI.Converters
         /// <returns>A converted value. If the method returns null, the valid null value is used.</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-      PropertyInfo propertyInfo = value as PropertyInfo;
+            PropertyInfo propertyInfo = value as PropertyInfo;
             if (propertyInfo == null) return null;
 
-      DescriptionAttribute descriptionAttribute = propertyInfo.GetCustomAttribute<DescriptionAttribute>();
+            DescriptionAttribute descriptionAttribute = propertyInfo.GetCustomAttribute<DescriptionAttribute>();
             if (descriptionAttribute == null) return null;
 
             return descriptionAttribute.Description;

@@ -45,10 +45,9 @@ namespace ASGV.CodeMaid.UI.Converters
         {
             if (values == null || values.Length < 2) return null;
 
-      ICodeItemParent parent = values[0] as ICodeItemParent;
-            if (parent == null || values[1] is not KindCodeItem) return null;
+            if (values[0] is not ICodeItemParent parent || values[1] is not KindCodeItem) return null;
 
-      int count = parent.GetChildrenRecursive().Count(x => x.Kind == (KindCodeItem)values[1]);
+            int count = parent.GetChildrenRecursive().Count(x => x.Kind == (KindCodeItem)values[1]);
 
             return count != 0 ? (object)count : null;
         }

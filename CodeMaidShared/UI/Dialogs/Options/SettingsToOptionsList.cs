@@ -19,15 +19,15 @@ namespace ASGV.CodeMaid.UI.Dialogs.Options
             OptionsPageViewModel = optionsPageViewModel;
         }
 
-    /// <summary>
-    /// Gets the active settings.
-    /// </summary>
-    public Settings ActiveSettings { get; }
+        /// <summary>
+        /// Gets the active settings.
+        /// </summary>
+        public Settings ActiveSettings { get; }
 
-    /// <summary>
-    /// Gets or sets the <see cref="OptionsPageViewModel"/> that owns this list.
-    /// </summary>
-    public OptionsPageViewModel OptionsPageViewModel { get; set; }
+        /// <summary>
+        /// Gets or sets the <see cref="OptionsPageViewModel"/> that owns this list.
+        /// </summary>
+        public OptionsPageViewModel OptionsPageViewModel { get; set; }
 
         /// <summary>
         /// Iterates across all mappings, copying the setting values onto the options.

@@ -6,36 +6,36 @@ using ASGV.CodeMaid.Properties;
 
 namespace ASGV.CodeMaid.UI.Dialogs.Options.Formatting
 {
-  /// <summary>
-  /// The view model for comment formatting options.
-  /// </summary>
-  public class FormattingViewModel : OptionsPageViewModel
-  {
-    #region Fields
-
-    private const string UnformattedPreviewText =
-        "<summary>Lorem ipsum dolor sit amet.</summary>" +
-        "<param name=\"p1\">Praesent sollicitudin massa nunc.</param>" +
-        "<param name=\"param2\">Maecenas id neque ultricies.</param>" +
-        "<returns>Praesent euismod diam porta pulvinar, quis ut pharetra.</returns>" +
-        "<remark>Phasellus porta luctus lorem. Ut tincidunt sapien quam, <see cref=\"nec malesuada\"/> nec malesuada enim elementum at.</remark>";
-
-    private readonly EnvDTE.Properties _editorProperties;
-    private readonly EnvDTE.ColorableItems _commentColors;
-
-    #endregion Fields
-
-    #region Constructors
-
     /// <summary>
-    /// Initializes a new instance of the <see cref="FormattingViewModel" /> class.
+    /// The view model for comment formatting options.
     /// </summary>
-    /// <param name="package">The hosting package.</param>
-    /// <param name="activeSettings">The active settings.</param>
-    public FormattingViewModel(CodeMaidPackage package, Settings activeSettings)
-        : base(package, activeSettings)
+    public class FormattingViewModel : OptionsPageViewModel
     {
-      Mappings = new SettingsToOptionsList(ActiveSettings, this)
+        #region Fields
+
+        private const string UnformattedPreviewText =
+            "<summary>Lorem ipsum dolor sit amet.</summary>" +
+            "<param name=\"p1\">Praesent sollicitudin massa nunc.</param>" +
+            "<param name=\"param2\">Maecenas id neque ultricies.</param>" +
+            "<returns>Praesent euismod diam porta pulvinar, quis ut pharetra.</returns>" +
+            "<remark>Phasellus porta luctus lorem. Ut tincidunt sapien quam, <see cref=\"nec malesuada\"/> nec malesuada enim elementum at.</remark>";
+
+        private readonly EnvDTE.Properties _editorProperties;
+        private readonly EnvDTE.ColorableItems _commentColors;
+
+        #endregion Fields
+
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FormattingViewModel" /> class.
+        /// </summary>
+        /// <param name="package">The hosting package.</param>
+        /// <param name="activeSettings">The active settings.</param>
+        public FormattingViewModel(CodeMaidPackage package, Settings activeSettings)
+            : base(package, activeSettings)
+        {
+            Mappings = new SettingsToOptionsList(ActiveSettings, this)
             {
                 new SettingToOptionMapping<bool, bool>(x => ActiveSettings.Formatting_CommentRunDuringCleanup, x => CommentRunDuringCleanup),
                 new SettingToOptionMapping<bool, bool>(x => ActiveSettings.Formatting_CommentSkipWrapOnLastWord, x => CommentSkipWrapOnLastWord),
@@ -49,198 +49,198 @@ namespace ASGV.CodeMaid.UI.Dialogs.Options.Formatting
                 new SettingToOptionMapping<bool, bool>(x => ActiveSettings.Formatting_CommentXmlTagsToLowerCase, x => CommentXmlTagsToLowerCase),
                 new SettingToOptionMapping<int, int>(x => ActiveSettings.Formatting_CommentXmlValueIndent, x => CommentXmlValueIndent)
             };
-      ThreadHelper.ThrowIfNotOnUIThread();
-      _editorProperties = Package.IDE.Properties["FontsAndColors", "TextEditor"];
-      EnvDTE.Property property = _editorProperties.Item("FontsAndColorsItems");
-      EnvDTE.FontsAndColorsItems fontsAndColorsItems = (EnvDTE.FontsAndColorsItems)property.Object;
-      _commentColors = fontsAndColorsItems.Item("Comment");
+            ThreadHelper.ThrowIfNotOnUIThread();
+            _editorProperties = Package.IDE.Properties["FontsAndColors", "TextEditor"];
+            EnvDTE.Property property = _editorProperties.Item("FontsAndColorsItems");
+            EnvDTE.FontsAndColorsItems fontsAndColorsItems = (EnvDTE.FontsAndColorsItems)property.Object;
+            _commentColors = fontsAndColorsItems.Item("Comment");
 
-      PropertyChanged += (sender, args) => UpdatePreviewText();
-    }
-
-    #endregion Constructors
-
-    #region Overrides of OptionsPageViewModel
-
-    /// <summary>
-    /// Gets the header.
-    /// </summary>
-    public override string Header => Resources.FormattingViewModel_Formatting;
-
-    /// <summary>
-    /// Loads the settings.
-    /// </summary>
-    public override void LoadSettings()
-    {
-      base.LoadSettings();
-
-      UpdatePreviewText();
-    }
-
-    #endregion Overrides of OptionsPageViewModel
-
-    #region Options
-
-    /// <summary>
-    /// Gets or sets the flag indicating if comment formatting will run during cleanup.
-    /// </summary>
-    public bool CommentRunDuringCleanup
-    {
-      get { return GetPropertyValue<bool>(); }
-      set { SetPropertyValue(value); }
-    }
-
-    /// <summary>
-    /// Gets or sets the flag indicating if comment formatting should skip wrapping the last word.
-    /// </summary>
-    public bool CommentSkipWrapOnLastWord
-    {
-      get { return GetPropertyValue<bool>(); }
-      set { SetPropertyValue(value); }
-    }
-
-    /// <summary>
-    /// Gets or sets the column where comments will attempt to wrap.
-    /// </summary>
-    public int CommentWrapColumn
-    {
-      get { return GetPropertyValue<int>(); }
-      set
-      {
-        if (value >= 0)
-        {
-          SetPropertyValue(value);
+            PropertyChanged += (sender, args) => UpdatePreviewText();
         }
-      }
-    }
 
-    /// <summary>
-    /// Gets or sets the flag indicating if the content of param tags should be aligned.
-    /// </summary>
-    public bool CommentXmlAlignParamTags
-    {
-      get { return GetPropertyValue<bool>(); }
-      set { SetPropertyValue(value); }
-    }
+        #endregion Constructors
 
-    public bool CommentXmlKeepTagsTogether
-    {
-      get { return GetPropertyValue<bool>(); }
-      set { SetPropertyValue(value); }
-    }
+        #region Overrides of OptionsPageViewModel
 
-    public bool CommentXmlSpaceSingleTags
-    {
-      get { return GetPropertyValue<bool>(); }
-      set { SetPropertyValue(value); }
-    }
+        /// <summary>
+        /// Gets the header.
+        /// </summary>
+        public override string Header => Resources.FormattingViewModel_Formatting;
 
-    /// <summary>
-    /// Gets or sets the flag indicating if an extra space should be added inside XML tags.
-    /// </summary>
-    public bool CommentXmlSpaceTags
-    {
-      get { return GetPropertyValue<bool>(); }
-      set { SetPropertyValue(value); }
-    }
-
-    public bool CommentXmlSplitAllTags
-    {
-      get { return GetPropertyValue<bool>(); }
-      set { SetPropertyValue(value); }
-    }
-
-    /// <summary>
-    /// Gets or sets the flag indicating if summary tags should always be split to multiple lines.
-    /// </summary>
-    public bool CommentXmlSplitSummaryTagToMultipleLines
-    {
-      get { return GetPropertyValue<bool>(); }
-      set { SetPropertyValue(value); }
-    }
-
-    public bool CommentXmlTagsToLowerCase
-    {
-      get { return GetPropertyValue<bool>(); }
-      set { SetPropertyValue(value); }
-    }
-
-    /// <summary>
-    /// Gets or sets the amount of extra spacing to add before XML values.
-    /// </summary>
-    public int CommentXmlValueIndent
-    {
-      get { return GetPropertyValue<int>(); }
-      set
-      {
-        if (value >= 0)
+        /// <summary>
+        /// Loads the settings.
+        /// </summary>
+        public override void LoadSettings()
         {
-          SetPropertyValue(value);
+            base.LoadSettings();
+
+            UpdatePreviewText();
         }
-      }
+
+        #endregion Overrides of OptionsPageViewModel
+
+        #region Options
+
+        /// <summary>
+        /// Gets or sets the flag indicating if comment formatting will run during cleanup.
+        /// </summary>
+        public bool CommentRunDuringCleanup
+        {
+            get { return GetPropertyValue<bool>(); }
+            set { SetPropertyValue(value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the flag indicating if comment formatting should skip wrapping the last word.
+        /// </summary>
+        public bool CommentSkipWrapOnLastWord
+        {
+            get { return GetPropertyValue<bool>(); }
+            set { SetPropertyValue(value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the column where comments will attempt to wrap.
+        /// </summary>
+        public int CommentWrapColumn
+        {
+            get { return GetPropertyValue<int>(); }
+            set
+            {
+                if (value >= 0)
+                {
+                    SetPropertyValue(value);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the flag indicating if the content of param tags should be aligned.
+        /// </summary>
+        public bool CommentXmlAlignParamTags
+        {
+            get { return GetPropertyValue<bool>(); }
+            set { SetPropertyValue(value); }
+        }
+
+        public bool CommentXmlKeepTagsTogether
+        {
+            get { return GetPropertyValue<bool>(); }
+            set { SetPropertyValue(value); }
+        }
+
+        public bool CommentXmlSpaceSingleTags
+        {
+            get { return GetPropertyValue<bool>(); }
+            set { SetPropertyValue(value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the flag indicating if an extra space should be added inside XML tags.
+        /// </summary>
+        public bool CommentXmlSpaceTags
+        {
+            get { return GetPropertyValue<bool>(); }
+            set { SetPropertyValue(value); }
+        }
+
+        public bool CommentXmlSplitAllTags
+        {
+            get { return GetPropertyValue<bool>(); }
+            set { SetPropertyValue(value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the flag indicating if summary tags should always be split to multiple lines.
+        /// </summary>
+        public bool CommentXmlSplitSummaryTagToMultipleLines
+        {
+            get { return GetPropertyValue<bool>(); }
+            set { SetPropertyValue(value); }
+        }
+
+        public bool CommentXmlTagsToLowerCase
+        {
+            get { return GetPropertyValue<bool>(); }
+            set { SetPropertyValue(value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the amount of extra spacing to add before XML values.
+        /// </summary>
+        public int CommentXmlValueIndent
+        {
+            get { return GetPropertyValue<int>(); }
+            set
+            {
+                if (value >= 0)
+                {
+                    SetPropertyValue(value);
+                }
+            }
+        }
+
+        #endregion Options
+
+        #region Preview Text and Helpers
+
+        public string CommentPreviewText
+        {
+            get { return GetPropertyValue<string>(); }
+            private set { SetPropertyValue(value); }
+        }
+
+        public FontFamily CommentPreviewTextFont
+        {
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread(); return new FontFamily(_editorProperties.Item("FontFamily").Value.ToString());
+            }
+        }
+
+        public Brush CommentPreviewTextForeground
+        {
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
+                System.Drawing.Color color = System.Drawing.ColorTranslator.FromOle((int)_commentColors.Foreground);
+
+                return new SolidColorBrush(Color.FromArgb(color.A, color.R, color.G, color.B));
+            }
+        }
+
+        public Brush CommentPreviewTextBackground
+        {
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                System.Drawing.Color color = System.Drawing.ColorTranslator.FromOle((int)_commentColors.Background);
+
+                return new SolidColorBrush(Color.FromArgb(color.A, color.R, color.G, color.B));
+            }
+        }
+
+        private void UpdatePreviewText()
+        {
+            CommentPreviewText = CodeComment.Format(UnformattedPreviewText, null, o =>
+            {
+                o.WrapColumn = CommentWrapColumn;
+                o.SkipWrapOnLastWord = CommentSkipWrapOnLastWord;
+
+                o.Xml.AlignParamTags = CommentXmlAlignParamTags;
+
+                o.Xml.Default.Case = CommentXmlTagsToLowerCase ? XmlTagCase.LowerCase : XmlTagCase.Keep;
+                o.Xml.Default.Indent = CommentXmlValueIndent;
+                o.Xml.Default.KeepTogether = CommentXmlKeepTagsTogether;
+                o.Xml.Default.SpaceContent = CommentXmlSpaceTags;
+                o.Xml.Default.SpaceSelfClosing = CommentXmlSpaceSingleTags;
+
+                o.Xml.Default.Split = CommentXmlSplitAllTags ? XmlTagNewLine.Always : XmlTagNewLine.Content;
+                o.Xml.Tags["summary"] = new FormatterOptionsXmlTag { Split = CommentXmlSplitSummaryTagToMultipleLines ? XmlTagNewLine.Always : XmlTagNewLine.Content };
+            });
+        }
+
+        #endregion Preview Text and Helpers
     }
-
-    #endregion Options
-
-    #region Preview Text and Helpers
-
-    public string CommentPreviewText
-    {
-      get { return GetPropertyValue<string>(); }
-      private set { SetPropertyValue(value); }
-    }
-
-    public FontFamily CommentPreviewTextFont
-    {
-      get
-      {
-        ThreadHelper.ThrowIfNotOnUIThread(); return new FontFamily(_editorProperties.Item("FontFamily").Value.ToString());
-      }
-    }
-
-    public Brush CommentPreviewTextForeground
-    {
-      get
-      {
-        ThreadHelper.ThrowIfNotOnUIThread();
-
-        System.Drawing.Color color = System.Drawing.ColorTranslator.FromOle((int)_commentColors.Foreground);
-
-        return new SolidColorBrush(Color.FromArgb(color.A, color.R, color.G, color.B));
-      }
-    }
-
-    public Brush CommentPreviewTextBackground
-    {
-      get
-      {
-        ThreadHelper.ThrowIfNotOnUIThread();
-        System.Drawing.Color color = System.Drawing.ColorTranslator.FromOle((int)_commentColors.Background);
-
-        return new SolidColorBrush(Color.FromArgb(color.A, color.R, color.G, color.B));
-      }
-    }
-
-    private void UpdatePreviewText()
-    {
-      CommentPreviewText = CodeComment.Format(UnformattedPreviewText, null, o =>
-      {
-        o.WrapColumn = CommentWrapColumn;
-        o.SkipWrapOnLastWord = CommentSkipWrapOnLastWord;
-
-        o.Xml.AlignParamTags = CommentXmlAlignParamTags;
-
-        o.Xml.Default.Case = CommentXmlTagsToLowerCase ? XmlTagCase.LowerCase : XmlTagCase.Keep;
-        o.Xml.Default.Indent = CommentXmlValueIndent;
-        o.Xml.Default.KeepTogether = CommentXmlKeepTagsTogether;
-        o.Xml.Default.SpaceContent = CommentXmlSpaceTags;
-        o.Xml.Default.SpaceSelfClosing = CommentXmlSpaceSingleTags;
-
-        o.Xml.Default.Split = CommentXmlSplitAllTags ? XmlTagNewLine.Always : XmlTagNewLine.Content;
-        o.Xml.Tags["summary"] = new FormatterOptionsXmlTag { Split = CommentXmlSplitSummaryTagToMultipleLines ? XmlTagNewLine.Always : XmlTagNewLine.Content };
-      });
-    }
-
-    #endregion Preview Text and Helpers
-  }
 }

@@ -3,45 +3,45 @@ using Microsoft.VisualStudio.Shell;
 
 namespace ASGV.CodeMaid.Integration.Commands
 {
-  /// <summary>
-  /// A command that provides for setting focus on the search bar in the Spade tool window.
-  /// </summary>
-  internal sealed class SpadeSearchCommand : BaseCommand
-  {
     /// <summary>
-    /// Initializes a new instance of the <see cref="SpadeSearchCommand" /> class.
+    /// A command that provides for setting focus on the search bar in the Spade tool window.
     /// </summary>
-    /// <param name="package">The hosting package.</param>
-    internal SpadeSearchCommand(CodeMaidPackage package)
-        : base(package, PackageGuids.GuidCodeMaidMenuSet, PackageIds.CmdIDCodeMaidSpadeSearch)
+    internal sealed class SpadeSearchCommand : BaseCommand
     {
-    }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SpadeSearchCommand" /> class.
+        /// </summary>
+        /// <param name="package">The hosting package.</param>
+        internal SpadeSearchCommand(CodeMaidPackage package)
+            : base(package, PackageGuids.GuidCodeMaidMenuSet, PackageIds.CmdIDCodeMaidSpadeSearch)
+        {
+        }
 
-    /// <summary>
-    /// A singleton instance of this command.
-    /// </summary>
-    public static SpadeSearchCommand Instance { get; private set; }
+        /// <summary>
+        /// A singleton instance of this command.
+        /// </summary>
+        public static SpadeSearchCommand Instance { get; private set; }
 
-    /// <summary>
-    /// Initializes a singleton instance of this command.
-    /// </summary>
-    /// <param name="package">The hosting package.</param>
-    /// <returns>A task.</returns>
-    public static async Task InitializeAsync(CodeMaidPackage package)
-    {
-      Instance = new SpadeSearchCommand(package);
-      await Instance.SwitchAsync(on: true);
-    }
+        /// <summary>
+        /// Initializes a singleton instance of this command.
+        /// </summary>
+        /// <param name="package">The hosting package.</param>
+        /// <returns>A task.</returns>
+        public static async Task InitializeAsync(CodeMaidPackage package)
+        {
+            Instance = new SpadeSearchCommand(package);
+            await Instance.SwitchAsync(on: true);
+        }
 
-    /// <summary>
-    /// Called to execute the command.
-    /// </summary>
-    protected override void OnExecute()
-    {
-      base.OnExecute();
-      ThreadHelper.ThrowIfNotOnUIThread();
-      UI.ToolWindows.Spade.SpadeToolWindow spade = Package.Spade;
-      spade?.SearchHost.Activate();
+        /// <summary>
+        /// Called to execute the command.
+        /// </summary>
+        protected override void OnExecute()
+        {
+            base.OnExecute();
+            ThreadHelper.ThrowIfNotOnUIThread();
+            UI.ToolWindows.Spade.SpadeToolWindow spade = Package.Spade;
+            spade?.SearchHost.Activate();
+        }
     }
-  }
 }

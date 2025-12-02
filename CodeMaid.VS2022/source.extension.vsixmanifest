@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Publisher="Adhemar Soria Galvarro Vargas" Version="12.3" Id="35985C0A-7E1A-4DE8-896E-1E846FE56D17" Language="en-US" />
+        <Identity Publisher="Adhemar Soria Galvarro Vargas" Version="12.4" Id="35985C0A-7E1A-4DE8-896E-1E846FE56D17" Language="en-US" />
         <DisplayName>CM 2026</DisplayName>
-        <Description xml:space="preserve">CodeMaid is an open source Visual Studio extension to cleanup and simplify our C#, C++, F#, VB, PHP, PowerShell, R, JSON, XAML, XML, ASP, HTML, CSS, LESS, SCSS, JavaScript and TypeScript coding. 
+        <Description xml:space="preserve">CM is an open-source extension for Visual Studio created to enhance code quality and developer productivity. It provides automated tools to clean up, reformat, and simplify source code across a wide range of programming and markup languages, including C#, C++, F#, Visual Basic, PHP, PowerShell, R, JSON, XAML, XML, ASP, HTML, CSS, LESS, SCSS, JavaScript, and TypeScript. By applying consistent formatting rules and eliminating unnecessary clutter, CM helps teams maintain readable, maintainable, and standardized codebases. Its seamless integration into Visual Studio makes it easy to adopt without disrupting existing workflows, while its open-source nature ensures continuous improvement through community contributions. More than a formatter, CM is a practical solution for developers who want cleaner projects, faster collaboration, and code that reflects best practices across diverse technologies
 
 Based in the Steve Cadwallader Codemaid Version</Description>
         <MoreInfo>http://www.codemaid.net/</MoreInfo>
@@ -14,6 +14,12 @@ Based in the Steve Cadwallader Codemaid Version</Description>
     </Metadata>
     <Installation>
         <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[17.0, 18.0)">
+            <ProductArchitecture>amd64</ProductArchitecture>
+        </InstallationTarget>
+        <InstallationTarget Version="[17.0,18.0)" Id="Microsoft.VisualStudio.Enterprise">
+            <ProductArchitecture>amd64</ProductArchitecture>
+        </InstallationTarget>
+        <InstallationTarget Version="[17.0,18.0)" Id="Microsoft.VisualStudio.Pro">
             <ProductArchitecture>amd64</ProductArchitecture>
         </InstallationTarget>
     </Installation>

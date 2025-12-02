@@ -91,12 +91,12 @@ namespace ASGV.CodeMaid.UI
         /// <param name="e">The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
         private static void OnIsItemSelectedChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
-      TreeViewItem treeViewItem = obj as TreeViewItem;
-      TreeView treeView = treeViewItem?.FindVisualAncestor<TreeView>();
+            TreeViewItem treeViewItem = obj as TreeViewItem;
+            TreeView treeView = treeViewItem?.FindVisualAncestor<TreeView>();
             if (treeView != null)
             {
-        TreeViewMultipleSelectionBehavior behavior = Interaction.GetBehaviors(treeView).OfType<TreeViewMultipleSelectionBehavior>().FirstOrDefault();
-        IList selectedItems = behavior?.SelectedItems;
+                TreeViewMultipleSelectionBehavior behavior = Interaction.GetBehaviors(treeView).OfType<TreeViewMultipleSelectionBehavior>().FirstOrDefault();
+                IList selectedItems = behavior?.SelectedItems;
                 if (selectedItems != null)
                 {
                     if (GetIsItemSelected(treeViewItem))
@@ -151,8 +151,7 @@ namespace ASGV.CodeMaid.UI
         /// </param>
         private void OnTreeViewItemKeyDown(object sender, KeyEventArgs e)
         {
-      TreeViewItem treeViewItem = e.OriginalSource as TreeViewItem;
-            if (treeViewItem != null)
+            if (e.OriginalSource is TreeViewItem treeViewItem)
             {
                 TreeViewItem targetItem = null;
 
@@ -204,7 +203,7 @@ namespace ASGV.CodeMaid.UI
         /// </param>
         private void OnTreeViewItemMouseUp(object sender, MouseButtonEventArgs e)
         {
-      TreeViewItem treeViewItem = FindParentTreeViewItem(e.OriginalSource);
+            TreeViewItem treeViewItem = FindParentTreeViewItem(e.OriginalSource);
             if (treeViewItem != null)
             {
                 switch (Keyboard.Modifiers)
@@ -242,8 +241,8 @@ namespace ASGV.CodeMaid.UI
                     return;
                 }
 
-        bool isBetweenAnchors = false;
-        IEnumerable<TreeViewItem> items = DeSelectAll();
+                bool isBetweenAnchors = false;
+                IEnumerable<TreeViewItem> items = DeSelectAll();
 
                 foreach (TreeViewItem item in items)
                 {
@@ -303,7 +302,7 @@ namespace ASGV.CodeMaid.UI
         /// <returns>The list of all items.</returns>
         private IEnumerable<TreeViewItem> DeSelectAll()
         {
-      IList<TreeViewItem> items = GetItemsRecursively<TreeViewItem>(AssociatedObject);
+            IList<TreeViewItem> items = GetItemsRecursively<TreeViewItem>(AssociatedObject);
             foreach (TreeViewItem item in items)
             {
                 SetIsItemSelected(item, false);
@@ -319,9 +318,9 @@ namespace ASGV.CodeMaid.UI
         /// <returns>The parent TreeViewItem, otherwise null.</returns>
         private static TreeViewItem FindParentTreeViewItem(object eventSource)
         {
-      DependencyObject source = eventSource as DependencyObject;
+            DependencyObject source = eventSource as DependencyObject;
 
-      TreeViewItem treeViewItem = source?.FindVisualAncestor<TreeViewItem>();
+            TreeViewItem treeViewItem = source?.FindVisualAncestor<TreeViewItem>();
 
             return treeViewItem;
         }
@@ -340,12 +339,11 @@ namespace ASGV.CodeMaid.UI
                 throw new ArgumentNullException(nameof(parentItem));
             }
 
-      List<T> items = new();
+            List<T> items = [];
 
             for (int i = 0; i < parentItem.Items.Count; i++)
             {
-                T item = parentItem.ItemContainerGenerator.ContainerFromIndex(i) as T;
-                if (item != null)
+                if (parentItem.ItemContainerGenerator.ContainerFromIndex(i) is T item)
                 {
                     items.Add(item);
                     items.AddRange(GetItemsRecursively<T>(item));
@@ -371,11 +369,11 @@ namespace ASGV.CodeMaid.UI
                 throw new ArgumentNullException(nameof(item));
             }
 
-      IList<T> items = GetItemsRecursively<T>(AssociatedObject);
+            IList<T> items = GetItemsRecursively<T>(AssociatedObject);
             int index = items.IndexOf(item);
             if (index >= 0)
             {
-        int relativeIndex = index + relativePosition;
+                int relativeIndex = index + relativePosition;
                 if (relativeIndex >= 0 && relativeIndex < items.Count)
                 {
                     return items[relativeIndex];

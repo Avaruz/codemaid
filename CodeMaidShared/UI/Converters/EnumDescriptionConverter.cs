@@ -25,7 +25,7 @@ namespace ASGV.CodeMaid.UI.Converters
         /// <returns>A converted value. If the method returns null, the valid null value is used.</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-      Enum enumValue = value as Enum;
+            Enum enumValue = value as Enum;
 
             return enumValue?.GetDescription();
         }

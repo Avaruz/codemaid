@@ -47,8 +47,7 @@ namespace ASGV.CodeMaid.UI
         /// </param>
         private static void OnDialogResultChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
-      Window window = obj as Window;
-            if (window != null)
+            if (obj is Window window)
             {
                 window.DialogResult = e.NewValue as bool?;
             }

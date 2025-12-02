@@ -70,8 +70,8 @@ namespace ASGV.CodeMaid.Model.Comments
         /// <returns>The XML open tag. In case of an element without value, the tag is self-closing.</returns>
         private static string CreateXmlOpenTag(XElement element, IXmlTagOptions options)
         {
-      StringBuilder builder = new();
-      string name = element.Name.LocalName;
+            StringBuilder builder = new();
+            string name = element.Name.LocalName;
 
             builder.Append("<");
 
@@ -98,7 +98,7 @@ namespace ASGV.CodeMaid.Model.Comments
 
             builder.Append(">");
 
-      string result = builder.ToString();
+            string result = builder.ToString();
 
             return options.KeepTogether ? CodeCommentHelper.SpaceToFake(result) : result;
         }
@@ -153,14 +153,14 @@ namespace ASGV.CodeMaid.Model.Comments
             }
             else
             {
-        // Loop and parse all child nodes.
-        XNode node = xml.FirstNode;
+                // Loop and parse all child nodes.
+                XNode node = xml.FirstNode;
                 while (node != null)
                 {
                     // If the node is a sub-element, it needs to be handled seperately.
                     if (node.NodeType == XmlNodeType.Element)
                     {
-            XElement element = (XElement)node;
+                        XElement element = (XElement)node;
 
                         if (NeedsXmlHandling(element))
                         {
@@ -188,8 +188,8 @@ namespace ASGV.CodeMaid.Model.Comments
                     }
                     else
                     {
-            // Always trim trailing
-            string value = node.ToString().TrimEnd(CodeCommentHelper.Spacer);
+                        // Always trim trailing
+                        string value = node.ToString().TrimEnd(CodeCommentHelper.Spacer);
 
                         // If the parent is an element, trim the starting spaces.
                         if (node.PreviousNode == null && node.Parent.NodeType == XmlNodeType.Element && !TagOptions.SpaceContent)

@@ -40,10 +40,10 @@ namespace ASGV.CodeMaid.UI
         {
             if (obj is TreeViewBindableSelectedItemBehavior behavior)
             {
-        TreeView treeView = behavior.AssociatedObject;
+                TreeView treeView = behavior.AssociatedObject;
                 if (treeView != null)
                 {
-          TreeViewItem treeViewItem = FindTreeViewItemRecursively(treeView, e.NewValue);
+                    TreeViewItem treeViewItem = FindTreeViewItemRecursively(treeView, e.NewValue);
                     treeViewItem?.SetValue(TreeViewItem.IsSelectedProperty, true);
                 }
             }
@@ -76,8 +76,8 @@ namespace ASGV.CodeMaid.UI
 
             for (int i = 0; i < itemsControl.Items.Count; i++)
             {
-        ItemsControl childItemsControl = itemsControl.ItemContainerGenerator.ContainerFromIndex(i) as ItemsControl;
-        TreeViewItem result = FindTreeViewItemRecursively(childItemsControl, contentToFind);
+                ItemsControl childItemsControl = itemsControl.ItemContainerGenerator.ContainerFromIndex(i) as ItemsControl;
+                TreeViewItem result = FindTreeViewItemRecursively(childItemsControl, contentToFind);
                 if (result != null)
                 {
                     return result;
@@ -95,7 +95,7 @@ namespace ASGV.CodeMaid.UI
         {
             itemsControl.ApplyTemplate();
 
-      ItemsPresenter itemsPresenter = (ItemsPresenter)itemsControl.Template.FindName("ItemsHost", itemsControl);
+            ItemsPresenter itemsPresenter = (ItemsPresenter)itemsControl.Template.FindName("ItemsHost", itemsControl);
 
             if (itemsPresenter != null)
             {
@@ -117,10 +117,10 @@ namespace ASGV.CodeMaid.UI
 
             if (itemsPresenter != null)
             {
-        Panel itemsHostPanel = (Panel)VisualTreeHelper.GetChild(itemsPresenter, 0);
+                Panel itemsHostPanel = (Panel)VisualTreeHelper.GetChild(itemsPresenter, 0);
 
-        // Ensure that the generator for this panel has been created.
-        UIElementCollection children = itemsHostPanel.Children;
+                // Ensure that the generator for this panel has been created.
+                UIElementCollection children = itemsHostPanel.Children;
             }
         }
 

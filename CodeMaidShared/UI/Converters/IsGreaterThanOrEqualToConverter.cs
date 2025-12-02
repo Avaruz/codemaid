@@ -34,8 +34,8 @@ namespace ASGV.CodeMaid.UI.Converters
         {
             if (value != null && parameter != null)
             {
-        double first = System.Convert.ToDouble(value);
-        double second = System.Convert.ToDouble(parameter);
+                double first = System.Convert.ToDouble(value);
+                double second = System.Convert.ToDouble(parameter);
 
                 return first >= second;
             }
@@ -88,8 +88,8 @@ namespace ASGV.CodeMaid.UI.Converters
         {
             if (values?.Length >= 2 && values.All(x => x != DependencyProperty.UnsetValue))
             {
-        double first = System.Convert.ToDouble(values[0]);
-        double second = System.Convert.ToDouble(values[1]);
+                double first = System.Convert.ToDouble(values[0]);
+                double second = System.Convert.ToDouble(values[1]);
 
                 return first >= second;
             }

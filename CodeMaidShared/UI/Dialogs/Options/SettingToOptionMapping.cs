@@ -24,29 +24,29 @@ namespace ASGV.CodeMaid.UI.Dialogs.Options
             OptionProperty = GetPropertyInfo(optionExpression);
         }
 
-    /// <summary>
-    /// Gets the <see cref="PropertyInfo"/> defining the setting property.
-    /// </summary>
-    public PropertyInfo SettingProperty { get; }
+        /// <summary>
+        /// Gets the <see cref="PropertyInfo"/> defining the setting property.
+        /// </summary>
+        public PropertyInfo SettingProperty { get; }
 
-    /// <summary>
-    /// Gets the <see cref="PropertyInfo"/> defining the option property.
-    /// </summary>
-    public PropertyInfo OptionProperty { get; }
+        /// <summary>
+        /// Gets the <see cref="PropertyInfo"/> defining the option property.
+        /// </summary>
+        public PropertyInfo OptionProperty { get; }
 
-    /// <summary>
-    /// Copies the value within the setting property onto the option property.
-    /// </summary>
-    /// <param name="settingsClass">The class instance for the settings property.</param>
-    /// <param name="optionClass">The class instance for the option property.</param>
-    public void CopySettingToOption(Settings settingsClass, object optionClass)
+        /// <summary>
+        /// Copies the value within the setting property onto the option property.
+        /// </summary>
+        /// <param name="settingsClass">The class instance for the settings property.</param>
+        /// <param name="optionClass">The class instance for the option property.</param>
+        public void CopySettingToOption(Settings settingsClass, object optionClass)
         {
-      object settingValue = SettingProperty.GetValue(settingsClass);
+            object settingValue = SettingProperty.GetValue(settingsClass);
 
             // Special case handling for MemberTypeSetting as operator casts for generics don't work as expected.
             if (typeof(TS) == typeof(string) && typeof(TO) == typeof(MemberTypeSetting))
             {
-        MemberTypeSetting optionValue = (MemberTypeSetting)(string)settingValue;
+                MemberTypeSetting optionValue = (MemberTypeSetting)(string)settingValue;
 
                 // Note: No need to do an equality comparison before assignment as all options already have that through the Bindable base class.
                 OptionProperty.SetValue(optionClass, optionValue);
@@ -70,8 +70,8 @@ namespace ASGV.CodeMaid.UI.Dialogs.Options
             // Special case handling for MemberTypeSetting as operator casts for generics don't work as expected.
             if (typeof(TS) == typeof(string) && typeof(TO) == typeof(MemberTypeSetting))
             {
-        string optionValue = (string)(MemberTypeSetting)OptionProperty.GetValue(optionClass);
-        string settingValue = (string)SettingProperty.GetValue(settingsClass);
+                string optionValue = (string)(MemberTypeSetting)OptionProperty.GetValue(optionClass);
+                string settingValue = (string)SettingProperty.GetValue(settingsClass);
 
                 if (!EqualityComparer<string>.Default.Equals(optionValue, settingValue))
                 {
@@ -99,8 +99,8 @@ namespace ASGV.CodeMaid.UI.Dialogs.Options
         /// <returns>A <see cref="PropertyInfo"/> described by the expression.</returns>
         private static PropertyInfo GetPropertyInfo<TA, TR>(Expression<Func<TA, TR>> expression)
         {
-      MemberExpression body = (MemberExpression)expression.Body;
-      PropertyInfo prop = (PropertyInfo)body.Member;
+            MemberExpression body = (MemberExpression)expression.Body;
+            PropertyInfo prop = (PropertyInfo)body.Member;
             return prop;
         }
     }

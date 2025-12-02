@@ -3,34 +3,34 @@ using Microsoft.VisualStudio.Shell;
 
 namespace ASGV.CodeMaid.Helpers
 {
-  /// <summary>
-  /// A set of extension methods for <see cref="TextDocument" />.
-  /// </summary>
-  internal static class TextDocumentExtensions
-  {
     /// <summary>
-    /// Gets the <see cref="CodeLanguage"/> for this text document.
+    /// A set of extension methods for <see cref="TextDocument" />.
     /// </summary>
-    /// <param name="document">The document.</param>
-    /// <returns>A <see cref="CodeLanguage"/>.</returns>
-    internal static CodeLanguage GetCodeLanguage(this TextDocument document)
+    internal static class TextDocumentExtensions
     {
-      ThreadHelper.ThrowIfNotOnUIThread();
-      return CodeLanguageHelper.GetCodeLanguage(document.Language);
-    }
+        /// <summary>
+        /// Gets the <see cref="CodeLanguage"/> for this text document.
+        /// </summary>
+        /// <param name="document">The document.</param>
+        /// <returns>A <see cref="CodeLanguage"/>.</returns>
+        internal static CodeLanguage GetCodeLanguage(this TextDocument document)
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
+            return CodeLanguageHelper.GetCodeLanguage(document.Language);
+        }
 
-    /// <summary>
-    /// Gets an edit point at the cursor for the specified text document.
-    /// </summary>
-    /// <param name="textDocument">The text document.</param>
-    /// <returns>An edit point at the cursor.</returns>
-    internal static EditPoint GetEditPointAtCursor(this TextDocument textDocument)
-    {
-      ThreadHelper.ThrowIfNotOnUIThread();
-      EditPoint cursor = textDocument.CreateEditPoint();
-      cursor.MoveToPoint(textDocument.Selection.ActivePoint);
+        /// <summary>
+        /// Gets an edit point at the cursor for the specified text document.
+        /// </summary>
+        /// <param name="textDocument">The text document.</param>
+        /// <returns>An edit point at the cursor.</returns>
+        internal static EditPoint GetEditPointAtCursor(this TextDocument textDocument)
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
+            EditPoint cursor = textDocument.CreateEditPoint();
+            cursor.MoveToPoint(textDocument.Selection.ActivePoint);
 
-      return cursor;
+            return cursor;
+        }
     }
-  }
 }

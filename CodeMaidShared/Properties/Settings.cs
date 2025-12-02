@@ -14,8 +14,8 @@ namespace ASGV.CodeMaid.Properties
         /// </summary>
         public override void Upgrade()
         {
-      LocalFileSettingsProvider oldSettingsProvider = new();
-      SettingsPropertyValueCollection oldPropertyValues = oldSettingsProvider.GetPropertyValues(Context, Properties);
+            LocalFileSettingsProvider oldSettingsProvider = new();
+            SettingsPropertyValueCollection oldPropertyValues = oldSettingsProvider.GetPropertyValues(Context, Properties);
 
             foreach (SettingsPropertyValue oldPropertyValue in oldPropertyValues)
             {

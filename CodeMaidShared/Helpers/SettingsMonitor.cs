@@ -9,105 +9,105 @@ using System.Threading.Tasks;
 
 namespace ASGV.CodeMaid.Helpers
 {
-  public sealed class SettingsMonitor<TSetting>
-      where TSetting : ApplicationSettingsBase
-  {
-    private readonly JoinableTaskFactory _joinableTaskFactory;
-    private readonly Dictionary<string[], Monitor> _monitors = new(new StringArrayComparer());
-    private readonly TSetting _settings;
-
-    public SettingsMonitor(TSetting settings, JoinableTaskFactory joinableTaskFactory)
+    public sealed class SettingsMonitor<TSetting>
+        where TSetting : ApplicationSettingsBase
     {
-      _joinableTaskFactory = joinableTaskFactory;
-      _settings = settings;
-      _settings.SettingsSaving += OnSettingsSaving;
-    }
+        private readonly JoinableTaskFactory _joinableTaskFactory;
+        private readonly Dictionary<string[], Monitor> _monitors = new(new StringArrayComparer());
+        private readonly TSetting _settings;
 
-    public async Task WatchAsync<TValue>(Expression<Func<TSetting, TValue>> setting, Func<TValue, Task> changedCallback)
-    {
-      string settingName = (setting.Body as MemberExpression).Member.Name;
-      await WatchAsync<TValue>([settingName], async values => await changedCallback(values[0]));
-    }
-
-    public async Task WatchAsync<TValue>(string[] settings, Func<TValue[], Task> changedCallback)
-    {
-      await WatchAsync(settings, async (object[] values) =>
-      {
-        TValue[] typedValues = Array.ConvertAll(values, v => (TValue)v);
-        await changedCallback(typedValues);
-      });
-    }
-
-    public async Task WatchAsync(string[] settings, Func<object[], Task> changedCallback)
-    {
-      object[] values = FindValues(settings);
-
-      await changedCallback(values);
-
-      if (_monitors.TryGetValue(settings, out Monitor monitor))
-      {
-        monitor.Callback += changedCallback;
-      }
-      else
-      {
-        monitor = new Monitor { LastValues = values, Callback = changedCallback };
-        _monitors.Add(settings, monitor);
-      }
-    }
-
-    internal async Task NotifySettingsChangedAsync()
-    {
-      foreach (KeyValuePair<string[], Monitor> item in _monitors)
-      {
-        Monitor monitor = item.Value;
-        object[] oldValues = monitor.LastValues;
-        object[] newValues = FindValues(item.Key);
-        if (!oldValues.SequenceEqual(newValues))
+        public SettingsMonitor(TSetting settings, JoinableTaskFactory joinableTaskFactory)
         {
-          monitor.LastValues = newValues;
-          await monitor.Callback(newValues);
+            _joinableTaskFactory = joinableTaskFactory;
+            _settings = settings;
+            _settings.SettingsSaving += OnSettingsSaving;
         }
-      }
-    }
 
-    private object[] FindValues(string[] settings) => Array.ConvertAll(settings, key => _settings[key]);
-
-    private async void OnSettingsSaving(object sender, CancelEventArgs e)
-    {
-      if (_joinableTaskFactory != null)
-      {
-        await _joinableTaskFactory.RunAsync(NotifySettingsChangedAsync);
-      }
-      else
-      {
-        await NotifySettingsChangedAsync();
-      }
-    }
-
-    private class Monitor
-    {
-      public Func<object[], Task> Callback;
-      public object[] LastValues;
-    }
-
-    private class StringArrayComparer : IEqualityComparer<string[]>
-    {
-      private static readonly StringComparer ElementComparer = StringComparer.OrdinalIgnoreCase;
-
-      public bool Equals(string[] x, string[] y)
-          => x.SequenceEqual(y, ElementComparer);
-
-      public int GetHashCode(string[] strings)
-      {
-        int hash = 0;
-        for (int i = 0; i < strings.Length; i++)
+        public async Task WatchAsync<TValue>(Expression<Func<TSetting, TValue>> setting, Func<TValue, Task> changedCallback)
         {
-          hash = unchecked(
-              hash * 31 ^ ElementComparer.GetHashCode(strings[i])
-          );
+            string settingName = (setting.Body as MemberExpression).Member.Name;
+            await WatchAsync<TValue>([settingName], async values => await changedCallback(values[0]));
         }
-        return hash;
-      }
+
+        public async Task WatchAsync<TValue>(string[] settings, Func<TValue[], Task> changedCallback)
+        {
+            await WatchAsync(settings, async (object[] values) =>
+            {
+                TValue[] typedValues = Array.ConvertAll(values, v => (TValue)v);
+                await changedCallback(typedValues);
+            });
+        }
+
+        public async Task WatchAsync(string[] settings, Func<object[], Task> changedCallback)
+        {
+            object[] values = FindValues(settings);
+
+            await changedCallback(values);
+
+            if (_monitors.TryGetValue(settings, out Monitor monitor))
+            {
+                monitor.Callback += changedCallback;
+            }
+            else
+            {
+                monitor = new Monitor { LastValues = values, Callback = changedCallback };
+                _monitors.Add(settings, monitor);
+            }
+        }
+
+        internal async Task NotifySettingsChangedAsync()
+        {
+            foreach (KeyValuePair<string[], Monitor> item in _monitors)
+            {
+                Monitor monitor = item.Value;
+                object[] oldValues = monitor.LastValues;
+                object[] newValues = FindValues(item.Key);
+                if (!oldValues.SequenceEqual(newValues))
+                {
+                    monitor.LastValues = newValues;
+                    await monitor.Callback(newValues);
+                }
+            }
+        }
+
+        private object[] FindValues(string[] settings) => Array.ConvertAll(settings, key => _settings[key]);
+
+        private async void OnSettingsSaving(object sender, CancelEventArgs e)
+        {
+            if (_joinableTaskFactory != null)
+            {
+                await _joinableTaskFactory.RunAsync(NotifySettingsChangedAsync);
+            }
+            else
+            {
+                await NotifySettingsChangedAsync();
+            }
+        }
+
+        private class Monitor
+        {
+            public Func<object[], Task> Callback;
+            public object[] LastValues;
+        }
+
+        private class StringArrayComparer : IEqualityComparer<string[]>
+        {
+            private static readonly StringComparer ElementComparer = StringComparer.OrdinalIgnoreCase;
+
+            public bool Equals(string[] x, string[] y)
+                => x.SequenceEqual(y, ElementComparer);
+
+            public int GetHashCode(string[] strings)
+            {
+                int hash = 0;
+                for (int i = 0; i < strings.Length; i++)
+                {
+                    hash = unchecked(
+                        hash * 31 ^ ElementComparer.GetHashCode(strings[i])
+                    );
+                }
+                return hash;
+            }
+        }
     }
-  }
 }

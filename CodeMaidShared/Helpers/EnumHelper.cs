@@ -15,10 +15,9 @@ namespace ASGV.CodeMaid.Helpers
         /// <returns>The description.</returns>
         public static string GetDescription(this Enum value)
         {
-      System.Reflection.FieldInfo fieldInfo = value.GetType().GetField(value.ToString());
-      DescriptionAttribute attribute = Attribute.GetCustomAttribute(fieldInfo, typeof(DescriptionAttribute)) as DescriptionAttribute;
+            System.Reflection.FieldInfo fieldInfo = value.GetType().GetField(value.ToString());
 
-            return attribute != null ? attribute.Description : value.ToString();
+            return Attribute.GetCustomAttribute(fieldInfo, typeof(DescriptionAttribute)) is DescriptionAttribute attribute ? attribute.Description : value.ToString();
         }
     }
 }

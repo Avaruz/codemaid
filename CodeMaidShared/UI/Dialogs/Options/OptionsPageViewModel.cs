@@ -30,17 +30,17 @@ namespace ASGV.CodeMaid.UI.Dialogs.Options
         /// </summary>
         public abstract string Header { get; }
 
-    /// <summary>
-    /// Gets the hosting package.
-    /// </summary>
-    public CodeMaidPackage Package { get; }
+        /// <summary>
+        /// Gets the hosting package.
+        /// </summary>
+        public CodeMaidPackage Package { get; }
 
-    /// <summary>
-    /// Gets the active settings.
-    /// </summary>
-    public Settings ActiveSettings { get; }
+        /// <summary>
+        /// Gets the active settings.
+        /// </summary>
+        public Settings ActiveSettings { get; }
 
-    private IEnumerable<OptionsPageViewModel> _children;
+        private IEnumerable<OptionsPageViewModel> _children;
 
         /// <summary>
         /// Gets or sets the children.

@@ -16,7 +16,7 @@ namespace ASGV.CodeMaid.Helpers
         {
             if (string.IsNullOrEmpty(input)) return input;
 
-      string result = Regex.Replace(input, @"[^ \t,<>\[\]]*\.", string.Empty);
+            string result = Regex.Replace(input, @"[^ \t,<>\[\]]*\.", string.Empty);
 
             return result;
         }

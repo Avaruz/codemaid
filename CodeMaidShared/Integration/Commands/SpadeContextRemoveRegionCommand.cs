@@ -6,81 +6,81 @@ using ASGV.CodeMaid.Model.CodeItems;
 
 namespace ASGV.CodeMaid.Integration.Commands
 {
-  /// <summary>
-  /// A command that provides for removing a region within Spade.
-  /// </summary>
-  internal sealed class SpadeContextRemoveRegionCommand : BaseCommand
-  {
-    private readonly RemoveRegionLogic _removeRegionLogic;
-
     /// <summary>
-    /// Initializes a new instance of the <see cref="SpadeContextRemoveRegionCommand" /> class.
+    /// A command that provides for removing a region within Spade.
     /// </summary>
-    /// <param name="package">The hosting package.</param>
-    internal SpadeContextRemoveRegionCommand(CodeMaidPackage package)
-        : base(package, PackageGuids.GuidCodeMaidMenuSet, PackageIds.CmdIDCodeMaidSpadeContextRemoveRegion)
+    internal sealed class SpadeContextRemoveRegionCommand : BaseCommand
     {
-      _removeRegionLogic = RemoveRegionLogic.GetInstance(package);
+        private readonly RemoveRegionLogic _removeRegionLogic;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SpadeContextRemoveRegionCommand" /> class.
+        /// </summary>
+        /// <param name="package">The hosting package.</param>
+        internal SpadeContextRemoveRegionCommand(CodeMaidPackage package)
+            : base(package, PackageGuids.GuidCodeMaidMenuSet, PackageIds.CmdIDCodeMaidSpadeContextRemoveRegion)
+        {
+            _removeRegionLogic = RemoveRegionLogic.GetInstance(package);
+        }
+
+        /// <summary>
+        /// A singleton instance of this command.
+        /// </summary>
+        public static SpadeContextRemoveRegionCommand Instance { get; private set; }
+
+        /// <summary>
+        /// Initializes a singleton instance of this command.
+        /// </summary>
+        /// <param name="package">The hosting package.</param>
+        /// <returns>A task.</returns>
+        public static async Task InitializeAsync(CodeMaidPackage package)
+        {
+            Instance = new SpadeContextRemoveRegionCommand(package);
+            await Instance.SwitchAsync(on: true);
+        }
+
+        /// <summary>
+        /// Called to update the current status of the command.
+        /// </summary>
+        protected override void OnBeforeQueryStatus()
+        {
+            bool visible = false;
+
+            UI.ToolWindows.Spade.SpadeToolWindow spade = Package.Spade;
+            if (spade != null)
+            {
+                visible = spade.SelectedItems.OfType<CodeItemRegion>().Any(IsRemoveableRegion);
+            }
+
+            Visible = visible;
+        }
+
+        /// <summary>
+        /// Called to execute the command.
+        /// </summary>
+        protected override void OnExecute()
+        {
+            base.OnExecute();
+
+            UI.ToolWindows.Spade.SpadeToolWindow spade = Package.Spade;
+            ThreadHelper.ThrowIfNotOnUIThread();
+            if (spade != null)
+            {
+                System.Collections.Generic.IEnumerable<CodeItemRegion> regions = spade.SelectedItems.OfType<CodeItemRegion>().Where(IsRemoveableRegion);
+                _removeRegionLogic.RemoveRegions(regions);
+
+                spade.Refresh();
+            }
+        }
+
+        /// <summary>
+        /// Determines if the specified region is a candidate for removal.
+        /// </summary>
+        /// <param name="region">The region.</param>
+        /// <returns>True if the region can be removed, otherwise false.</returns>
+        private static bool IsRemoveableRegion(CodeItemRegion region)
+        {
+            return !region.IsPseudoGroup && region.StartLine > 0 && region.EndLine > 0;
+        }
     }
-
-    /// <summary>
-    /// A singleton instance of this command.
-    /// </summary>
-    public static SpadeContextRemoveRegionCommand Instance { get; private set; }
-
-    /// <summary>
-    /// Initializes a singleton instance of this command.
-    /// </summary>
-    /// <param name="package">The hosting package.</param>
-    /// <returns>A task.</returns>
-    public static async Task InitializeAsync(CodeMaidPackage package)
-    {
-      Instance = new SpadeContextRemoveRegionCommand(package);
-      await Instance.SwitchAsync(on: true);
-    }
-
-    /// <summary>
-    /// Called to update the current status of the command.
-    /// </summary>
-    protected override void OnBeforeQueryStatus()
-    {
-      bool visible = false;
-
-      UI.ToolWindows.Spade.SpadeToolWindow spade = Package.Spade;
-      if (spade != null)
-      {
-        visible = spade.SelectedItems.OfType<CodeItemRegion>().Any(IsRemoveableRegion);
-      }
-
-      Visible = visible;
-    }
-
-    /// <summary>
-    /// Called to execute the command.
-    /// </summary>
-    protected override void OnExecute()
-    {
-      base.OnExecute();
-
-      UI.ToolWindows.Spade.SpadeToolWindow spade = Package.Spade;
-      ThreadHelper.ThrowIfNotOnUIThread();
-      if (spade != null)
-      {
-        System.Collections.Generic.IEnumerable<CodeItemRegion> regions = spade.SelectedItems.OfType<CodeItemRegion>().Where(IsRemoveableRegion);
-        _removeRegionLogic.RemoveRegions(regions);
-
-        spade.Refresh();
-      }
-    }
-
-    /// <summary>
-    /// Determines if the specified region is a candidate for removal.
-    /// </summary>
-    /// <param name="region">The region.</param>
-    /// <returns>True if the region can be removed, otherwise false.</returns>
-    private static bool IsRemoveableRegion(CodeItemRegion region)
-    {
-      return !region.IsPseudoGroup && region.StartLine > 0 && region.EndLine > 0;
-    }
-  }
 }

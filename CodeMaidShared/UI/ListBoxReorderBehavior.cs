@@ -110,7 +110,7 @@ namespace ASGV.CodeMaid.UI
         {
             if (_dragCandidate == null || !_dragStartPoint.HasValue) return;
 
-      Vector delta = _dragStartPoint.Value - e.GetPosition(null);
+            Vector delta = _dragStartPoint.Value - e.GetPosition(null);
             if (Math.Abs(delta.X) <= SystemParameters.MinimumHorizontalDragDistance &&
                 Math.Abs(delta.Y) <= SystemParameters.MinimumVerticalDragDistance)
             {
@@ -147,11 +147,11 @@ namespace ASGV.CodeMaid.UI
         /// <param name="e">The <see cref="DragEventArgs" /> instance containing the event data.</param>
         private void OnDragEvent(object sender, DragEventArgs e)
         {
-      ListBoxItem target = FindParentListBoxItem(e.OriginalSource);
+            ListBoxItem target = FindParentListBoxItem(e.OriginalSource);
             if (target != null && e.Data.GetDataPresent(typeof(object)))
             {
-        object sourceData = e.Data.GetData(typeof(object));
-        object targetData = target.DataContext;
+                object sourceData = e.Data.GetData(typeof(object));
+                object targetData = target.DataContext;
 
                 if (sourceData != null && targetData != null && sourceData != targetData)
                 {
@@ -194,7 +194,7 @@ namespace ASGV.CodeMaid.UI
         /// <param name="e">The <see cref="DragEventArgs" /> instance containing the event data.</param>
         private void OnDragLeave(object sender, DragEventArgs e)
         {
-      ListBoxItem target = FindParentListBoxItem(e.OriginalSource);
+            ListBoxItem target = FindParentListBoxItem(e.OriginalSource);
             if (target != null)
             {
                 target.SetValue(DragDropAttachedProperties.IsDropAboveTargetProperty, false);
@@ -212,19 +212,18 @@ namespace ASGV.CodeMaid.UI
         {
             if (!e.Data.GetDataPresent(typeof(object))) return;
 
-      ListBoxItem target = FindParentListBoxItem(e.OriginalSource);
+            ListBoxItem target = FindParentListBoxItem(e.OriginalSource);
             if (target == null) return;
 
-      object sourceData = e.Data.GetData(typeof(object));
-      object targetData = target.DataContext;
+            object sourceData = e.Data.GetData(typeof(object));
+            object targetData = target.DataContext;
 
             if (sourceData == null || targetData == null || sourceData == targetData) return;
 
-      ObservableCollection<object> collection = AssociatedObject.ItemsSource as ObservableCollection<object>;
-            if (collection == null) return;
+            if (AssociatedObject.ItemsSource is not ObservableCollection<object> collection) return;
 
-      int sourceIndex = collection.IndexOf(sourceData);
-      int targetIndex = collection.IndexOf(targetData);
+            int sourceIndex = collection.IndexOf(sourceData);
+            int targetIndex = collection.IndexOf(targetData);
 
             // If the source is in front of the target, offset the target by 1 as the indices will change then the source is removed.
             if (sourceIndex < targetIndex)
@@ -264,10 +263,9 @@ namespace ASGV.CodeMaid.UI
         /// <returns>The parent ListBoxItem, otherwise null.</returns>
         private static ListBoxItem FindParentListBoxItem(object eventSource)
         {
-      DependencyObject source = eventSource as DependencyObject;
-            if (source == null) return null;
+            if (eventSource is not DependencyObject source) return null;
 
-      ListBoxItem listBoxItem = source.FindVisualAncestor<ListBoxItem>();
+            ListBoxItem listBoxItem = source.FindVisualAncestor<ListBoxItem>();
 
             return listBoxItem;
         }
@@ -280,8 +278,8 @@ namespace ASGV.CodeMaid.UI
         /// <returns>The drop position.</returns>
         private DropPosition GetDropPostion(DragEventArgs e, ListBoxItem target)
         {
-      Point dropPoint = e.GetPosition(target);
-      double targetHeight = target.ActualHeight;
+            Point dropPoint = e.GetPosition(target);
+            double targetHeight = target.ActualHeight;
 
             if (CanMerge)
             {
@@ -308,12 +306,11 @@ namespace ASGV.CodeMaid.UI
             // Remove the source item from the collection.
             collection.Remove(sourceItem);
 
-      // Get a collection for the target, creating one if necessary.
-      IList targetCollection = targetItem as IList ?? new List<object> { targetItem };
+            // Get a collection for the target, creating one if necessary.
+            IList targetCollection = targetItem as IList ?? new List<object> { targetItem };
 
-      // Add the source(s) to the target collection.
-      IList sourceCollection = sourceItem as IList;
-            if (sourceCollection != null)
+            // Add the source(s) to the target collection.
+            if (sourceItem is IList sourceCollection)
             {
                 foreach (object source in sourceCollection)
                 {

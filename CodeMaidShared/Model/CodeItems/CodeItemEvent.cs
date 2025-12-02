@@ -6,79 +6,79 @@ using ASGV.CodeMaid.Helpers;
 
 namespace ASGV.CodeMaid.Model.CodeItems
 {
-  /// <summary>
-  /// The representation of a code event.
-  /// </summary>
-  public class CodeItemEvent : BaseCodeItemElement, IInterfaceItem
-  {
-    #region Fields
-
-    private readonly Lazy<bool> _isExplicitInterfaceImplementation;
-
-    #endregion Fields
-
-    #region Constructors
-
     /// <summary>
-    /// Initializes a new instance of the <see cref="CodeItemEvent" /> class.
+    /// The representation of a code event.
     /// </summary>
-    public CodeItemEvent()
+    public class CodeItemEvent : BaseCodeItemElement, IInterfaceItem
     {
-      // Make exceptions for explicit interface implementations - which report private access
-      // but really do not have a meaningful access level.
-      ThreadHelper.ThrowIfNotOnUIThread();
-      _Access = LazyTryDefault(
-                () => { ThreadHelper.ThrowIfNotOnUIThread(); return CodeEvent != null && !IsExplicitInterfaceImplementation ? CodeEvent.Access : vsCMAccess.vsCMAccessPublic; });
+        #region Fields
 
-      _Attributes = LazyTryDefault(
-          () => CodeEvent?.Attributes);
+        private readonly Lazy<bool> _isExplicitInterfaceImplementation;
 
-      _DocComment = LazyTryDefault(
-          () => CodeEvent?.DocComment);
+        #endregion Fields
 
-      _isExplicitInterfaceImplementation = LazyTryDefault(
-          () => CodeEvent != null && ExplicitInterfaceImplementationHelper.IsExplicitInterfaceImplementation(CodeEvent));
+        #region Constructors
 
-      _IsStatic = LazyTryDefault(
-          () => CodeEvent?.IsShared == true);
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CodeItemEvent" /> class.
+        /// </summary>
+        public CodeItemEvent()
+        {
+            // Make exceptions for explicit interface implementations - which report private access
+            // but really do not have a meaningful access level.
+            ThreadHelper.ThrowIfNotOnUIThread();
+            _Access = LazyTryDefault(
+                      () => { ThreadHelper.ThrowIfNotOnUIThread(); return CodeEvent != null && !IsExplicitInterfaceImplementation ? CodeEvent.Access : vsCMAccess.vsCMAccessPublic; });
 
-      _TypeString = LazyTryDefault(
-          () => CodeEvent?.Type?.AsString);
+            _Attributes = LazyTryDefault(
+                () => CodeEvent?.Attributes);
+
+            _DocComment = LazyTryDefault(
+                () => CodeEvent?.DocComment);
+
+            _isExplicitInterfaceImplementation = LazyTryDefault(
+                () => CodeEvent != null && ExplicitInterfaceImplementationHelper.IsExplicitInterfaceImplementation(CodeEvent));
+
+            _IsStatic = LazyTryDefault(
+                () => CodeEvent?.IsShared == true);
+
+            _TypeString = LazyTryDefault(
+                () => CodeEvent?.Type?.AsString);
+        }
+
+        #endregion Constructors
+
+        #region BaseCodeItem Overrides
+
+        /// <summary>
+        /// Gets the kind.
+        /// </summary>
+        public override KindCodeItem Kind => KindCodeItem.Event;
+
+        /// <summary>
+        /// Loads all lazy initialized values immediately.
+        /// </summary>
+        public override void LoadLazyInitializedValues()
+        {
+            base.LoadLazyInitializedValues();
+
+            bool ieii = IsExplicitInterfaceImplementation;
+        }
+
+        #endregion BaseCodeItem Overrides
+
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the VSX CodeEvent.
+        /// </summary>
+        public CodeEvent CodeEvent { get; set; }
+
+        /// <summary>
+        /// Gets a flag indicating if this property is an explicit interface implementation.
+        /// </summary>
+        public bool IsExplicitInterfaceImplementation => _isExplicitInterfaceImplementation.Value;
+
+        #endregion Properties
     }
-
-    #endregion Constructors
-
-    #region BaseCodeItem Overrides
-
-    /// <summary>
-    /// Gets the kind.
-    /// </summary>
-    public override KindCodeItem Kind => KindCodeItem.Event;
-
-    /// <summary>
-    /// Loads all lazy initialized values immediately.
-    /// </summary>
-    public override void LoadLazyInitializedValues()
-    {
-      base.LoadLazyInitializedValues();
-
-      bool ieii = IsExplicitInterfaceImplementation;
-    }
-
-    #endregion BaseCodeItem Overrides
-
-    #region Properties
-
-    /// <summary>
-    /// Gets or sets the VSX CodeEvent.
-    /// </summary>
-    public CodeEvent CodeEvent { get; set; }
-
-    /// <summary>
-    /// Gets a flag indicating if this property is an explicit interface implementation.
-    /// </summary>
-    public bool IsExplicitInterfaceImplementation => _isExplicitInterfaceImplementation.Value;
-
-    #endregion Properties
-  }
 }

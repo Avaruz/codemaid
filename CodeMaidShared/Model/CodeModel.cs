@@ -6,96 +6,96 @@ using ASGV.CodeMaid.Model.CodeItems;
 
 namespace ASGV.CodeMaid.Model
 {
-  /// <summary>
-  /// This class encapsulates the representation of a document, including its code items and
-  /// current state.
-  /// </summary>
-  internal class CodeModel
-  {
-    #region Fields
-
-    private bool _isBuilding;
-    private bool _isStale;
-
-    #endregion Fields
-
-    #region Constructors
-
     /// <summary>
-    /// Initializes a new instance of the <see cref="CodeModel" /> class.
+    /// This class encapsulates the representation of a document, including its code items and
+    /// current state.
     /// </summary>
-    /// <param name="document">The document.</param>
-    internal CodeModel(Document document)
+    internal class CodeModel
     {
-      CodeItems = [];
-      Document = document;
-      IsBuiltWaitHandle = new ManualResetEvent(false);
-    }
+        #region Fields
 
-    #endregion Constructors
+        private bool _isBuilding;
+        private bool _isStale;
 
-    #region Properties
+        #endregion Fields
 
-    /// <summary>
-    /// Gets the document.
-    /// </summary>
-    internal Document Document { get; }
+        #region Constructors
 
-    /// <summary>
-    /// Gets or sets the code items.
-    /// </summary>
-    internal SetCodeItems CodeItems { get; set; }
-
-    /// <summary>
-    /// Gets or sets a flag indicating if this model is currently being built.
-    /// </summary>
-    internal bool IsBuilding
-    {
-      get { return _isBuilding; }
-      set
-      {
-        ThreadHelper.ThrowIfNotOnUIThread();
-        if (_isBuilding != value)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CodeModel" /> class.
+        /// </summary>
+        /// <param name="document">The document.</param>
+        internal CodeModel(Document document)
         {
-          OutputWindowHelper.DiagnosticWriteLine($"CodeModel.IsBuilding changing to '{value}' for '{Document.FullName}'");
-
-          _isBuilding = value;
-          if (_isBuilding)
-          {
-            IsBuiltWaitHandle.Reset();
-          }
-          else
-          {
-            IsBuiltWaitHandle.Set();
-          }
+            CodeItems = [];
+            Document = document;
+            IsBuiltWaitHandle = new ManualResetEvent(false);
         }
-      }
-    }
 
-    /// <summary>
-    /// Gets a wait handle that will be signaled when building is complete.
-    /// </summary>
-    internal ManualResetEvent IsBuiltWaitHandle { get; }
+        #endregion Constructors
 
-    /// <summary>
-    /// Gets or sets a flag indicating if this model is stale.
-    /// </summary>
-    internal bool IsStale
-    {
-      get { return _isStale; }
-      set
-      {
-        ThreadHelper.ThrowIfNotOnUIThread();
+        #region Properties
 
-        if (_isStale != value)
+        /// <summary>
+        /// Gets the document.
+        /// </summary>
+        internal Document Document { get; }
+
+        /// <summary>
+        /// Gets or sets the code items.
+        /// </summary>
+        internal SetCodeItems CodeItems { get; set; }
+
+        /// <summary>
+        /// Gets or sets a flag indicating if this model is currently being built.
+        /// </summary>
+        internal bool IsBuilding
         {
-          OutputWindowHelper.DiagnosticWriteLine($"CodeModel.IsStale changing to '{value}' for '{Document.FullName}'");
+            get { return _isBuilding; }
+            set
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                if (_isBuilding != value)
+                {
+                    OutputWindowHelper.DiagnosticWriteLine($"CodeModel.IsBuilding changing to '{value}' for '{Document.FullName}'");
 
-          _isStale = value;
+                    _isBuilding = value;
+                    if (_isBuilding)
+                    {
+                        IsBuiltWaitHandle.Reset();
+                    }
+                    else
+                    {
+                        IsBuiltWaitHandle.Set();
+                    }
+                }
+            }
         }
-      }
-    }
 
-    #endregion Properties
-  }
+        /// <summary>
+        /// Gets a wait handle that will be signaled when building is complete.
+        /// </summary>
+        internal ManualResetEvent IsBuiltWaitHandle { get; }
+
+        /// <summary>
+        /// Gets or sets a flag indicating if this model is stale.
+        /// </summary>
+        internal bool IsStale
+        {
+            get { return _isStale; }
+            set
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
+                if (_isStale != value)
+                {
+                    OutputWindowHelper.DiagnosticWriteLine($"CodeModel.IsStale changing to '{value}' for '{Document.FullName}'");
+
+                    _isStale = value;
+                }
+            }
+        }
+
+        #endregion Properties
+    }
 }

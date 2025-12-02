@@ -20,20 +20,20 @@ namespace ASGV.CodeMaid.Model.CodeItems
             CodeItems = codeItems;
         }
 
-    #endregion Constructors
+        #endregion Constructors
 
-    #region Properties
+        #region Properties
 
-    /// <summary>
-    /// Gets the document.
-    /// </summary>
-    internal Document Document { get; }
+        /// <summary>
+        /// Gets the document.
+        /// </summary>
+        internal Document Document { get; }
 
-    /// <summary>
-    /// Gets the code items.
-    /// </summary>
-    internal SetCodeItems CodeItems { get; }
+        /// <summary>
+        /// Gets the code items.
+        /// </summary>
+        internal SetCodeItems CodeItems { get; }
 
-    #endregion Properties
-  }
+        #endregion Properties
+    }
 }
